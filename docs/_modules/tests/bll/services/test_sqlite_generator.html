@@ -1,0 +1,282 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>tests.bll.services.test_sqlite_generator &#8212; Plaso Sqlite Plugin Scaffolder 20170614 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '20170614',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">Plaso Sqlite Plugin Scaffolder 20170614 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for tests.bll.services.test_sqlite_generator</h1><div class="highlight"><pre>
+<span></span><span class="c1"># !/usr/bin/python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;test class&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">unittest</span>
+
+<span class="kn">from</span> <span class="nn">plasoscaffolder.bll.services</span> <span class="k">import</span> <span class="n">sqlite_generator</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.common</span> <span class="k">import</span> <span class="n">file_handler</span>
+<span class="kn">from</span> <span class="nn">tests.fake</span> <span class="k">import</span> <span class="n">fake_file_handler</span><span class="p">,</span> <span class="n">fake_sqliteplugin_mapping</span>
+<span class="kn">from</span> <span class="nn">tests.fake</span> <span class="k">import</span> <span class="n">fake_mapping_helper</span>
+<span class="kn">from</span> <span class="nn">tests.fake</span> <span class="k">import</span> <span class="n">fake_sqlite_database_information</span>
+<span class="kn">from</span> <span class="nn">tests.fake</span> <span class="k">import</span> <span class="n">fake_sqlite_plugin_helper</span>
+<span class="kn">from</span> <span class="nn">tests.fake</span> <span class="k">import</span> <span class="n">fake_sqlite_plugin_path_helper</span>
+<span class="kn">from</span> <span class="nn">tests.test_helper</span> <span class="k">import</span> <span class="n">output_handler_file</span>
+<span class="kn">from</span> <span class="nn">tests.test_helper</span> <span class="k">import</span> <span class="n">path_helper</span>
+
+
+<div class="viewcode-block" id="SQLiteGeneratorTest"><a class="viewcode-back" href="../../../../tests.bll.services.html#tests.bll.services.test_sqlite_generator.SQLiteGeneratorTest">[docs]</a><span class="k">class</span> <span class="nc">SQLiteGeneratorTest</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;the SQLite generator test&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SQLiteGeneratorTest.setUp"><a class="viewcode-back" href="../../../../tests.bll.services.html#tests.bll.services.test_sqlite_generator.SQLiteGeneratorTest.setUp">[docs]</a>  <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">plugin_helper</span> <span class="o">=</span> <span class="n">fake_sqlite_plugin_helper</span><span class="o">.</span><span class="n">FakeSQLitePluginHelper</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">template_path</span> <span class="o">=</span> <span class="n">path_helper</span><span class="o">.</span><span class="n">TemplatePath</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SQLiteGeneratorTest.testPrintCopy"><a class="viewcode-back" href="../../../../tests.bll.services.html#tests.bll.services.test_sqlite_generator.SQLiteGeneratorTest.testPrintCopy">[docs]</a>  <span class="k">def</span> <span class="nf">testPrintCopy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;test the print for a copy&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tmpdir</span><span class="p">:</span>
+      <span class="n">fake_path_helper</span> <span class="o">=</span> \
+        <span class="n">fake_sqlite_plugin_path_helper</span><span class="o">.</span><span class="n">FakeSQLitePluginPathHelper</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">template_path</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;db&#39;</span><span class="p">)</span>
+      <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">,</span> <span class="s1">&#39;testfile&#39;</span><span class="p">)</span>
+      <span class="n">generator</span> <span class="o">=</span> <span class="n">sqlite_generator</span><span class="o">.</span><span class="n">SQLiteGenerator</span><span class="p">(</span>
+          <span class="n">tmpdir</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">],</span>
+          <span class="n">output_handler_file</span><span class="o">.</span><span class="n">OutputHandlerFile</span><span class="p">(</span><span class="n">path</span><span class="p">,</span>
+                                                <span class="n">file_handler</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">()),</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">plugin_helper</span><span class="p">,</span> <span class="n">fake_path_helper</span><span class="p">)</span>
+      <span class="n">generator</span><span class="o">.</span><span class="n">_PrintCopy</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>  <span class="c1"># pylint: disable=protected-access</span>
+      <span class="n">expected</span> <span class="o">=</span> <span class="s2">&quot;copy &quot;</span> <span class="o">+</span> <span class="n">path</span>
+      <span class="n">actual</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ReadFromFile</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">actual</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SQLiteGeneratorTest.testPrintEdit"><a class="viewcode-back" href="../../../../tests.bll.services.html#tests.bll.services.test_sqlite_generator.SQLiteGeneratorTest.testPrintEdit">[docs]</a>  <span class="k">def</span> <span class="nf">testPrintEdit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;test the print for a edit&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tmpdir</span><span class="p">:</span>
+      <span class="n">fake_path_helper</span> <span class="o">=</span> \
+        <span class="n">fake_sqlite_plugin_path_helper</span><span class="o">.</span><span class="n">FakeSQLitePluginPathHelper</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">template_path</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;db&#39;</span><span class="p">)</span>
+      <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">,</span> <span class="s1">&#39;testfile&#39;</span><span class="p">)</span>
+      <span class="n">generator</span> <span class="o">=</span> <span class="n">sqlite_generator</span><span class="o">.</span><span class="n">SQLiteGenerator</span><span class="p">(</span>
+          <span class="n">tmpdir</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">],</span>
+          <span class="n">output_handler_file</span><span class="o">.</span><span class="n">OutputHandlerFile</span><span class="p">(</span><span class="n">path</span><span class="p">,</span>
+                                                <span class="n">file_handler</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">()),</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">plugin_helper</span><span class="p">,</span> <span class="n">fake_path_helper</span><span class="p">)</span>
+      <span class="n">generator</span><span class="o">.</span><span class="n">_PrintEdit</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>  <span class="c1"># pylint: disable=protected-access</span>
+      <span class="n">expected</span> <span class="o">=</span> <span class="s1">&#39;edit &#39;</span> <span class="o">+</span> <span class="n">path</span>
+      <span class="n">actual</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ReadFromFile</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">actual</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SQLiteGeneratorTest.testPrintCreate"><a class="viewcode-back" href="../../../../tests.bll.services.html#tests.bll.services.test_sqlite_generator.SQLiteGeneratorTest.testPrintCreate">[docs]</a>  <span class="k">def</span> <span class="nf">testPrintCreate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;test the print for a create&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tmpdir</span><span class="p">:</span>
+      <span class="n">fake_path_helper</span> <span class="o">=</span> <span class="p">(</span>
+          <span class="n">fake_sqlite_plugin_path_helper</span><span class="o">.</span><span class="n">FakeSQLitePluginPathHelper</span><span class="p">(</span>
+              <span class="bp">self</span><span class="o">.</span><span class="n">template_path</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;db&#39;</span><span class="p">))</span>
+      <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">,</span> <span class="s1">&#39;testfile&#39;</span><span class="p">)</span>
+      <span class="n">generator</span> <span class="o">=</span> <span class="n">sqlite_generator</span><span class="o">.</span><span class="n">SQLiteGenerator</span><span class="p">(</span>
+          <span class="n">tmpdir</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">],</span>
+          <span class="n">output_handler_file</span><span class="o">.</span><span class="n">OutputHandlerFile</span><span class="p">(</span><span class="n">path</span><span class="p">,</span>
+                                                <span class="n">file_handler</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">()),</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">plugin_helper</span><span class="p">,</span> <span class="n">fake_path_helper</span><span class="p">)</span>
+      <span class="n">generator</span><span class="o">.</span><span class="n">_PrintCreate</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>  <span class="c1"># pylint: disable=protected-access</span>
+      <span class="n">expected</span> <span class="o">=</span> <span class="s1">&#39;create &#39;</span> <span class="o">+</span> <span class="n">path</span>
+      <span class="n">actual</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ReadFromFile</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">actual</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SQLiteGeneratorTest.testGenerateSQLitePlugin"><a class="viewcode-back" href="../../../../tests.bll.services.html#tests.bll.services.test_sqlite_generator.SQLiteGeneratorTest.testGenerateSQLitePlugin">[docs]</a>  <span class="k">def</span> <span class="nf">testGenerateSQLitePlugin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;test the output of a generation of a sqlite plugin&quot;&quot;&quot;</span>
+    <span class="n">fake_handler</span> <span class="o">=</span> <span class="n">fake_file_handler</span><span class="o">.</span><span class="n">FakeFileHandler</span><span class="p">()</span>
+    <span class="n">mapping_helper</span> <span class="o">=</span> <span class="n">fake_mapping_helper</span><span class="o">.</span><span class="n">FakeMappingHelper</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">template_path</span><span class="p">)</span>
+    <span class="n">init_formatter_mapper</span> <span class="o">=</span> <span class="n">fake_sqliteplugin_mapping</span><span class="o">.</span><span class="n">FakeSQLitePluginMapper</span><span class="p">(</span>
+        <span class="n">mapping_helper</span><span class="p">)</span>
+    <span class="n">init_parser_mapper</span> <span class="o">=</span> <span class="n">fake_sqliteplugin_mapping</span><span class="o">.</span><span class="n">FakeSQLitePluginMapper</span><span class="p">(</span>
+        <span class="n">mapping_helper</span><span class="p">)</span>
+    <span class="n">parser_mapper</span> <span class="o">=</span> <span class="n">fake_sqliteplugin_mapping</span><span class="o">.</span><span class="n">FakeSQLitePluginMapper</span><span class="p">(</span>
+        <span class="n">mapping_helper</span><span class="p">)</span>
+    <span class="n">formatter_mapper</span> <span class="o">=</span> <span class="n">fake_sqliteplugin_mapping</span><span class="o">.</span><span class="n">FakeSQLitePluginMapper</span><span class="p">(</span>
+        <span class="n">mapping_helper</span><span class="p">)</span>
+    <span class="n">parser_test_mapper</span> <span class="o">=</span> <span class="n">fake_sqliteplugin_mapping</span><span class="o">.</span><span class="n">FakeSQLitePluginMapper</span><span class="p">(</span>
+        <span class="n">mapping_helper</span><span class="p">)</span>
+    <span class="n">formatter_test_mapper</span> <span class="o">=</span> <span class="n">fake_sqliteplugin_mapping</span><span class="o">.</span><span class="n">FakeSQLitePluginMapper</span><span class="p">(</span>
+        <span class="n">mapping_helper</span><span class="p">)</span>
+    <span class="n">fake_database_information</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">fake_sqlite_database_information</span><span class="o">.</span><span class="n">FakeSQLiteDatabaseInformation</span><span class="p">([]))</span>
+
+    <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tmpdir</span><span class="p">:</span>
+      <span class="n">fake_path_helper</span> <span class="o">=</span> <span class="p">(</span>
+          <span class="n">fake_sqlite_plugin_path_helper</span><span class="o">.</span><span class="n">FakeSQLitePluginPathHelper</span><span class="p">(</span>
+              <span class="bp">self</span><span class="o">.</span><span class="n">template_path</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="s1">&#39;db&#39;</span><span class="p">))</span>
+      <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">,</span> <span class="s1">&#39;testfile&#39;</span><span class="p">)</span>
+
+      <span class="n">generator</span> <span class="o">=</span> <span class="n">sqlite_generator</span><span class="o">.</span><span class="n">SQLiteGenerator</span><span class="p">(</span>
+          <span class="n">tmpdir</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="p">[],</span>
+          <span class="n">output_handler_file</span><span class="o">.</span><span class="n">OutputHandlerFile</span><span class="p">(</span>
+              <span class="n">path</span><span class="p">,</span> <span class="n">file_handler</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">()),</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">plugin_helper</span><span class="p">,</span> <span class="n">fake_path_helper</span><span class="p">)</span>
+      <span class="n">generator</span><span class="o">.</span><span class="n">GenerateSQLitePlugin</span><span class="p">(</span>
+          <span class="n">tmpdir</span><span class="p">,</span> <span class="n">fake_handler</span><span class="p">,</span> <span class="n">init_formatter_mapper</span><span class="p">,</span> <span class="n">init_parser_mapper</span><span class="p">,</span>
+          <span class="n">parser_mapper</span><span class="p">,</span> <span class="n">formatter_mapper</span><span class="p">,</span>
+          <span class="n">parser_test_mapper</span><span class="p">,</span> <span class="n">formatter_test_mapper</span><span class="p">,</span> <span class="n">mapping_helper</span><span class="p">,</span>
+          <span class="n">fake_database_information</span><span class="p">)</span>
+      <span class="n">expected</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;create testcreate testcreate testcreate testcopy testcreate &#39;</span>
+                  <span class="s1">&#39;testcreate test&#39;</span><span class="p">)</span>
+      <span class="n">actual</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ReadFromFile</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">actual</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SQLiteGeneratorTest.testGenerateSQLitePluginWithExistingInit"><a class="viewcode-back" href="../../../../tests.bll.services.html#tests.bll.services.test_sqlite_generator.SQLiteGeneratorTest.testGenerateSQLitePluginWithExistingInit">[docs]</a>  <span class="k">def</span> <span class="nf">testGenerateSQLitePluginWithExistingInit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;test the output of a generation of a sqlite plugin&quot;&quot;&quot;</span>
+    <span class="n">fake_handler</span> <span class="o">=</span> <span class="n">fake_file_handler</span><span class="o">.</span><span class="n">FakeFileHandler</span><span class="p">()</span>
+    <span class="n">mapping_helper</span> <span class="o">=</span> <span class="n">fake_mapping_helper</span><span class="o">.</span><span class="n">FakeMappingHelper</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">template_path</span><span class="p">)</span>
+    <span class="n">init_formatter_mapper</span> <span class="o">=</span> <span class="n">fake_sqliteplugin_mapping</span><span class="o">.</span><span class="n">FakeSQLitePluginMapper</span><span class="p">(</span>
+        <span class="n">mapping_helper</span><span class="p">)</span>
+    <span class="n">init_parser_mapper</span> <span class="o">=</span> <span class="n">fake_sqliteplugin_mapping</span><span class="o">.</span><span class="n">FakeSQLitePluginMapper</span><span class="p">(</span>
+        <span class="n">mapping_helper</span><span class="p">)</span>
+    <span class="n">parser_mapper</span> <span class="o">=</span> <span class="n">fake_sqliteplugin_mapping</span><span class="o">.</span><span class="n">FakeSQLitePluginMapper</span><span class="p">(</span>
+        <span class="n">mapping_helper</span><span class="p">)</span>
+    <span class="n">formatter_mapper</span> <span class="o">=</span> <span class="n">fake_sqliteplugin_mapping</span><span class="o">.</span><span class="n">FakeSQLitePluginMapper</span><span class="p">(</span>
+        <span class="n">mapping_helper</span><span class="p">)</span>
+    <span class="n">parser_test_mapper</span> <span class="o">=</span> <span class="n">fake_sqliteplugin_mapping</span><span class="o">.</span><span class="n">FakeSQLitePluginMapper</span><span class="p">(</span>
+        <span class="n">mapping_helper</span><span class="p">)</span>
+    <span class="n">formatter_test_mapper</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">fake_sqliteplugin_mapping</span><span class="o">.</span><span class="n">FakeSQLitePluginMapper</span><span class="p">(</span>
+            <span class="n">mapping_helper</span><span class="p">))</span>
+    <span class="n">fake_database_information</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">fake_sqlite_database_information</span><span class="o">.</span><span class="n">FakeSQLiteDatabaseInformation</span><span class="p">([]))</span>
+
+    <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tmpdir</span><span class="p">:</span>
+      <span class="n">fake_path_helper</span> <span class="o">=</span> <span class="p">(</span>
+          <span class="n">fake_sqlite_plugin_path_helper</span><span class="o">.</span><span class="n">FakeSQLitePluginPathHelper</span><span class="p">(</span>
+              <span class="bp">self</span><span class="o">.</span><span class="n">template_path</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="s1">&#39;db&#39;</span><span class="p">))</span>
+      <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">,</span> <span class="s1">&#39;testfile&#39;</span><span class="p">)</span>
+
+      <span class="n">generator</span> <span class="o">=</span> <span class="n">sqlite_generator</span><span class="o">.</span><span class="n">SQLiteGenerator</span><span class="p">(</span>
+          <span class="n">tmpdir</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="p">[],</span>
+          <span class="n">output_handler_file</span><span class="o">.</span><span class="n">OutputHandlerFile</span><span class="p">(</span>
+              <span class="n">path</span><span class="p">,</span> <span class="n">file_handler</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">()),</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">plugin_helper</span><span class="p">,</span> <span class="n">fake_path_helper</span><span class="p">)</span>
+
+      <span class="n">generator</span><span class="o">.</span><span class="n">init_formatter_exists</span> <span class="o">=</span> <span class="kc">True</span>
+      <span class="n">generator</span><span class="o">.</span><span class="n">init_parser_exists</span> <span class="o">=</span> <span class="kc">True</span>
+
+      <span class="n">generator</span><span class="o">.</span><span class="n">GenerateSQLitePlugin</span><span class="p">(</span>
+          <span class="n">tmpdir</span><span class="p">,</span> <span class="n">fake_handler</span><span class="p">,</span> <span class="n">init_formatter_mapper</span><span class="p">,</span> <span class="n">init_parser_mapper</span><span class="p">,</span>
+          <span class="n">parser_mapper</span><span class="p">,</span> <span class="n">formatter_mapper</span><span class="p">,</span>
+          <span class="n">parser_test_mapper</span><span class="p">,</span> <span class="n">formatter_test_mapper</span><span class="p">,</span> <span class="n">mapping_helper</span><span class="p">,</span>
+          <span class="n">fake_database_information</span><span class="p">)</span>
+      <span class="n">expected</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;create testcreate testcreate testcreate testcopy testedit &#39;</span>
+                  <span class="s1">&#39;testedit test&#39;</span><span class="p">)</span>
+      <span class="n">actual</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ReadFromFile</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">actual</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SQLiteGeneratorTest.testPrint"><a class="viewcode-back" href="../../../../tests.bll.services.html#tests.bll.services.test_sqlite_generator.SQLiteGeneratorTest.testPrint">[docs]</a>  <span class="k">def</span> <span class="nf">testPrint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;test print&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tmpdir</span><span class="p">:</span>
+      <span class="n">fake_path_helper</span> <span class="o">=</span> \
+        <span class="n">fake_sqlite_plugin_path_helper</span><span class="o">.</span><span class="n">FakeSQLitePluginPathHelper</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">template_path</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="s1">&#39;db&#39;</span><span class="p">)</span>
+      <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">,</span> <span class="s1">&#39;testfile&#39;</span><span class="p">)</span>
+      <span class="n">generator</span> <span class="o">=</span> <span class="n">sqlite_generator</span><span class="o">.</span><span class="n">SQLiteGenerator</span><span class="p">(</span>
+          <span class="n">tmpdir</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">],</span>
+          <span class="n">output_handler_file</span><span class="o">.</span><span class="n">OutputHandlerFile</span><span class="p">(</span>
+              <span class="n">path</span><span class="p">,</span> <span class="n">file_handler</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">()),</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">plugin_helper</span><span class="p">,</span> <span class="n">fake_path_helper</span><span class="p">)</span>
+      <span class="n">arguments</span> <span class="o">=</span> <span class="s1">&#39;test1&#39;</span><span class="p">,</span> <span class="s1">&#39;test2&#39;</span><span class="p">,</span> <span class="s1">&#39;test3&#39;</span><span class="p">,</span> <span class="s1">&#39;test4&#39;</span><span class="p">,</span> <span class="s1">&#39;test5&#39;</span><span class="p">,</span> <span class="s1">&#39;test6&#39;</span><span class="p">,</span> <span class="s1">&#39;test7&#39;</span>
+      <span class="n">generator</span><span class="o">.</span><span class="n">_Print</span><span class="p">(</span><span class="o">*</span><span class="n">arguments</span><span class="p">)</span>  <span class="c1"># pylint: disable=protected-access</span>
+      <span class="n">actual</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ReadFromFile</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+    <span class="n">expected</span> <span class="o">=</span> <span class="s1">&#39;create test1create test2create test3create test4copy &#39;</span> \
+               <span class="s1">&#39;test5create test6create test7&#39;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">actual</span><span class="p">)</span></div>
+
+  <span class="k">def</span> <span class="nf">_ReadFromFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;read from file helper&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+      <span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+  <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">Plaso Sqlite Plugin Scaffolder 20170614 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Claudia Saxer.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.
+    </div>
+  </body>
+</html>

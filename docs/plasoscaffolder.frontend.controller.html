@@ -1,0 +1,303 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plasoscaffolder.frontend.controller package &#8212; Plaso Sqlite Plugin Scaffolder 20170614 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '20170614',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Plaso Sqlite Plugin Scaffolder 20170614 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="plasoscaffolder-frontend-controller-package">
+<h1>plasoscaffolder.frontend.controller package<a class="headerlink" href="#plasoscaffolder-frontend-controller-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-plasoscaffolder.frontend.controller.sqlite_controller">
+<span id="plasoscaffolder-frontend-controller-sqlite-controller-module"></span><h2>plasoscaffolder.frontend.controller.sqlite_controller module<a class="headerlink" href="#module-plasoscaffolder.frontend.controller.sqlite_controller" title="Permalink to this headline">¶</a></h2>
+<p>File representing the Controller for SQLite plugin.</p>
+<dl class="class">
+<dt id="plasoscaffolder.frontend.controller.sqlite_controller.SQLiteController">
+<em class="property">class </em><code class="descclassname">plasoscaffolder.frontend.controller.sqlite_controller.</code><code class="descname">SQLiteController</code><span class="sig-paren">(</span><em>output_handler: &lt;plasoscaffolder.common.base_output_handler.BaseOutputHandler object at 0x058C35D0&gt;</em>, <em>plugin_helper: &lt;plasoscaffolder.bll.services.base_sqlite_plugin_helper.BaseSQLitePluginHelper object at 0x058C35B0&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plasoscaffolder/frontend/controller/sqlite_controller.html#SQLiteController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.frontend.controller.sqlite_controller.SQLiteController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Class representing the SQLite Controller.</p>
+<dl class="method">
+<dt id="plasoscaffolder.frontend.controller.sqlite_controller.SQLiteController.Generate">
+<code class="descname">Generate</code><span class="sig-paren">(</span><em>template_path: str</em>, <em>yapf_path: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plasoscaffolder/frontend/controller/sqlite_controller.html#SQLiteController.Generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.frontend.controller.sqlite_controller.SQLiteController.Generate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generating the files.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>template_path</strong> (<em>str</em>) &#8211; the path to the template directory</li>
+<li><strong>yapf_path</strong> (<em>str</em>) &#8211; the path to the yapf style file</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.frontend.controller.sqlite_controller.SQLiteController.GetCustomizable">
+<code class="descname">GetCustomizable</code><span class="sig-paren">(</span><em>columns: [&lt;class 'plasoscaffolder.model.sql_query_column_model_data.SQLColumnModelData'&gt;]</em><span class="sig-paren">)</span> &#x2192; [&lt;class 'plasoscaffolder.model.sql_query_column_model_data.SQLColumnModelData'&gt;]<a class="reference internal" href="_modules/plasoscaffolder/frontend/controller/sqlite_controller.html#SQLiteController.GetCustomizable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.frontend.controller.sqlite_controller.SQLiteController.GetCustomizable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the customizable columns from the user</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>columns</strong> (<em></em><em>[</em><a class="reference internal" href="plasoscaffolder.model.html#plasoscaffolder.model.sql_query_column_model_data.SQLColumnModelData" title="plasoscaffolder.model.sql_query_column_model_data.SQLColumnModelData"><em>sql_query_column_model_data.SQLColumnModelData</em></a><em>]</em><em></em>) &#8211; the columns
+from the SQL query.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>the columns</dt>
+<dd>from the SQL query an set if the column is customizable</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">[<a class="reference internal" href="plasoscaffolder.model.html#plasoscaffolder.model.sql_query_column_model_data.SQLColumnModelData" title="plasoscaffolder.model.sql_query_column_model_data.SQLColumnModelData">sql_query_column_model_data.SQLColumnModelData</a>]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.frontend.controller.sqlite_controller.SQLiteController.GetTimestamps">
+<code class="descname">GetTimestamps</code><span class="sig-paren">(</span><em>columns: [&lt;class 'plasoscaffolder.model.sql_query_column_model.SQLColumnModel'&gt;], data: [&lt;class 'str'&gt;]) -&gt; ([&lt;class 'plasoscaffolder.model.sql_query_column_model_data.SQLColumnModelData'&gt;], [&lt;class 'plasoscaffolder.model.sql_query_column_model_timestamp.SQLColumnModelTimestamp'&gt;]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plasoscaffolder/frontend/controller/sqlite_controller.html#SQLiteController.GetTimestamps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.frontend.controller.sqlite_controller.SQLiteController.GetTimestamps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the timestamp from the user and the columns.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>columns</strong> (<em></em><em>[</em><a class="reference internal" href="plasoscaffolder.model.html#plasoscaffolder.model.sql_query_column_model.SQLColumnModel" title="plasoscaffolder.model.sql_query_column_model.SQLColumnModel"><em>sql_query_column_model.SQLColumnModel</em></a><em>]</em><em></em>) &#8211; the columns from the
+SQL query.</li>
+<li><strong>data</strong> (<em></em><em>[</em><em>str</em><em>]</em><em></em>) &#8211; the data from the cursor</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><dl class="docutils">
+<dt>[sql_query_column_model_data.SQLColumnModelData],</dt>
+<dd><p class="first last">[sql_query_column_model_timestamp.SQLColumnModelTimestamp]: A
+tuple of columns. The first column represents the
+normal column for the query. The second
+column represents the timestamp events.</p>
+</dd>
+</dl>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.frontend.controller.sqlite_controller.SQLiteController.PluginName">
+<code class="descname">PluginName</code><span class="sig-paren">(</span><em>unused_ctx: click.core.Context</em>, <em>unused_param: click.core.Option</em>, <em>value: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/plasoscaffolder/frontend/controller/sqlite_controller.html#SQLiteController.PluginName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.frontend.controller.sqlite_controller.SQLiteController.PluginName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saving the plugin name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>unused_ctx</strong> (<em>click.core.Context</em>) &#8211; the click context (automatically given
+via callback)</li>
+<li><strong>unused_param</strong> (<em>click.core.Option</em>) &#8211; the click command (automatically
+given via callback)</li>
+<li><strong>value</strong> (<em>str</em>) &#8211; the source path (automatically given via callback)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the plugin name representing the same as value</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.frontend.controller.sqlite_controller.SQLiteController.SQLQuery">
+<code class="descname">SQLQuery</code><span class="sig-paren">(</span><em>unused_ctx: click.core.Context</em>, <em>unused_param: click.core.Option</em>, <em>value: str</em><span class="sig-paren">)</span> &#x2192; [&lt;class 'plasoscaffolder.model.sql_query_model.SQLQueryModel'&gt;]<a class="reference internal" href="_modules/plasoscaffolder/frontend/controller/sqlite_controller.html#SQLiteController.SQLQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.frontend.controller.sqlite_controller.SQLiteController.SQLQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>The SQL Query of the plugin.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>unused_ctx</strong> (<em>click.core.Context</em>) &#8211; the click context (automatically given
+via callback)</li>
+<li><strong>unused_param</strong> (<em>click.core.Option</em>) &#8211; the click command (automatically
+given via callback)</li>
+<li><strong>value</strong> (<em>str</em>) &#8211; the SQL Query (automatically given via callback)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a list of SQL Query models</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[<a class="reference internal" href="plasoscaffolder.model.html#plasoscaffolder.model.sql_query_model.SQLQueryModel" title="plasoscaffolder.model.sql_query_model.SQLQueryModel">sql_query_model.SQLQueryModel</a>]</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.frontend.controller.sqlite_controller.SQLiteController.SourcePath">
+<code class="descname">SourcePath</code><span class="sig-paren">(</span><em>unused_ctx: click.core.Context</em>, <em>unused_param: click.core.Option</em>, <em>value: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/plasoscaffolder/frontend/controller/sqlite_controller.html#SQLiteController.SourcePath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.frontend.controller.sqlite_controller.SQLiteController.SourcePath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saving the source path.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>unused_ctx</strong> (<em>click.core.Context</em>) &#8211; the click context (automatically given
+via callback)</li>
+<li><strong>unused_param</strong> (<em>click.core.Option</em>) &#8211; the click command (automatically
+given via callback)</li>
+<li><strong>value</strong> (<em>str</em>) &#8211; the source path (automatically given via callback)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the source path representing the same as value</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.frontend.controller.sqlite_controller.SQLiteController.TestPath">
+<code class="descname">TestPath</code><span class="sig-paren">(</span><em>unused_ctx: click.core.Context</em>, <em>unused_param: click.core.Option</em>, <em>value: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/plasoscaffolder/frontend/controller/sqlite_controller.html#SQLiteController.TestPath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.frontend.controller.sqlite_controller.SQLiteController.TestPath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saving the path to the test file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>unused_ctx</strong> (<em>click.core.Context</em>) &#8211; the click context (automatically given
+via callback)</li>
+<li><strong>unused_param</strong> (<em>click.core.Option</em>) &#8211; the click command (automatically
+given via callback)</li>
+<li><strong>value</strong> (<em>str</em>) &#8211; the source path (automatically given via callback)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the test file path representing the same as the value</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-plasoscaffolder.frontend.controller">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-plasoscaffolder.frontend.controller" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">plasoscaffolder.frontend.controller package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-plasoscaffolder.frontend.controller.sqlite_controller">plasoscaffolder.frontend.controller.sqlite_controller module</a></li>
+<li><a class="reference internal" href="#module-plasoscaffolder.frontend.controller">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/plasoscaffolder.frontend.controller.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Plaso Sqlite Plugin Scaffolder 20170614 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Claudia Saxer.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.
+    </div>
+  </body>
+</html>

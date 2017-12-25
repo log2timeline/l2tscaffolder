@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plasoscaffolder.dal.explain_query_plan &#8212; Plaso Sqlite Plugin Scaffolder 20170614 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '20170614',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Plaso Sqlite Plugin Scaffolder 20170614 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for plasoscaffolder.dal.explain_query_plan</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># pylint: disable=no-member</span>
+<span class="c1"># pylint does not recognize connect and close as member</span>
+<span class="sd">&quot;&quot;&quot;Class for the explain query plan.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">plasoscaffolder.dal</span> <span class="k">import</span> <span class="n">base_explain_query_plan</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.dal</span> <span class="k">import</span> <span class="n">base_sql_query_execution</span>
+
+
+<div class="viewcode-block" id="ExplainQueryPlan"><a class="viewcode-back" href="../../../plasoscaffolder.dal.html#plasoscaffolder.dal.explain_query_plan.ExplainQueryPlan">[docs]</a><span class="k">class</span> <span class="nc">ExplainQueryPlan</span><span class="p">(</span><span class="n">base_explain_query_plan</span><span class="o">.</span><span class="n">BaseExplainQueryPlan</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Class representing the explain query plan.&quot;&quot;&quot;</span>
+
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">sql_execution</span><span class="p">:</span> <span class="n">base_sql_query_execution</span><span class="o">.</span><span class="n">BaseSQLQueryExecution</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Initializes the explain query plan.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      sql_execution (base_sql_query_execution.BaseSQLQueryExecution): the</span>
+<span class="sd">          helper to execute a query</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_sql_execution</span> <span class="o">=</span> <span class="n">sql_execution</span>
+
+<div class="viewcode-block" id="ExplainQueryPlan.IsReadOnly"><a class="viewcode-back" href="../../../plasoscaffolder.dal.html#plasoscaffolder.dal.explain_query_plan.ExplainQueryPlan.IsReadOnly">[docs]</a>  <span class="k">def</span> <span class="nf">IsReadOnly</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Determines if the query is read only.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      query (str): the sql query to determine if it is read only</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      bool: true if it is read only, false if it is not</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">explain_query</span> <span class="o">=</span> <span class="s1">&#39;EXPLAIN </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="n">explain_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sql_execution</span><span class="o">.</span><span class="n">ExecuteQuery</span><span class="p">(</span><span class="n">explain_query</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">explain_result</span><span class="o">.</span><span class="n">has_error</span><span class="p">:</span>
+      <span class="k">return</span> <span class="kc">False</span>
+    <span class="n">opcodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">explain_row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">explain_row</span> <span class="ow">in</span> <span class="n">explain_result</span><span class="o">.</span><span class="n">data</span><span class="p">]</span>
+    <span class="n">has_write</span> <span class="o">=</span> <span class="s1">&#39;OpenWrite&#39;</span> <span class="ow">in</span> <span class="n">opcodes</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">GetLockedTables</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="k">return</span> <span class="ow">not</span> <span class="n">has_write</span></div>
+
+<div class="viewcode-block" id="ExplainQueryPlan.GetLockedTables"><a class="viewcode-back" href="../../../plasoscaffolder.dal.html#plasoscaffolder.dal.explain_query_plan.ExplainQueryPlan.GetLockedTables">[docs]</a>  <span class="k">def</span> <span class="nf">GetLockedTables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Determines the table that were locked during the SQL query.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      query (str): the sql query to get the locked tables from</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      [str]: the list of tables</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">explain_query</span> <span class="o">=</span> <span class="s1">&#39;EXPLAIN </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="n">explain_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sql_execution</span><span class="o">.</span><span class="n">ExecuteQuery</span><span class="p">(</span><span class="n">explain_query</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">explain_result</span><span class="o">.</span><span class="n">has_error</span> <span class="ow">or</span> <span class="n">explain_result</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+      <span class="k">return</span> <span class="p">[]</span>
+    <span class="n">tables</span> <span class="o">=</span> <span class="p">[</span><span class="n">explain_row</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="k">for</span> <span class="n">explain_row</span> <span class="ow">in</span> <span class="n">explain_result</span><span class="o">.</span><span class="n">data</span> <span class="k">if</span>
+              <span class="n">explain_row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;TableLock&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">tables</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Plaso Sqlite Plugin Scaffolder 20170614 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Claudia Saxer.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.
+    </div>
+  </body>
+</html>

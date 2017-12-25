@@ -1,0 +1,46 @@
+# Files to ignore by git
+
+# Back-up files
+*~
+*.swp
+
+# Generic auto-generated build files
+*.pyc
+*.pyo
+
+# Specific auto-generated build files
+/.eggs
+/.tox
+**/__pycache__/
+/build/
+.build/
+dist
+/MANIFEST.test_data
+/src/plasoscaffolder.egg-info
+
+# Auto-generated Sphinx documentation files
+/docs/.build/doctrees/
+/docs/.build/html
+/docs/.build/.doctrees/
+/docs/.build/_modules/
+/docs/.build/_sources/
+/docs/.build/_static/
+docs/.build/
+
+# Code review files
+/.review
+._code_review_number
+
+# Pycharm files
+.idea
+
+# Test files
+.coverage
+tests-coverage.txt
+unittest
+sys
+
+# Build files
+/src/build
+/docs/.build
+

@@ -1,0 +1,734 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plasoscaffolder.bll.services package &#8212; Plaso Sqlite Plugin Scaffolder 20170614 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '20170614',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Plaso Sqlite Plugin Scaffolder 20170614 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="plasoscaffolder-bll-services-package">
+<h1>plasoscaffolder.bll.services package<a class="headerlink" href="#plasoscaffolder-bll-services-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-plasoscaffolder.bll.services.base_sqlite_generator">
+<span id="plasoscaffolder-bll-services-base-sqlite-generator-module"></span><h2>plasoscaffolder.bll.services.base_sqlite_generator module<a class="headerlink" href="#module-plasoscaffolder.bll.services.base_sqlite_generator" title="Permalink to this headline">¶</a></h2>
+<p>Base class for a Generator for SQLite.</p>
+<dl class="class">
+<dt id="plasoscaffolder.bll.services.base_sqlite_generator.BaseSQLiteGenerator">
+<em class="property">class </em><code class="descclassname">plasoscaffolder.bll.services.base_sqlite_generator.</code><code class="descname">BaseSQLiteGenerator</code><a class="reference internal" href="_modules/plasoscaffolder/bll/services/base_sqlite_generator.html#BaseSQLiteGenerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.bll.services.base_sqlite_generator.BaseSQLiteGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Class representing the base class for the base SQLite generator.</p>
+<dl class="method">
+<dt id="plasoscaffolder.bll.services.base_sqlite_generator.BaseSQLiteGenerator.GenerateSQLitePlugin">
+<code class="descname">GenerateSQLitePlugin</code><span class="sig-paren">(</span><em>template_path: str</em>, <em>fileHandler: plasoscaffolder.common.base_file_handler.BaseFileHandler</em>, <em>formatter_init_mapper: plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper</em>, <em>parser_init_mapper: plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper</em>, <em>parser_mapper: plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper</em>, <em>formatter_mapper: plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper</em>, <em>parser_test_mapper: plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper</em>, <em>formatter_test_mapper: plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper</em>, <em>mappingHelper: plasoscaffolder.bll.mappings.base_mapping_helper.BaseMappingHelper</em>, <em>database_information: plasoscaffolder.dal.base_database_information.BaseDatabaseInformation</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plasoscaffolder/bll/services/base_sqlite_generator.html#BaseSQLiteGenerator.GenerateSQLitePlugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.bll.services.base_sqlite_generator.BaseSQLiteGenerator.GenerateSQLitePlugin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the whole SQLite plugin.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>template_path</strong> (<em>str</em>) &#8211; the path to the template directory</li>
+<li><strong>fileHandler</strong> (<a class="reference internal" href="plasoscaffolder.common.html#plasoscaffolder.common.base_file_handler.BaseFileHandler" title="plasoscaffolder.common.base_file_handler.BaseFileHandler"><em>base_file_handler.BaseFileHandler</em></a>) &#8211; the handler for the file</li>
+<li><strong>formatter_init_mapper</strong> (<a class="reference internal" href="plasoscaffolder.bll.mappings.html#plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper" title="plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper"><em>base_sqliteplugin_mapping.BaseSQLitePluginMapper</em></a>) &#8211; the init formatter mapper</li>
+<li><strong>parser_init_mapper</strong> (<a class="reference internal" href="plasoscaffolder.bll.mappings.html#plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper" title="plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper"><em>base_sqliteplugin_mapping.BaseSQLitePluginMapper</em></a>) &#8211; the init parser mapper</li>
+<li><strong>parser_mapper</strong> (<a class="reference internal" href="plasoscaffolder.bll.mappings.html#plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper" title="plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper"><em>base_sqliteplugin_mapping.BaseSQLitePluginMapper</em></a>) &#8211; the parser mapper</li>
+<li><strong>formatter_mapper</strong> (<a class="reference internal" href="plasoscaffolder.bll.mappings.html#plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper" title="plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper"><em>base_sqliteplugin_mapping.BaseSQLitePluginMapper</em></a>) &#8211; the mapper for the formatter</li>
+<li><strong>parser_test_mapper</strong> (<a class="reference internal" href="plasoscaffolder.bll.mappings.html#plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper" title="plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper"><em>base_sqliteplugin_mapping.BaseSQLitePluginMapper</em></a>) &#8211; the mapper for the formatter test</li>
+<li><strong>formatter_test_mapper</strong> (<a class="reference internal" href="plasoscaffolder.bll.mappings.html#plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper" title="plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper"><em>base_sqliteplugin_mapping.BaseSQLitePluginMapper</em></a>) &#8211; the mapper for the parser test</li>
+<li><strong>mappingHelper</strong> (<a class="reference internal" href="plasoscaffolder.bll.mappings.html#plasoscaffolder.bll.mappings.base_mapping_helper.BaseMappingHelper" title="plasoscaffolder.bll.mappings.base_mapping_helper.BaseMappingHelper"><em>base_mapping_helper.BaseMappingHelper</em></a>) &#8211; the mapping helper</li>
+<li><strong>database_information</strong> (<a class="reference internal" href="plasoscaffolder.dal.html#plasoscaffolder.dal.base_database_information.BaseDatabaseInformation" title="plasoscaffolder.dal.base_database_information.BaseDatabaseInformation"><em>base_database_information.BaseDatabaseInformation</em></a>) &#8211; helper class for information about the database</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-plasoscaffolder.bll.services.base_sqlite_plugin_helper">
+<span id="plasoscaffolder-bll-services-base-sqlite-plugin-helper-module"></span><h2>plasoscaffolder.bll.services.base_sqlite_plugin_helper module<a class="headerlink" href="#module-plasoscaffolder.bll.services.base_sqlite_plugin_helper" title="Permalink to this headline">¶</a></h2>
+<p>Base class for SQLite plugin helper</p>
+<dl class="class">
+<dt id="plasoscaffolder.bll.services.base_sqlite_plugin_helper.BaseSQLitePluginHelper">
+<em class="property">class </em><code class="descclassname">plasoscaffolder.bll.services.base_sqlite_plugin_helper.</code><code class="descname">BaseSQLitePluginHelper</code><a class="reference internal" href="_modules/plasoscaffolder/bll/services/base_sqlite_plugin_helper.html#BaseSQLitePluginHelper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.bll.services.base_sqlite_plugin_helper.BaseSQLitePluginHelper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Class representing the base class for the SQLite plugin helper.</p>
+<dl class="method">
+<dt id="plasoscaffolder.bll.services.base_sqlite_plugin_helper.BaseSQLitePluginHelper.FileExists">
+<code class="descname">FileExists</code><span class="sig-paren">(</span><em>path: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/plasoscaffolder/bll/services/base_sqlite_plugin_helper.html#BaseSQLitePluginHelper.FileExists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.bll.services.base_sqlite_plugin_helper.BaseSQLitePluginHelper.FileExists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the file exists.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<em>str</em>) &#8211; the file path</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.bll.services.base_sqlite_plugin_helper.BaseSQLitePluginHelper.FolderExists">
+<code class="descname">FolderExists</code><span class="sig-paren">(</span><em>path: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/plasoscaffolder/bll/services/base_sqlite_plugin_helper.html#BaseSQLitePluginHelper.FolderExists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.bll.services.base_sqlite_plugin_helper.BaseSQLitePluginHelper.FolderExists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if folder exists.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<em>str</em>) &#8211; the folder path</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.bll.services.base_sqlite_plugin_helper.BaseSQLitePluginHelper.GetAssumedTimestamps">
+<code class="descname">GetAssumedTimestamps</code><span class="sig-paren">(</span><em>columns: [&lt;module 'plasoscaffolder.model.sql_query_column_model' from 'C:\\git\\PlasoScaffolder\\src\\plasoscaffolder\\model\\sql_query_column_model.py'&gt;]</em><span class="sig-paren">)</span> &#x2192; [&lt;class 'str'&gt;]<a class="reference internal" href="_modules/plasoscaffolder/bll/services/base_sqlite_plugin_helper.html#BaseSQLitePluginHelper.GetAssumedTimestamps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.bll.services.base_sqlite_plugin_helper.BaseSQLitePluginHelper.GetAssumedTimestamps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets all columns assumed that they are timestamps</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>columns</strong> (<em></em><em>[</em><a class="reference internal" href="plasoscaffolder.model.html#module-plasoscaffolder.model.sql_query_column_model" title="plasoscaffolder.model.sql_query_column_model"><em>sql_query_column_model</em></a><em>]</em><em></em>) &#8211; the columns from the query</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the names from the columns assumed they could be a timestamp</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">[str]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.bll.services.base_sqlite_plugin_helper.BaseSQLitePluginHelper.GetColumnsAndTimestampColumn">
+<code class="descname">GetColumnsAndTimestampColumn</code><span class="sig-paren">(</span><em>columns: [&lt;class 'plasoscaffolder.model.sql_query_column_model.SQLColumnModel'&gt;], timestamps: [&lt;class 'str'&gt;], data: [&lt;class 'str'&gt;]) -&gt; ([&lt;class 'plasoscaffolder.model.sql_query_column_model_data.SQLColumnModelData'&gt;], [&lt;class 'plasoscaffolder.model.sql_query_column_model_timestamp.SQLColumnModelTimestamp'&gt;]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plasoscaffolder/bll/services/base_sqlite_plugin_helper.html#BaseSQLitePluginHelper.GetColumnsAndTimestampColumn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.bll.services.base_sqlite_plugin_helper.BaseSQLitePluginHelper.GetColumnsAndTimestampColumn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Splits the column list into a list of simple columns and a list for
+timestamp event columns and adds the data to the simple columns</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>columns</strong> (<em></em><em>[</em><a class="reference internal" href="plasoscaffolder.model.html#plasoscaffolder.model.sql_query_column_model_data.SQLColumnModelData" title="plasoscaffolder.model.sql_query_column_model_data.SQLColumnModelData"><em>sql_query_column_model_data.SQLColumnModelData</em></a><em>]</em><em></em>) &#8211; the columns
+from the SQL query</li>
+<li><strong>timestamps</strong> (<em></em><em>[</em><em>str</em><em>]</em><em></em>) &#8211; the timestamp events</li>
+<li><strong>data</strong> (<em></em><em>[</em><em>str</em><em>]</em><em></em>) &#8211; the data from the cursor</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><dl class="docutils">
+<dt>([sql_query_column_model_data.SQLColumnModelData],</dt>
+<dd><p class="first last">[sql_query_column_model_timestamp.SQLColumnModelTimestamp): a tuple
+of columns, the first are the normal columns, the second are the
+timestamp events</p>
+</dd>
+</dl>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.bll.services.base_sqlite_plugin_helper.BaseSQLitePluginHelper.GetDistinctColumnsFromSQLQueryData">
+<code class="descname">GetDistinctColumnsFromSQLQueryData</code><span class="sig-paren">(</span><em>queries: [&lt;class 'plasoscaffolder.model.sql_query_model.SQLQueryModel'&gt;]</em><span class="sig-paren">)</span> &#x2192; [&lt;class 'str'&gt;]<a class="reference internal" href="_modules/plasoscaffolder/bll/services/base_sqlite_plugin_helper.html#BaseSQLitePluginHelper.GetDistinctColumnsFromSQLQueryData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.bll.services.base_sqlite_plugin_helper.BaseSQLitePluginHelper.GetDistinctColumnsFromSQLQueryData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a distinct list of all attributes from multiple queries</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>queries</strong> (<em></em><em>[</em><a class="reference internal" href="plasoscaffolder.model.html#plasoscaffolder.model.sql_query_model.SQLQueryModel" title="plasoscaffolder.model.sql_query_model.SQLQueryModel"><em>sql_query_model.SQLQueryModel</em></a><em>]</em><em></em>) &#8211; an array of multiple
+sql query data objects</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">all distinct attributes used in the query</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list[str]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.bll.services.base_sqlite_plugin_helper.BaseSQLitePluginHelper.IsValidCommaSeparatedString">
+<code class="descname">IsValidCommaSeparatedString</code><span class="sig-paren">(</span><em>text: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/plasoscaffolder/bll/services/base_sqlite_plugin_helper.html#BaseSQLitePluginHelper.IsValidCommaSeparatedString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.bll.services.base_sqlite_plugin_helper.BaseSQLitePluginHelper.IsValidCommaSeparatedString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates a comma separated string</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> (<em>str</em>) &#8211; the string to validate</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">true if the text is valide</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.bll.services.base_sqlite_plugin_helper.BaseSQLitePluginHelper.IsValidPluginName">
+<code class="descname">IsValidPluginName</code><span class="sig-paren">(</span><em>plugin_name: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/plasoscaffolder/bll/services/base_sqlite_plugin_helper.html#BaseSQLitePluginHelper.IsValidPluginName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.bll.services.base_sqlite_plugin_helper.BaseSQLitePluginHelper.IsValidPluginName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates the plugin Name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plugin_name</strong> (<em>str</em>) &#8211; the plugin Name</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">true if the plugin Name is valid</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.bll.services.base_sqlite_plugin_helper.BaseSQLitePluginHelper.IsValidRowName">
+<code class="descname">IsValidRowName</code><span class="sig-paren">(</span><em>row_name: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/plasoscaffolder/bll/services/base_sqlite_plugin_helper.html#BaseSQLitePluginHelper.IsValidRowName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.bll.services.base_sqlite_plugin_helper.BaseSQLitePluginHelper.IsValidRowName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates the row name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>row_name</strong> (<em>str</em>) &#8211; the row name</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">true if the row name is valid</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.bll.services.base_sqlite_plugin_helper.BaseSQLitePluginHelper.PluginExists">
+<code class="descname">PluginExists</code><span class="sig-paren">(</span><em>path: str</em>, <em>plugin_name: str</em>, <em>database_suffix: str</em>, <em>path_helper: plasoscaffolder.bll.services.base_sqlite_plugin_path_helper.BaseSQLitePluginPathHelper</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/plasoscaffolder/bll/services/base_sqlite_plugin_helper.html#BaseSQLitePluginHelper.PluginExists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.bll.services.base_sqlite_plugin_helper.BaseSQLitePluginHelper.PluginExists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the plugin already exists.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>database_suffix</strong> &#8211; the suffix of the database file</li>
+<li><strong>path</strong> (<em>str</em>) &#8211; the path of the plaso source</li>
+<li><strong>plugin_name</strong> (<em>str</em>) &#8211; the name of the plugin</li>
+<li><strong>path_helper</strong> (<a class="reference internal" href="#plasoscaffolder.bll.services.base_sqlite_plugin_path_helper.BaseSQLitePluginPathHelper" title="plasoscaffolder.bll.services.base_sqlite_plugin_path_helper.BaseSQLitePluginPathHelper"><em>base_sqlite_plugin_path_helper.BaseSQLitePluginPathHelper</em></a>) &#8211; the SQLite plugin helper</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the plugin already exists. False if it does not.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.bll.services.base_sqlite_plugin_helper.BaseSQLitePluginHelper.RunSQLQuery">
+<code class="descname">RunSQLQuery</code><span class="sig-paren">(</span><em>query: str</em>, <em>executor: plasoscaffolder.dal.base_sql_query_execution.BaseSQLQueryExecution</em><span class="sig-paren">)</span> &#x2192; plasoscaffolder.dal.sql_query_data.SQLQueryData<a class="reference internal" href="_modules/plasoscaffolder/bll/services/base_sqlite_plugin_helper.html#BaseSQLitePluginHelper.RunSQLQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.bll.services.base_sqlite_plugin_helper.BaseSQLitePluginHelper.RunSQLQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates the sql query</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>executor</strong> (<em>base_sql_query_execution.SQLiteQueryExecution</em>) &#8211; to validate the
+SQL queries provided by the user</li>
+<li><strong>query</strong> (<em>str</em>) &#8211; the SQL query</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><dl class="docutils">
+<dt>data returned by executing the</dt>
+<dd><p class="first last">query</p>
+</dd>
+</dl>
+</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="plasoscaffolder.dal.html#plasoscaffolder.dal.sql_query_data.SQLQueryData" title="plasoscaffolder.dal.sql_query_data.SQLQueryData">sql_query_data.SQLQueryData</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-plasoscaffolder.bll.services.base_sqlite_plugin_path_helper">
+<span id="plasoscaffolder-bll-services-base-sqlite-plugin-path-helper-module"></span><h2>plasoscaffolder.bll.services.base_sqlite_plugin_path_helper module<a class="headerlink" href="#module-plasoscaffolder.bll.services.base_sqlite_plugin_path_helper" title="Permalink to this headline">¶</a></h2>
+<p>Base class for SQLite plugin path helper.</p>
+<dl class="class">
+<dt id="plasoscaffolder.bll.services.base_sqlite_plugin_path_helper.BaseSQLitePluginPathHelper">
+<em class="property">class </em><code class="descclassname">plasoscaffolder.bll.services.base_sqlite_plugin_path_helper.</code><code class="descname">BaseSQLitePluginPathHelper</code><a class="reference internal" href="_modules/plasoscaffolder/bll/services/base_sqlite_plugin_path_helper.html#BaseSQLitePluginPathHelper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.bll.services.base_sqlite_plugin_path_helper.BaseSQLitePluginPathHelper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Class representing the base class for the SQLite plugin path helper.</p>
+<dl class="attribute">
+<dt id="plasoscaffolder.bll.services.base_sqlite_plugin_path_helper.BaseSQLitePluginPathHelper.formatter_file_path">
+<code class="descname">formatter_file_path</code><a class="headerlink" href="#plasoscaffolder.bll.services.base_sqlite_plugin_path_helper.BaseSQLitePluginPathHelper.formatter_file_path" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> &#8211; the path to the formatter file</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plasoscaffolder.bll.services.base_sqlite_plugin_path_helper.BaseSQLitePluginPathHelper.parser_file_path">
+<code class="descname">parser_file_path</code><a class="headerlink" href="#plasoscaffolder.bll.services.base_sqlite_plugin_path_helper.BaseSQLitePluginPathHelper.parser_file_path" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> &#8211; the path to the parser file</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plasoscaffolder.bll.services.base_sqlite_plugin_path_helper.BaseSQLitePluginPathHelper.formatter_test_file_path">
+<code class="descname">formatter_test_file_path</code><a class="headerlink" href="#plasoscaffolder.bll.services.base_sqlite_plugin_path_helper.BaseSQLitePluginPathHelper.formatter_test_file_path" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> &#8211; the path to the formatter test file</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plasoscaffolder.bll.services.base_sqlite_plugin_path_helper.BaseSQLitePluginPathHelper.parser_test_file_path">
+<code class="descname">parser_test_file_path</code><a class="headerlink" href="#plasoscaffolder.bll.services.base_sqlite_plugin_path_helper.BaseSQLitePluginPathHelper.parser_test_file_path" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> &#8211; the path to the parser test file</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plasoscaffolder.bll.services.base_sqlite_plugin_path_helper.BaseSQLitePluginPathHelper.database_path">
+<code class="descname">database_path</code><a class="headerlink" href="#plasoscaffolder.bll.services.base_sqlite_plugin_path_helper.BaseSQLitePluginPathHelper.database_path" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> &#8211; the path to the database file</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plasoscaffolder.bll.services.base_sqlite_plugin_path_helper.BaseSQLitePluginPathHelper.parser_init_file_path">
+<code class="descname">parser_init_file_path</code><a class="headerlink" href="#plasoscaffolder.bll.services.base_sqlite_plugin_path_helper.BaseSQLitePluginPathHelper.parser_init_file_path" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> &#8211; the path to the parser init file</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plasoscaffolder.bll.services.base_sqlite_plugin_path_helper.BaseSQLitePluginPathHelper.formatter_init_file_path">
+<code class="descname">formatter_init_file_path</code><a class="headerlink" href="#plasoscaffolder.bll.services.base_sqlite_plugin_path_helper.BaseSQLitePluginPathHelper.formatter_init_file_path" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> &#8211; the path to the formatter init file</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-plasoscaffolder.bll.services.sqlite_generator">
+<span id="plasoscaffolder-bll-services-sqlite-generator-module"></span><h2>plasoscaffolder.bll.services.sqlite_generator module<a class="headerlink" href="#module-plasoscaffolder.bll.services.sqlite_generator" title="Permalink to this headline">¶</a></h2>
+<p>A SQLite Generator</p>
+<dl class="class">
+<dt id="plasoscaffolder.bll.services.sqlite_generator.SQLiteGenerator">
+<em class="property">class </em><code class="descclassname">plasoscaffolder.bll.services.sqlite_generator.</code><code class="descname">SQLiteGenerator</code><span class="sig-paren">(</span><em>path: str, name: str, database: str, queries: [&lt;class 'plasoscaffolder.model.sql_query_model.SQLQueryModel'&gt;], output_handler: plasoscaffolder.common.base_output_handler.BaseOutputHandler, pluginHelper: plasoscaffolder.bll.services.base_sqlite_plugin_helper.BaseSQLitePluginHelper, pathHelper: plasoscaffolder.bll.services.base_sqlite_plugin_path_helper.BaseSQLitePluginPathHelper</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plasoscaffolder/bll/services/sqlite_generator.html#SQLiteGenerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.bll.services.sqlite_generator.SQLiteGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plasoscaffolder.bll.services.base_sqlite_generator.BaseSQLiteGenerator" title="plasoscaffolder.bll.services.base_sqlite_generator.BaseSQLiteGenerator"><code class="xref py py-class docutils literal"><span class="pre">plasoscaffolder.bll.services.base_sqlite_generator.BaseSQLiteGenerator</span></code></a></p>
+<p>Generator for SQLite Files.</p>
+<dl class="method">
+<dt id="plasoscaffolder.bll.services.sqlite_generator.SQLiteGenerator.GenerateSQLitePlugin">
+<code class="descname">GenerateSQLitePlugin</code><span class="sig-paren">(</span><em>template_path: str</em>, <em>fileHandler: plasoscaffolder.common.base_file_handler.BaseFileHandler</em>, <em>formatter_init_mapper: plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper</em>, <em>parser_init_mapper: plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper</em>, <em>parser_mapper: plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper</em>, <em>formatter_mapper: plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper</em>, <em>parser_test_mapper: plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper</em>, <em>formatter_test_mapper: plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper</em>, <em>mappingHelper: plasoscaffolder.bll.mappings.base_mapping_helper.BaseMappingHelper</em>, <em>database_information: plasoscaffolder.dal.base_database_information.BaseDatabaseInformation</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plasoscaffolder/bll/services/sqlite_generator.html#SQLiteGenerator.GenerateSQLitePlugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.bll.services.sqlite_generator.SQLiteGenerator.GenerateSQLitePlugin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the whole SQLite plugin.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>template_path</strong> (<em>str</em>) &#8211; the path to the template directory</li>
+<li><strong>fileHandler</strong> (<a class="reference internal" href="plasoscaffolder.common.html#plasoscaffolder.common.base_file_handler.BaseFileHandler" title="plasoscaffolder.common.base_file_handler.BaseFileHandler"><em>base_file_handler.BaseFileHandler</em></a>) &#8211; the handler for the file</li>
+<li><strong>formatter_init_mapper</strong> (<a class="reference internal" href="plasoscaffolder.bll.mappings.html#plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper" title="plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper"><em>base_sqliteplugin_mapping.BaseSQLitePluginMapper</em></a>) &#8211; the init formatter mapper</li>
+<li><strong>parser_init_mapper</strong> (<a class="reference internal" href="plasoscaffolder.bll.mappings.html#plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper" title="plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper"><em>base_sqliteplugin_mapping.BaseSQLitePluginMapper</em></a>) &#8211; the init parser mapper</li>
+<li><strong>parser_mapper</strong> (<a class="reference internal" href="plasoscaffolder.bll.mappings.html#plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper" title="plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper"><em>base_sqliteplugin_mapping.BaseSQLitePluginMapper</em></a>) &#8211; the parser mapper</li>
+<li><strong>formatter_mapper</strong> (<a class="reference internal" href="plasoscaffolder.bll.mappings.html#plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper" title="plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper"><em>base_sqliteplugin_mapping.BaseSQLitePluginMapper</em></a>) &#8211; the mapper for the formatter</li>
+<li><strong>parser_test_mapper</strong> (<a class="reference internal" href="plasoscaffolder.bll.mappings.html#plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper" title="plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper"><em>base_sqliteplugin_mapping.BaseSQLitePluginMapper</em></a>) &#8211; the mapper for the formatter test</li>
+<li><strong>formatter_test_mapper</strong> (<a class="reference internal" href="plasoscaffolder.bll.mappings.html#plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper" title="plasoscaffolder.bll.mappings.base_sqliteplugin_mapping.BaseSQLitePluginMapper"><em>base_sqliteplugin_mapping.BaseSQLitePluginMapper</em></a>) &#8211; the mapper for the parser test</li>
+<li><strong>mappingHelper</strong> (<a class="reference internal" href="plasoscaffolder.bll.mappings.html#plasoscaffolder.bll.mappings.base_mapping_helper.BaseMappingHelper" title="plasoscaffolder.bll.mappings.base_mapping_helper.BaseMappingHelper"><em>base_mapping_helper.BaseMappingHelper</em></a>) &#8211; the mapping helper</li>
+<li><strong>database_information</strong> (<a class="reference internal" href="plasoscaffolder.dal.html#plasoscaffolder.dal.base_database_information.BaseDatabaseInformation" title="plasoscaffolder.dal.base_database_information.BaseDatabaseInformation"><em>base_database_information.BaseDatabaseInformation</em></a>) &#8211; helper class for information about the database</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-plasoscaffolder.bll.services.sqlite_plugin_helper">
+<span id="plasoscaffolder-bll-services-sqlite-plugin-helper-module"></span><h2>plasoscaffolder.bll.services.sqlite_plugin_helper module<a class="headerlink" href="#module-plasoscaffolder.bll.services.sqlite_plugin_helper" title="Permalink to this headline">¶</a></h2>
+<p>SQLite plugin helper.</p>
+<dl class="class">
+<dt id="plasoscaffolder.bll.services.sqlite_plugin_helper.SQLitePluginHelper">
+<em class="property">class </em><code class="descclassname">plasoscaffolder.bll.services.sqlite_plugin_helper.</code><code class="descname">SQLitePluginHelper</code><a class="reference internal" href="_modules/plasoscaffolder/bll/services/sqlite_plugin_helper.html#SQLitePluginHelper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.bll.services.sqlite_plugin_helper.SQLitePluginHelper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plasoscaffolder.bll.services.base_sqlite_plugin_helper.BaseSQLitePluginHelper" title="plasoscaffolder.bll.services.base_sqlite_plugin_helper.BaseSQLitePluginHelper"><code class="xref py py-class docutils literal"><span class="pre">plasoscaffolder.bll.services.base_sqlite_plugin_helper.BaseSQLitePluginHelper</span></code></a></p>
+<p>Class containing helper functions for the SQLite plugin.</p>
+<dl class="method">
+<dt id="plasoscaffolder.bll.services.sqlite_plugin_helper.SQLitePluginHelper.FileExists">
+<code class="descname">FileExists</code><span class="sig-paren">(</span><em>path: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/plasoscaffolder/bll/services/sqlite_plugin_helper.html#SQLitePluginHelper.FileExists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.bll.services.sqlite_plugin_helper.SQLitePluginHelper.FileExists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the file exists.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> &#8211; the plaso folder path</td>
+</tr>
+</tbody>
+</table>
+<p>Returns: true if the file exists</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.bll.services.sqlite_plugin_helper.SQLitePluginHelper.FolderExists">
+<code class="descname">FolderExists</code><span class="sig-paren">(</span><em>path: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/plasoscaffolder/bll/services/sqlite_plugin_helper.html#SQLitePluginHelper.FolderExists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.bll.services.sqlite_plugin_helper.SQLitePluginHelper.FolderExists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if folder exists.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> &#8211; the plaso folder path</td>
+</tr>
+</tbody>
+</table>
+<p>Returns: true if the folder exists</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.bll.services.sqlite_plugin_helper.SQLitePluginHelper.GetAssumedTimestamps">
+<code class="descname">GetAssumedTimestamps</code><span class="sig-paren">(</span><em>columns: [&lt;class 'plasoscaffolder.model.sql_query_column_model.SQLColumnModel'&gt;]</em><span class="sig-paren">)</span> &#x2192; [&lt;class 'str'&gt;]<a class="reference internal" href="_modules/plasoscaffolder/bll/services/sqlite_plugin_helper.html#SQLitePluginHelper.GetAssumedTimestamps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.bll.services.sqlite_plugin_helper.SQLitePluginHelper.GetAssumedTimestamps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets all columns assumed that they are timestamps</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>columns</strong> (<em></em><em>[</em><a class="reference internal" href="plasoscaffolder.model.html#plasoscaffolder.model.sql_query_column_model.SQLColumnModel" title="plasoscaffolder.model.sql_query_column_model.SQLColumnModel"><em>sql_query_column_model.SQLColumnModel</em></a><em>]</em><em></em>) &#8211; the columns from the
+SQL query</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the names from the columns assumed they could be a timestamp</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">[str]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.bll.services.sqlite_plugin_helper.SQLitePluginHelper.GetColumnsAndTimestampColumn">
+<code class="descname">GetColumnsAndTimestampColumn</code><span class="sig-paren">(</span><em>columns: [&lt;class 'plasoscaffolder.model.sql_query_column_model.SQLColumnModel'&gt;], timestamps: [&lt;class 'str'&gt;], data: [&lt;class 'str'&gt;]) -&gt; ([&lt;class 'plasoscaffolder.model.sql_query_column_model_data.SQLColumnModelData'&gt;], [&lt;class 'plasoscaffolder.model.sql_query_column_model_timestamp.SQLColumnModelTimestamp'&gt;]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plasoscaffolder/bll/services/sqlite_plugin_helper.html#SQLitePluginHelper.GetColumnsAndTimestampColumn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.bll.services.sqlite_plugin_helper.SQLitePluginHelper.GetColumnsAndTimestampColumn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Splits the column list into a list of simple columns and a list for
+timestamp event columns and adds the data to the simple columns</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>columns</strong> (<em></em><em>[</em><a class="reference internal" href="plasoscaffolder.model.html#plasoscaffolder.model.sql_query_column_model_data.SQLColumnModelData" title="plasoscaffolder.model.sql_query_column_model_data.SQLColumnModelData"><em>sql_query_column_model_data.SQLColumnModelData</em></a><em>]</em><em></em>) &#8211; the columns
+from the SQL query</li>
+<li><strong>timestamps</strong> (<em></em><em>[</em><em>str</em><em>]</em><em></em>) &#8211; the timestamp events</li>
+<li><strong>data</strong> (<em></em><em>[</em><em>str</em><em>]</em><em></em>) &#8211; the data from the cursor</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><dl class="docutils">
+<dt>([sql_query_column_model_data.SQLColumnModelData],</dt>
+<dd><p class="first last">[sql_query_column_model_timestamp.SQLColumnModelTimestamp]): a tuple
+of columns, the first are the normal columns, the second are the
+timestamp events</p>
+</dd>
+</dl>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.bll.services.sqlite_plugin_helper.SQLitePluginHelper.GetDistinctColumnsFromSQLQueryData">
+<code class="descname">GetDistinctColumnsFromSQLQueryData</code><span class="sig-paren">(</span><em>queries: [&lt;class 'plasoscaffolder.model.sql_query_model.SQLQueryModel'&gt;]</em><span class="sig-paren">)</span> &#x2192; [&lt;class 'str'&gt;]<a class="reference internal" href="_modules/plasoscaffolder/bll/services/sqlite_plugin_helper.html#SQLitePluginHelper.GetDistinctColumnsFromSQLQueryData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.bll.services.sqlite_plugin_helper.SQLitePluginHelper.GetDistinctColumnsFromSQLQueryData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a distinct list of all attributes from multiple queries.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>queries</strong> (<em></em><em>[</em><a class="reference internal" href="plasoscaffolder.model.html#plasoscaffolder.model.sql_query_model.SQLQueryModel" title="plasoscaffolder.model.sql_query_model.SQLQueryModel"><em>sql_query_model.SQLQueryModel</em></a><em>]</em><em></em>) &#8211; an array of multiple
+SQL query data objects</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">all distinct attributes used in the query</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list[str]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.bll.services.sqlite_plugin_helper.SQLitePluginHelper.IsValidCommaSeparatedString">
+<code class="descname">IsValidCommaSeparatedString</code><span class="sig-paren">(</span><em>text: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/plasoscaffolder/bll/services/sqlite_plugin_helper.html#SQLitePluginHelper.IsValidCommaSeparatedString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.bll.services.sqlite_plugin_helper.SQLitePluginHelper.IsValidCommaSeparatedString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates a comma separated string</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> (<em>str</em>) &#8211; the string to validate</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">true if the text is valid</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.bll.services.sqlite_plugin_helper.SQLitePluginHelper.IsValidPluginName">
+<code class="descname">IsValidPluginName</code><span class="sig-paren">(</span><em>plugin_name: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/plasoscaffolder/bll/services/sqlite_plugin_helper.html#SQLitePluginHelper.IsValidPluginName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.bll.services.sqlite_plugin_helper.SQLitePluginHelper.IsValidPluginName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates the plugin name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plugin_name</strong> (<em>str</em>) &#8211; the plugin name</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">true if the plugin name is valid</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.bll.services.sqlite_plugin_helper.SQLitePluginHelper.IsValidRowName">
+<code class="descname">IsValidRowName</code><span class="sig-paren">(</span><em>row_name: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/plasoscaffolder/bll/services/sqlite_plugin_helper.html#SQLitePluginHelper.IsValidRowName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.bll.services.sqlite_plugin_helper.SQLitePluginHelper.IsValidRowName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates the row name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>row_name</strong> (<em>str</em>) &#8211; the row name</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">true if the row name is valid</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.bll.services.sqlite_plugin_helper.SQLitePluginHelper.PluginExists">
+<code class="descname">PluginExists</code><span class="sig-paren">(</span><em>path: str</em>, <em>plugin_name: str</em>, <em>database_suffix: str</em>, <em>path_helper: &lt;plasoscaffolder.bll.services.base_sqlite_plugin_path_helper.BaseSQLitePluginPathHelper object at 0x05487110&gt;</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/plasoscaffolder/bll/services/sqlite_plugin_helper.html#SQLitePluginHelper.PluginExists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.bll.services.sqlite_plugin_helper.SQLitePluginHelper.PluginExists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the plugin already exists.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>database_suffix</strong> &#8211; the suffix of the database file</li>
+<li><strong>path</strong> (<em>str</em>) &#8211; the path of the plaso source</li>
+<li><strong>plugin_name</strong> (<em>str</em>) &#8211; the Name of the plugin</li>
+<li><strong>path_helper</strong> (<a class="reference internal" href="#plasoscaffolder.bll.services.base_sqlite_plugin_helper.BaseSQLitePluginHelper" title="plasoscaffolder.bll.services.base_sqlite_plugin_helper.BaseSQLitePluginHelper"><em>BaseSQLitePluginHelper</em></a>) &#8211; the SQLite plugin helper</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the plugin already exists. False if it does not.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.bll.services.sqlite_plugin_helper.SQLitePluginHelper.RunSQLQuery">
+<code class="descname">RunSQLQuery</code><span class="sig-paren">(</span><em>query: str</em>, <em>executor: plasoscaffolder.dal.base_sql_query_execution.BaseSQLQueryExecution</em><span class="sig-paren">)</span> &#x2192; plasoscaffolder.dal.sql_query_data.SQLQueryData<a class="reference internal" href="_modules/plasoscaffolder/bll/services/sqlite_plugin_helper.html#SQLitePluginHelper.RunSQLQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.bll.services.sqlite_plugin_helper.SQLitePluginHelper.RunSQLQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates the SQL query.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>executor</strong> (<em>base_sql_query_execution.SQLQueryExection</em><em>(</em><em></em><em>)</em><em></em>) &#8211; </li>
+<li><strong>query</strong> (<em>str</em>) &#8211; the SQL query</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><dl class="docutils">
+<dt>data returned by executing the</dt>
+<dd><p class="first last">query</p>
+</dd>
+</dl>
+</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="plasoscaffolder.dal.html#plasoscaffolder.dal.sql_query_data.SQLQueryData" title="plasoscaffolder.dal.sql_query_data.SQLQueryData">sql_query_data.SQLQueryData</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-plasoscaffolder.bll.services.sqlite_plugin_path_helper">
+<span id="plasoscaffolder-bll-services-sqlite-plugin-path-helper-module"></span><h2>plasoscaffolder.bll.services.sqlite_plugin_path_helper module<a class="headerlink" href="#module-plasoscaffolder.bll.services.sqlite_plugin_path_helper" title="Permalink to this headline">¶</a></h2>
+<p>SQLite Plugin Path Helper-</p>
+<dl class="class">
+<dt id="plasoscaffolder.bll.services.sqlite_plugin_path_helper.SQLitePluginPathHelper">
+<em class="property">class </em><code class="descclassname">plasoscaffolder.bll.services.sqlite_plugin_path_helper.</code><code class="descname">SQLitePluginPathHelper</code><span class="sig-paren">(</span><em>path: str</em>, <em>plugin_name: str</em>, <em>database_suffix: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plasoscaffolder/bll/services/sqlite_plugin_path_helper.html#SQLitePluginPathHelper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.bll.services.sqlite_plugin_path_helper.SQLitePluginPathHelper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plasoscaffolder.bll.services.base_sqlite_plugin_path_helper.BaseSQLitePluginPathHelper" title="plasoscaffolder.bll.services.base_sqlite_plugin_path_helper.BaseSQLitePluginPathHelper"><code class="xref py py-class docutils literal"><span class="pre">plasoscaffolder.bll.services.base_sqlite_plugin_path_helper.BaseSQLitePluginPathHelper</span></code></a></p>
+<p>Class containing helper functions for the SQLite plugin for the path-</p>
+<dl class="attribute">
+<dt id="plasoscaffolder.bll.services.sqlite_plugin_path_helper.SQLitePluginPathHelper.formatter_file_path">
+<code class="descname">formatter_file_path</code><a class="headerlink" href="#plasoscaffolder.bll.services.sqlite_plugin_path_helper.SQLitePluginPathHelper.formatter_file_path" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> &#8211; the path to the formatter file</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plasoscaffolder.bll.services.sqlite_plugin_path_helper.SQLitePluginPathHelper.parser_file_path">
+<code class="descname">parser_file_path</code><a class="headerlink" href="#plasoscaffolder.bll.services.sqlite_plugin_path_helper.SQLitePluginPathHelper.parser_file_path" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> &#8211; the path to the parser file</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plasoscaffolder.bll.services.sqlite_plugin_path_helper.SQLitePluginPathHelper.formatter_test_file_path">
+<code class="descname">formatter_test_file_path</code><a class="headerlink" href="#plasoscaffolder.bll.services.sqlite_plugin_path_helper.SQLitePluginPathHelper.formatter_test_file_path" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> &#8211; the path to the formatter test file</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plasoscaffolder.bll.services.sqlite_plugin_path_helper.SQLitePluginPathHelper.parser_test_file_path">
+<code class="descname">parser_test_file_path</code><a class="headerlink" href="#plasoscaffolder.bll.services.sqlite_plugin_path_helper.SQLitePluginPathHelper.parser_test_file_path" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> &#8211; the path to the parser test file</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plasoscaffolder.bll.services.sqlite_plugin_path_helper.SQLitePluginPathHelper.database_path">
+<code class="descname">database_path</code><a class="headerlink" href="#plasoscaffolder.bll.services.sqlite_plugin_path_helper.SQLitePluginPathHelper.database_path" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> &#8211; the path to the database file</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plasoscaffolder.bll.services.sqlite_plugin_path_helper.SQLitePluginPathHelper.parser_init_file_path">
+<code class="descname">parser_init_file_path</code><a class="headerlink" href="#plasoscaffolder.bll.services.sqlite_plugin_path_helper.SQLitePluginPathHelper.parser_init_file_path" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> &#8211; the path to the parser init file</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plasoscaffolder.bll.services.sqlite_plugin_path_helper.SQLitePluginPathHelper.formatter_init_file_path">
+<code class="descname">formatter_init_file_path</code><a class="headerlink" href="#plasoscaffolder.bll.services.sqlite_plugin_path_helper.SQLitePluginPathHelper.formatter_init_file_path" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> &#8211; the path to the formatter init file</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-plasoscaffolder.bll.services">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-plasoscaffolder.bll.services" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">plasoscaffolder.bll.services package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-plasoscaffolder.bll.services.base_sqlite_generator">plasoscaffolder.bll.services.base_sqlite_generator module</a></li>
+<li><a class="reference internal" href="#module-plasoscaffolder.bll.services.base_sqlite_plugin_helper">plasoscaffolder.bll.services.base_sqlite_plugin_helper module</a></li>
+<li><a class="reference internal" href="#module-plasoscaffolder.bll.services.base_sqlite_plugin_path_helper">plasoscaffolder.bll.services.base_sqlite_plugin_path_helper module</a></li>
+<li><a class="reference internal" href="#module-plasoscaffolder.bll.services.sqlite_generator">plasoscaffolder.bll.services.sqlite_generator module</a></li>
+<li><a class="reference internal" href="#module-plasoscaffolder.bll.services.sqlite_plugin_helper">plasoscaffolder.bll.services.sqlite_plugin_helper module</a></li>
+<li><a class="reference internal" href="#module-plasoscaffolder.bll.services.sqlite_plugin_path_helper">plasoscaffolder.bll.services.sqlite_plugin_path_helper module</a></li>
+<li><a class="reference internal" href="#module-plasoscaffolder.bll.services">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/plasoscaffolder.bll.services.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Plaso Sqlite Plugin Scaffolder 20170614 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Claudia Saxer.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.
+    </div>
+  </body>
+</html>

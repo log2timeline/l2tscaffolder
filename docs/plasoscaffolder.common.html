@@ -1,0 +1,765 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plasoscaffolder.common package &#8212; Plaso Sqlite Plugin Scaffolder 20170614 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '20170614',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Plaso Sqlite Plugin Scaffolder 20170614 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="plasoscaffolder-common-package">
+<h1>plasoscaffolder.common package<a class="headerlink" href="#plasoscaffolder-common-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-plasoscaffolder.common.base_code_formatter">
+<span id="plasoscaffolder-common-base-code-formatter-module"></span><h2>plasoscaffolder.common.base_code_formatter module<a class="headerlink" href="#module-plasoscaffolder.common.base_code_formatter" title="Permalink to this headline">¶</a></h2>
+<p>Base code formatter.</p>
+<dl class="class">
+<dt id="plasoscaffolder.common.base_code_formatter.BaseCodeFormatter">
+<em class="property">class </em><code class="descclassname">plasoscaffolder.common.base_code_formatter.</code><code class="descname">BaseCodeFormatter</code><a class="reference internal" href="_modules/plasoscaffolder/common/base_code_formatter.html#BaseCodeFormatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.base_code_formatter.BaseCodeFormatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Base class representing the base class for the code formatter.</p>
+<dl class="method">
+<dt id="plasoscaffolder.common.base_code_formatter.BaseCodeFormatter.Format">
+<code class="descname">Format</code><span class="sig-paren">(</span><em>code: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/plasoscaffolder/common/base_code_formatter.html#BaseCodeFormatter.Format"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.base_code_formatter.BaseCodeFormatter.Format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formats the code.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>code</strong> (<em>str</em>) &#8211; the code to format</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the formatted code.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-plasoscaffolder.common.base_file_handler">
+<span id="plasoscaffolder-common-base-file-handler-module"></span><h2>plasoscaffolder.common.base_file_handler module<a class="headerlink" href="#module-plasoscaffolder.common.base_file_handler" title="Permalink to this headline">¶</a></h2>
+<p>Base file handler.</p>
+<dl class="class">
+<dt id="plasoscaffolder.common.base_file_handler.BaseFileHandler">
+<em class="property">class </em><code class="descclassname">plasoscaffolder.common.base_file_handler.</code><code class="descname">BaseFileHandler</code><a class="reference internal" href="_modules/plasoscaffolder/common/base_file_handler.html#BaseFileHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.base_file_handler.BaseFileHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Base class representing the base class for the file handler.</p>
+<dl class="method">
+<dt id="plasoscaffolder.common.base_file_handler.BaseFileHandler.AddContent">
+<code class="descname">AddContent</code><span class="sig-paren">(</span><em>source: str</em>, <em>content: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/plasoscaffolder/common/base_file_handler.html#BaseFileHandler.AddContent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.base_file_handler.BaseFileHandler.AddContent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add content to a file and create file if non existing.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>source</strong> (<em>str</em>) &#8211; The path of the file to edit.</li>
+<li><strong>content</strong> (<em>str</em>) &#8211; The content to append to the file.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the path of the edited file.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.common.base_file_handler.BaseFileHandler.CopyFile">
+<code class="descname">CopyFile</code><span class="sig-paren">(</span><em>source: str</em>, <em>destination: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/plasoscaffolder/common/base_file_handler.html#BaseFileHandler.CopyFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.base_file_handler.BaseFileHandler.CopyFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copies a file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>source</strong> (<em>str</em>) &#8211; path of the file to copy</li>
+<li><strong>destination</strong> (<em>str</em>) &#8211; path to copy the file to.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the path of the copied file</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.common.base_file_handler.BaseFileHandler.CreateFile">
+<code class="descname">CreateFile</code><span class="sig-paren">(</span><em>directory_path: str</em>, <em>file_name: str</em>, <em>filename_suffix: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plasoscaffolder/common/base_file_handler.html#BaseFileHandler.CreateFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.base_file_handler.BaseFileHandler.CreateFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an empty file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>directory_path</strong> (<em>str</em>) &#8211; The path to the directory the file should be
+created.</li>
+<li><strong>file_name</strong> (<em>str</em>) &#8211; the name of the new file.</li>
+<li><strong>filename_suffix</strong> (<em>str</em>) &#8211; the suffix of the new file.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the path of the created file</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.common.base_file_handler.BaseFileHandler.CreateFileFromPath">
+<code class="descname">CreateFileFromPath</code><span class="sig-paren">(</span><em>file_path: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/plasoscaffolder/common/base_file_handler.html#BaseFileHandler.CreateFileFromPath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.base_file_handler.BaseFileHandler.CreateFileFromPath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a empty file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_path</strong> (<em>str</em>) &#8211; the path to the file.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the path of the created file</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="plasoscaffolder.common.base_file_handler.BaseFileHandler.CreateFilePath">
+<em class="property">classmethod </em><code class="descname">CreateFilePath</code><span class="sig-paren">(</span><em>path: str</em>, <em>name: str</em>, <em>suffix: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/plasoscaffolder/common/base_file_handler.html#BaseFileHandler.CreateFilePath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.base_file_handler.BaseFileHandler.CreateFilePath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates the file path out of the directory path, filename and suffix.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>path</strong> (<em>str</em>) &#8211; the path to the file directory</li>
+<li><strong>name</strong> (<em>str</em>) &#8211; the filename</li>
+<li><strong>suffix</strong> (<em>str</em>) &#8211; the suffix</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the joined path to the file</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.common.base_file_handler.BaseFileHandler.CreateFolderForFilePathIfNotExist">
+<code class="descname">CreateFolderForFilePathIfNotExist</code><span class="sig-paren">(</span><em>file_path: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plasoscaffolder/common/base_file_handler.html#BaseFileHandler.CreateFolderForFilePathIfNotExist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.base_file_handler.BaseFileHandler.CreateFolderForFilePathIfNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates folders for the given file if it does not exist.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_path</strong> (<em>str</em>) &#8211; the path to the file</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the directory path of the created directory</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.common.base_file_handler.BaseFileHandler.CreateOrModifyFileWithContent">
+<code class="descname">CreateOrModifyFileWithContent</code><span class="sig-paren">(</span><em>source: str</em>, <em>content: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plasoscaffolder/common/base_file_handler.html#BaseFileHandler.CreateOrModifyFileWithContent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.base_file_handler.BaseFileHandler.CreateOrModifyFileWithContent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add content to file or modify file and create folder if they don&#8217;t exist.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>source</strong> (<em>str</em>) &#8211; the file to edit / create</li>
+<li><strong>content</strong> (<em>str</em>) &#8211; the content to add to the file</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-plasoscaffolder.common.base_output_handler">
+<span id="plasoscaffolder-common-base-output-handler-module"></span><h2>plasoscaffolder.common.base_output_handler module<a class="headerlink" href="#module-plasoscaffolder.common.base_output_handler" title="Permalink to this headline">¶</a></h2>
+<p>base output handler</p>
+<dl class="class">
+<dt id="plasoscaffolder.common.base_output_handler.BaseOutputHandler">
+<em class="property">class </em><code class="descclassname">plasoscaffolder.common.base_output_handler.</code><code class="descname">BaseOutputHandler</code><a class="reference internal" href="_modules/plasoscaffolder/common/base_output_handler.html#BaseOutputHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.base_output_handler.BaseOutputHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Base class representing the Base class for the output handler class</p>
+<dl class="method">
+<dt id="plasoscaffolder.common.base_output_handler.BaseOutputHandler.Confirm">
+<code class="descname">Confirm</code><span class="sig-paren">(</span><em>text: str</em>, <em>default=True</em>, <em>abort=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plasoscaffolder/common/base_output_handler.html#BaseOutputHandler.Confirm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.base_output_handler.BaseOutputHandler.Confirm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask for a confirmation, either yes or no to a question.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>text</strong> (<em>str</em>) &#8211; prompts the user for a confirmation, with the given test as
+the question</li>
+<li><strong>default</strong> (<em>bool</em>) &#8211; the default for the confirmation answer. If True the
+default is Y(es), if False the default is N(o)</li>
+<li><strong>abort</strong> (<em>bool</em>) &#8211; if the program should abort if the user answer to the
+confirm prompt is no. The default is an abort.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">False if the user entered no, True if the user entered yes</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.common.base_output_handler.BaseOutputHandler.PrintError">
+<code class="descname">PrintError</code><span class="sig-paren">(</span><em>text: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plasoscaffolder/common/base_output_handler.html#BaseOutputHandler.PrintError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.base_output_handler.BaseOutputHandler.PrintError" title="Permalink to this definition">¶</a></dt>
+<dd><p>An echo for errors.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> (<em>str</em>) &#8211; the text to print</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.common.base_output_handler.BaseOutputHandler.PrintInfo">
+<code class="descname">PrintInfo</code><span class="sig-paren">(</span><em>text: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plasoscaffolder/common/base_output_handler.html#BaseOutputHandler.PrintInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.base_output_handler.BaseOutputHandler.PrintInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>An echo for information.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> (<em>str</em>) &#8211; the text to print</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.common.base_output_handler.BaseOutputHandler.PromptError">
+<code class="descname">PromptError</code><span class="sig-paren">(</span><em>text: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/plasoscaffolder/common/base_output_handler.html#BaseOutputHandler.PromptError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.base_output_handler.BaseOutputHandler.PromptError" title="Permalink to this definition">¶</a></dt>
+<dd><p>A prompt for errors.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> (<em>str</em>) &#8211; the text to prompt</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the user input</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.common.base_output_handler.BaseOutputHandler.PromptInfo">
+<code class="descname">PromptInfo</code><span class="sig-paren">(</span><em>text: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/plasoscaffolder/common/base_output_handler.html#BaseOutputHandler.PromptInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.base_output_handler.BaseOutputHandler.PromptInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>A prompt for information.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> (<em>str</em>) &#8211; the text to prompt</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the user input</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.common.base_output_handler.BaseOutputHandler.PromptInfoWithDefault">
+<code class="descname">PromptInfoWithDefault</code><span class="sig-paren">(</span><em>text: str</em>, <em>text_type: object</em>, <em>default: object</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/plasoscaffolder/common/base_output_handler.html#BaseOutputHandler.PromptInfoWithDefault"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.base_output_handler.BaseOutputHandler.PromptInfoWithDefault" title="Permalink to this definition">¶</a></dt>
+<dd><p>A prompt for information, with a default value and a required type.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>text</strong> (<em>str</em>) &#8211; the text to prompt</li>
+<li><strong>text_type</strong> (<em>object</em>) &#8211; the type of the input</li>
+<li><strong>default</strong> (<em>object</em>) &#8211; the default value</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the user input</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-plasoscaffolder.common.code_formatter">
+<span id="plasoscaffolder-common-code-formatter-module"></span><h2>plasoscaffolder.common.code_formatter module<a class="headerlink" href="#module-plasoscaffolder.common.code_formatter" title="Permalink to this headline">¶</a></h2>
+<p>To Format the code</p>
+<dl class="class">
+<dt id="plasoscaffolder.common.code_formatter.CodeFormatter">
+<em class="property">class </em><code class="descclassname">plasoscaffolder.common.code_formatter.</code><code class="descname">CodeFormatter</code><span class="sig-paren">(</span><em>yapf_path: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plasoscaffolder/common/code_formatter.html#CodeFormatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.code_formatter.CodeFormatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plasoscaffolder.common.base_code_formatter.BaseCodeFormatter" title="plasoscaffolder.common.base_code_formatter.BaseCodeFormatter"><code class="xref py py-class docutils literal"><span class="pre">plasoscaffolder.common.base_code_formatter.BaseCodeFormatter</span></code></a></p>
+<p>Class handles the code formation of files.</p>
+<dl class="method">
+<dt id="plasoscaffolder.common.code_formatter.CodeFormatter.Format">
+<code class="descname">Format</code><span class="sig-paren">(</span><em>code: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/plasoscaffolder/common/code_formatter.html#CodeFormatter.Format"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.code_formatter.CodeFormatter.Format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formats the code.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>code</strong> (<em>str</em>) &#8211; the code to format</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the formatted code</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-plasoscaffolder.common.file_handler">
+<span id="plasoscaffolder-common-file-handler-module"></span><h2>plasoscaffolder.common.file_handler module<a class="headerlink" href="#module-plasoscaffolder.common.file_handler" title="Permalink to this headline">¶</a></h2>
+<p>The file handler.</p>
+<dl class="class">
+<dt id="plasoscaffolder.common.file_handler.FileHandler">
+<em class="property">class </em><code class="descclassname">plasoscaffolder.common.file_handler.</code><code class="descname">FileHandler</code><a class="reference internal" href="_modules/plasoscaffolder/common/file_handler.html#FileHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.file_handler.FileHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plasoscaffolder.common.base_file_handler.BaseFileHandler" title="plasoscaffolder.common.base_file_handler.BaseFileHandler"><code class="xref py py-class docutils literal"><span class="pre">plasoscaffolder.common.base_file_handler.BaseFileHandler</span></code></a></p>
+<p>Class handles the creation of Files.</p>
+<dl class="method">
+<dt id="plasoscaffolder.common.file_handler.FileHandler.AddContent">
+<code class="descname">AddContent</code><span class="sig-paren">(</span><em>source: str</em>, <em>content: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/plasoscaffolder/common/file_handler.html#FileHandler.AddContent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.file_handler.FileHandler.AddContent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add content to a file and create file if non existing.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>source</strong> (<em>str</em>) &#8211; The path of the file to edit.</li>
+<li><strong>content</strong> (<em>str</em>) &#8211; The content to append to the file.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the path of the edited file.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.common.file_handler.FileHandler.CopyFile">
+<code class="descname">CopyFile</code><span class="sig-paren">(</span><em>source: str</em>, <em>destination: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/plasoscaffolder/common/file_handler.html#FileHandler.CopyFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.file_handler.FileHandler.CopyFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copies a file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>source</strong> (<em>str</em>) &#8211; path of the file to copy</li>
+<li><strong>destination</strong> (<em>str</em>) &#8211; path to copy the file to.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the path of the copied file</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.common.file_handler.FileHandler.CreateFile">
+<code class="descname">CreateFile</code><span class="sig-paren">(</span><em>directory_path: str</em>, <em>file_name: str</em>, <em>filename_suffix: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plasoscaffolder/common/file_handler.html#FileHandler.CreateFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.file_handler.FileHandler.CreateFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a empty file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>directory_path</strong> (<em>str</em>) &#8211; The path to the directory the file should be
+created.</li>
+<li><strong>file_name</strong> (<em>str</em>) &#8211; the name of the new file.</li>
+<li><strong>filename_suffix</strong> (<em>str</em>) &#8211; the suffix of the new file.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the path of the created file</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.common.file_handler.FileHandler.CreateFileFromPath">
+<code class="descname">CreateFileFromPath</code><span class="sig-paren">(</span><em>file_path: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/plasoscaffolder/common/file_handler.html#FileHandler.CreateFileFromPath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.file_handler.FileHandler.CreateFileFromPath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a empty file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_path</strong> (<em>str</em>) &#8211; the path to the file.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the path of the created file</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="plasoscaffolder.common.file_handler.FileHandler.CreateFilePath">
+<em class="property">classmethod </em><code class="descname">CreateFilePath</code><span class="sig-paren">(</span><em>path: str</em>, <em>name: str</em>, <em>suffix: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/plasoscaffolder/common/file_handler.html#FileHandler.CreateFilePath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.file_handler.FileHandler.CreateFilePath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates the file path out of the directory path, filename and suffix.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>path</strong> (<em>str</em>) &#8211; the path to the file directory</li>
+<li><strong>name</strong> (<em>str</em>) &#8211; the filename</li>
+<li><strong>suffix</strong> (<em>str</em>) &#8211; the suffix</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the joined path to the file</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.common.file_handler.FileHandler.CreateFolderForFilePathIfNotExist">
+<code class="descname">CreateFolderForFilePathIfNotExist</code><span class="sig-paren">(</span><em>file_path: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plasoscaffolder/common/file_handler.html#FileHandler.CreateFolderForFilePathIfNotExist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.file_handler.FileHandler.CreateFolderForFilePathIfNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates folders for the given file if it does not exist.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_path</strong> (<em>str</em>) &#8211; the path to the file</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the directory path of the created directory</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.common.file_handler.FileHandler.CreateOrModifyFileWithContent">
+<code class="descname">CreateOrModifyFileWithContent</code><span class="sig-paren">(</span><em>source: str</em>, <em>content: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plasoscaffolder/common/file_handler.html#FileHandler.CreateOrModifyFileWithContent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.file_handler.FileHandler.CreateOrModifyFileWithContent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-plasoscaffolder.common.output_handler_click">
+<span id="plasoscaffolder-common-output-handler-click-module"></span><h2>plasoscaffolder.common.output_handler_click module<a class="headerlink" href="#module-plasoscaffolder.common.output_handler_click" title="Permalink to this headline">¶</a></h2>
+<p>The output file handler for click</p>
+<dl class="class">
+<dt id="plasoscaffolder.common.output_handler_click.OutputHandlerClick">
+<em class="property">class </em><code class="descclassname">plasoscaffolder.common.output_handler_click.</code><code class="descname">OutputHandlerClick</code><a class="reference internal" href="_modules/plasoscaffolder/common/output_handler_click.html#OutputHandlerClick"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.output_handler_click.OutputHandlerClick" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plasoscaffolder.common.base_output_handler.BaseOutputHandler" title="plasoscaffolder.common.base_output_handler.BaseOutputHandler"><code class="xref py py-class docutils literal"><span class="pre">plasoscaffolder.common.base_output_handler.BaseOutputHandler</span></code></a></p>
+<p>Class representing the output handler for click.</p>
+<dl class="method">
+<dt id="plasoscaffolder.common.output_handler_click.OutputHandlerClick.Confirm">
+<code class="descname">Confirm</code><span class="sig-paren">(</span><em>text: str</em>, <em>default=True</em>, <em>abort=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plasoscaffolder/common/output_handler_click.html#OutputHandlerClick.Confirm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.output_handler_click.OutputHandlerClick.Confirm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask for a confirmation, either yes or no to a question.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>text</strong> (<em>str</em>) &#8211; prompts the user for a confirmation, with the given test as
+the question</li>
+<li><strong>default</strong> (<em>bool</em>) &#8211; the default for the confirmation answer. If True the
+default is Y(es), if False the default is N(o)</li>
+<li><strong>abort</strong> (<em>bool</em>) &#8211; if the program should abort if the user answer to the
+confirm prompt is no. The default is an abort.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">False if the user entered no, True if the user entered yes</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.common.output_handler_click.OutputHandlerClick.PrintError">
+<code class="descname">PrintError</code><span class="sig-paren">(</span><em>text: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plasoscaffolder/common/output_handler_click.html#OutputHandlerClick.PrintError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.output_handler_click.OutputHandlerClick.PrintError" title="Permalink to this definition">¶</a></dt>
+<dd><p>A echo for errors with click.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> (<em>str</em>) &#8211; the text to print</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.common.output_handler_click.OutputHandlerClick.PrintInfo">
+<code class="descname">PrintInfo</code><span class="sig-paren">(</span><em>text: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plasoscaffolder/common/output_handler_click.html#OutputHandlerClick.PrintInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.output_handler_click.OutputHandlerClick.PrintInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>A echo for information with click.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> (<em>str</em>) &#8211; the text to print</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.common.output_handler_click.OutputHandlerClick.PromptError">
+<code class="descname">PromptError</code><span class="sig-paren">(</span><em>text: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/plasoscaffolder/common/output_handler_click.html#OutputHandlerClick.PromptError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.output_handler_click.OutputHandlerClick.PromptError" title="Permalink to this definition">¶</a></dt>
+<dd><p>A prompt for errors with click.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> (<em>str</em>) &#8211; the text to prompt</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the user input</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.common.output_handler_click.OutputHandlerClick.PromptInfo">
+<code class="descname">PromptInfo</code><span class="sig-paren">(</span><em>text: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/plasoscaffolder/common/output_handler_click.html#OutputHandlerClick.PromptInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.output_handler_click.OutputHandlerClick.PromptInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>A prompt for information with click.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> (<em>str</em>) &#8211; the text to  prompt</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the user input</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.common.output_handler_click.OutputHandlerClick.PromptInfoWithDefault">
+<code class="descname">PromptInfoWithDefault</code><span class="sig-paren">(</span><em>text: str</em>, <em>text_type: object</em>, <em>default: object</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/plasoscaffolder/common/output_handler_click.html#OutputHandlerClick.PromptInfoWithDefault"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.output_handler_click.OutputHandlerClick.PromptInfoWithDefault" title="Permalink to this definition">¶</a></dt>
+<dd><p>A prompt for information, with a default value and a required type.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>text</strong> (<em>str</em>) &#8211; the text to prompt</li>
+<li><strong>text_type</strong> (<em>object</em>) &#8211; the type of the input</li>
+<li><strong>default</strong> (<em>object</em>) &#8211; the default value</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the user input</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-plasoscaffolder.common.type_mapper">
+<span id="plasoscaffolder-common-type-mapper-module"></span><h2>plasoscaffolder.common.type_mapper module<a class="headerlink" href="#module-plasoscaffolder.common.type_mapper" title="Permalink to this headline">¶</a></h2>
+<p>The mapper between SQL and python data types</p>
+<dl class="class">
+<dt id="plasoscaffolder.common.type_mapper.TypeMapperSQLitePython">
+<em class="property">class </em><code class="descclassname">plasoscaffolder.common.type_mapper.</code><code class="descname">TypeMapperSQLitePython</code><a class="reference internal" href="_modules/plasoscaffolder/common/type_mapper.html#TypeMapperSQLitePython"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.common.type_mapper.TypeMapperSQLitePython" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>The mapper between SQLite and python data types</p>
+<p>The mappings taken from the site: <a class="reference external" href="https://sqlite.org/datatype3.html">https://sqlite.org/datatype3.html</a></p>
+<dl class="attribute">
+<dt id="plasoscaffolder.common.type_mapper.TypeMapperSQLitePython.MAPPINGS">
+<code class="descname">MAPPINGS</code><em class="property"> = {'BLOB': &lt;class 'bytes'&gt;, 'INTEGER': &lt;class 'int'&gt;, 'INT': &lt;class 'int'&gt;, 'TINYINT': &lt;class 'int'&gt;, 'SMALLINT': &lt;class 'int'&gt;, 'MEDIUMINT': &lt;class 'int'&gt;, 'BIGINT': &lt;class 'int'&gt;, 'UNSIGNED BIG INT': &lt;class 'int'&gt;, 'INT2': &lt;class 'int'&gt;, 'INT8': &lt;class 'int'&gt;, 'CHARACTER': &lt;class 'str'&gt;, 'CHAR': &lt;class 'str'&gt;, 'VARCHAR': &lt;class 'str'&gt;, 'VARYING CHARACTER': &lt;class 'str'&gt;, 'NCHAR': &lt;class 'str'&gt;, 'NATIVE CHARACTER': &lt;class 'str'&gt;, 'NVARCHAR': &lt;class 'str'&gt;, 'TEXT': &lt;class 'str'&gt;, 'CLOB': &lt;class 'str'&gt;, 'STRING': &lt;class 'str'&gt;, 'REAL': &lt;class 'float'&gt;, 'DOUBLE': &lt;class 'float'&gt;, 'DOUBLE PRECISION': &lt;class 'float'&gt;, 'FLOAT': &lt;class 'float'&gt;, 'NUMERIC': &lt;class 'int'&gt;, 'DECIMAL': &lt;class 'int'&gt;, 'BOOLEAN': &lt;class 'bool'&gt;, 'DATE': &lt;class 'int'&gt;, 'DATETIME': &lt;class 'int'&gt;}</em><a class="headerlink" href="#plasoscaffolder.common.type_mapper.TypeMapperSQLitePython.MAPPINGS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-plasoscaffolder.common">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-plasoscaffolder.common" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">plasoscaffolder.common package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-plasoscaffolder.common.base_code_formatter">plasoscaffolder.common.base_code_formatter module</a></li>
+<li><a class="reference internal" href="#module-plasoscaffolder.common.base_file_handler">plasoscaffolder.common.base_file_handler module</a></li>
+<li><a class="reference internal" href="#module-plasoscaffolder.common.base_output_handler">plasoscaffolder.common.base_output_handler module</a></li>
+<li><a class="reference internal" href="#module-plasoscaffolder.common.code_formatter">plasoscaffolder.common.code_formatter module</a></li>
+<li><a class="reference internal" href="#module-plasoscaffolder.common.file_handler">plasoscaffolder.common.file_handler module</a></li>
+<li><a class="reference internal" href="#module-plasoscaffolder.common.output_handler_click">plasoscaffolder.common.output_handler_click module</a></li>
+<li><a class="reference internal" href="#module-plasoscaffolder.common.type_mapper">plasoscaffolder.common.type_mapper module</a></li>
+<li><a class="reference internal" href="#module-plasoscaffolder.common">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/plasoscaffolder.common.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Plaso Sqlite Plugin Scaffolder 20170614 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Claudia Saxer.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.
+    </div>
+  </body>
+</html>

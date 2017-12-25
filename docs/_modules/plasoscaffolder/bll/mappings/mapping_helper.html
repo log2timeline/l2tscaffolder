@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plasoscaffolder.bll.mappings.mapping_helper &#8212; Plaso Sqlite Plugin Scaffolder 20170614 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '20170614',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">Plaso Sqlite Plugin Scaffolder 20170614 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for plasoscaffolder.bll.mappings.mapping_helper</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Helper methods for mapping.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">jinja2</span>
+
+<span class="kn">from</span> <span class="nn">plasoscaffolder.bll.mappings</span> <span class="k">import</span> <span class="n">base_mapping_helper</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.common</span> <span class="k">import</span> <span class="n">code_formatter</span>
+
+
+<div class="viewcode-block" id="MappingHelper"><a class="viewcode-back" href="../../../../plasoscaffolder.bll.mappings.html#plasoscaffolder.bll.mappings.mapping_helper.MappingHelper">[docs]</a><span class="k">class</span> <span class="nc">MappingHelper</span><span class="p">(</span><span class="n">base_mapping_helper</span><span class="o">.</span><span class="n">BaseMappingHelper</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Mapping Helper class.&quot;&quot;&quot;</span>
+
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">yapf_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Initializing the mapping helper class.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      template_path (str): the path to the template directory</span>
+<span class="sd">      yapf_path (str): the path to the yapf style file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+    <span class="n">template_loader</span> <span class="o">=</span> <span class="n">jinja2</span><span class="o">.</span><span class="n">FileSystemLoader</span><span class="p">(</span><span class="n">template_path</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_template_environment</span> <span class="o">=</span> <span class="n">jinja2</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span>
+        <span class="n">autoescape</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">loader</span><span class="o">=</span><span class="n">template_loader</span><span class="p">,</span> <span class="n">trim_blocks</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">formatter</span> <span class="o">=</span> <span class="n">code_formatter</span><span class="o">.</span><span class="n">CodeFormatter</span><span class="p">(</span><span class="n">yapf_path</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MappingHelper.RenderTemplate"><a class="viewcode-back" href="../../../../plasoscaffolder.bll.mappings.html#plasoscaffolder.bll.mappings.mapping_helper.MappingHelper.RenderTemplate">[docs]</a>  <span class="k">def</span> <span class="nf">RenderTemplate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template_filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Renders the template with the context to return a string.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      template_filename (str): the name of the template</span>
+<span class="sd">      context (dict): the context of the template as a dictionary</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      str: the rendered template as a string</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">template</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_template_environment</span><span class="o">.</span><span class="n">get_template</span><span class="p">(</span>
+        <span class="n">template_filename</span><span class="p">)</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+    <span class="n">template</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_RemoveEscapeError</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
+
+    <span class="n">formatted</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">formatter</span><span class="o">.</span><span class="n">Format</span><span class="p">(</span><span class="n">template</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">formatted</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_RemoveYapfComment</span><span class="p">(</span><span class="n">formatted</span><span class="p">)</span>
+    <span class="n">formatted</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_RemoveBlanksAtEndOfLine</span><span class="p">(</span><span class="n">formatted</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">formatted</span></div>
+
+<div class="viewcode-block" id="MappingHelper.GenerateClassName"><a class="viewcode-back" href="../../../../plasoscaffolder.bll.mappings.html#plasoscaffolder.bll.mappings.mapping_helper.MappingHelper.GenerateClassName">[docs]</a>  <span class="k">def</span> <span class="nf">GenerateClassName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plugin_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Generates the class name from the plugin name.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      plugin_name (str): the name of the plugin</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      str: the name of the class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">plugin_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">title</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span></div>
+
+  <span class="k">def</span> <span class="nf">_RemoveEscapeError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Remove the escape error.</span>
+
+<span class="sd">    Because jinja template variable is first escaped and then word wrapped,</span>
+<span class="sd">    the escaped backslash can be split and can result in an eol.</span>
+<span class="sd">    The escaped backslash will be placed on the next line.</span>
+<span class="sd">    This is a workaround and can be removed if yapf supports unicode string</span>
+<span class="sd">    formatting and it is also changed in the jinja2 template, and only works</span>
+<span class="sd">    with 8 spaces.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      template (str): the resulting template as a python file string</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      str: the template without escape (eol) errors</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">to_be_replaced</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\\\&#39;\n</span><span class="s1">        u</span><span class="se">\&#39;\\</span><span class="s1">&#39;</span>
+    <span class="n">to_be_replaced_with</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\&#39;\n</span><span class="s1">        u</span><span class="se">\&#39;\\\\</span><span class="s1">&#39;</span>
+
+    <span class="n">template</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">to_be_replaced</span><span class="p">,</span> <span class="n">to_be_replaced_with</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">template</span>
+
+  <span class="k">def</span> <span class="nf">_RemoveYapfComment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Remove the yapf comment line.</span>
+
+<span class="sd">    The Line as well as the new line will be removed.</span>
+<span class="sd">    The yapf Comment has to be at the end of the line. Or on its own line.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      template (str): the resulting template as a python file string</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      str: the template without yapf comment lines</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">template</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;# yapf: disable</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;# yapf: enable</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span>
+                                                             <span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+  <span class="k">def</span> <span class="nf">_RemoveBlanksAtEndOfLine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Removes blanks at the end of lines.</span>
+
+<span class="sd">    This is for those parts that are ignored with yapf.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      template (str): the template to remove the blanks at the end of lines</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      str: the template without blanks on the line endings</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">while</span> <span class="n">template</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;  </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+      <span class="n">template</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;  </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">template</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">Plaso Sqlite Plugin Scaffolder 20170614 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Claudia Saxer.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.
+    </div>
+  </body>
+</html>

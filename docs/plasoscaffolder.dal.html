@@ -1,0 +1,695 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plasoscaffolder.dal package &#8212; Plaso Sqlite Plugin Scaffolder 20170614 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '20170614',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Plaso Sqlite Plugin Scaffolder 20170614 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="plasoscaffolder-dal-package">
+<h1>plasoscaffolder.dal package<a class="headerlink" href="#plasoscaffolder-dal-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-plasoscaffolder.dal.base_database_information">
+<span id="plasoscaffolder-dal-base-database-information-module"></span><h2>plasoscaffolder.dal.base_database_information module<a class="headerlink" href="#module-plasoscaffolder.dal.base_database_information" title="Permalink to this headline">¶</a></h2>
+<p>Base class for the Information for the SQLite Database</p>
+<dl class="class">
+<dt id="plasoscaffolder.dal.base_database_information.BaseDatabaseInformation">
+<em class="property">class </em><code class="descclassname">plasoscaffolder.dal.base_database_information.</code><code class="descname">BaseDatabaseInformation</code><a class="reference internal" href="_modules/plasoscaffolder/dal/base_database_information.html#BaseDatabaseInformation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.dal.base_database_information.BaseDatabaseInformation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Base class representing the SQLite Query validator.</p>
+<dl class="method">
+<dt id="plasoscaffolder.dal.base_database_information.BaseDatabaseInformation.GetTableColumnsAndType">
+<code class="descname">GetTableColumnsAndType</code><span class="sig-paren">(</span><em>table: str</em>, <em>all_lowercase=False</em><span class="sig-paren">)</span> &#x2192; [&lt;class 'str'&gt;]<a class="reference internal" href="_modules/plasoscaffolder/dal/base_database_information.html#BaseDatabaseInformation.GetTableColumnsAndType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.dal.base_database_information.BaseDatabaseInformation.GetTableColumnsAndType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the table information from the database</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>table</strong> (<em>str</em>) &#8211; the name of the table</li>
+<li><strong>all_lowercase</strong> (<em>bool</em>) &#8211; if the table name and the type should be returned
+in lower case</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><dl class="docutils">
+<dt>the table information, with the name of the column and the</dt>
+<dd><p class="first last">type of the column</p>
+</dd>
+</dl>
+</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">{name, type}</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.dal.base_database_information.BaseDatabaseInformation.GetTablesFromDatabase">
+<code class="descname">GetTablesFromDatabase</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; [&lt;class 'str'&gt;]<a class="reference internal" href="_modules/plasoscaffolder/dal/base_database_information.html#BaseDatabaseInformation.GetTablesFromDatabase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.dal.base_database_information.BaseDatabaseInformation.GetTablesFromDatabase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executes the SQL Query and returns all tables from the database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the name of the tables</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">[str]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-plasoscaffolder.dal.base_explain_query_plan">
+<span id="plasoscaffolder-dal-base-explain-query-plan-module"></span><h2>plasoscaffolder.dal.base_explain_query_plan module<a class="headerlink" href="#module-plasoscaffolder.dal.base_explain_query_plan" title="Permalink to this headline">¶</a></h2>
+<p>Base class for the explain query plan.</p>
+<dl class="class">
+<dt id="plasoscaffolder.dal.base_explain_query_plan.BaseExplainQueryPlan">
+<em class="property">class </em><code class="descclassname">plasoscaffolder.dal.base_explain_query_plan.</code><code class="descname">BaseExplainQueryPlan</code><a class="reference internal" href="_modules/plasoscaffolder/dal/base_explain_query_plan.html#BaseExplainQueryPlan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.dal.base_explain_query_plan.BaseExplainQueryPlan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Base class representing the explain query plan.</p>
+<dl class="method">
+<dt id="plasoscaffolder.dal.base_explain_query_plan.BaseExplainQueryPlan.GetLockedTables">
+<code class="descname">GetLockedTables</code><span class="sig-paren">(</span><em>query: str</em><span class="sig-paren">)</span> &#x2192; [&lt;class 'str'&gt;]<a class="reference internal" href="_modules/plasoscaffolder/dal/base_explain_query_plan.html#BaseExplainQueryPlan.GetLockedTables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.dal.base_explain_query_plan.BaseExplainQueryPlan.GetLockedTables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines the table that were locked during the SQL query.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>query</strong> (<em>str</em>) &#8211; the SQL query to get the locked tables from</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the list of tables</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">[str]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.dal.base_explain_query_plan.BaseExplainQueryPlan.IsReadOnly">
+<code class="descname">IsReadOnly</code><span class="sig-paren">(</span><em>query: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/plasoscaffolder/dal/base_explain_query_plan.html#BaseExplainQueryPlan.IsReadOnly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.dal.base_explain_query_plan.BaseExplainQueryPlan.IsReadOnly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines if the query is read only.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>query</strong> (<em>str</em>) &#8211; the sql query to determine if it is read only</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">true if it is read only, false if it is not</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-plasoscaffolder.dal.base_sql_query_execution">
+<span id="plasoscaffolder-dal-base-sql-query-execution-module"></span><h2>plasoscaffolder.dal.base_sql_query_execution module<a class="headerlink" href="#module-plasoscaffolder.dal.base_sql_query_execution" title="Permalink to this headline">¶</a></h2>
+<p>The SQLite Query validator.</p>
+<dl class="class">
+<dt id="plasoscaffolder.dal.base_sql_query_execution.BaseSQLQueryExecution">
+<em class="property">class </em><code class="descclassname">plasoscaffolder.dal.base_sql_query_execution.</code><code class="descname">BaseSQLQueryExecution</code><a class="reference internal" href="_modules/plasoscaffolder/dal/base_sql_query_execution.html#BaseSQLQueryExecution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.dal.base_sql_query_execution.BaseSQLQueryExecution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Class representing the SQLite query validator.</p>
+<dl class="method">
+<dt id="plasoscaffolder.dal.base_sql_query_execution.BaseSQLQueryExecution.ExecuteQuery">
+<code class="descname">ExecuteQuery</code><span class="sig-paren">(</span><em>query: str</em><span class="sig-paren">)</span> &#x2192; plasoscaffolder.dal.sql_query_data.SQLQueryData<a class="reference internal" href="_modules/plasoscaffolder/dal/base_sql_query_execution.html#BaseSQLQueryExecution.ExecuteQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.dal.base_sql_query_execution.BaseSQLQueryExecution.ExecuteQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executes the SQL Query.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>query</strong> (<em>str</em>) &#8211; The SQL Query to execute on the SQLite database.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The data to the Query</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#plasoscaffolder.dal.sql_query_data.SQLQueryData" title="plasoscaffolder.dal.sql_query_data.SQLQueryData">sql_query_data.SQLQueryData</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.dal.base_sql_query_execution.BaseSQLQueryExecution.ExecuteQueryDetailed">
+<code class="descname">ExecuteQueryDetailed</code><span class="sig-paren">(</span><em>query: str</em><span class="sig-paren">)</span> &#x2192; plasoscaffolder.dal.sql_query_data.SQLQueryData<a class="reference internal" href="_modules/plasoscaffolder/dal/base_sql_query_execution.html#BaseSQLQueryExecution.ExecuteQueryDetailed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.dal.base_sql_query_execution.BaseSQLQueryExecution.ExecuteQueryDetailed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executes the SQL Query and gets detailed information.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>query</strong> (<em>str</em>) &#8211; The SQL Query to execute on the SQLite database.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The data to the Query</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#plasoscaffolder.dal.sql_query_data.SQLQueryData" title="plasoscaffolder.dal.sql_query_data.SQLQueryData">sql_query_data.SQLQueryData</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.dal.base_sql_query_execution.BaseSQLQueryExecution.ExecuteReadOnlyQuery">
+<code class="descname">ExecuteReadOnlyQuery</code><span class="sig-paren">(</span><em>query: str</em><span class="sig-paren">)</span> &#x2192; plasoscaffolder.dal.sql_query_data.SQLQueryData<a class="reference internal" href="_modules/plasoscaffolder/dal/base_sql_query_execution.html#BaseSQLQueryExecution.ExecuteReadOnlyQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.dal.base_sql_query_execution.BaseSQLQueryExecution.ExecuteReadOnlyQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executes the SQL Query if it is read only, and valid to parse.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>query</strong> (<em>str</em>) &#8211; the SQL Query to execute on the SQLite database</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the data to the Query</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#plasoscaffolder.dal.sql_query_data.SQLQueryData" title="plasoscaffolder.dal.sql_query_data.SQLQueryData">sql_query_data.SQLQueryData</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.dal.base_sql_query_execution.BaseSQLQueryExecution.TryToConnect">
+<code class="descname">TryToConnect</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/plasoscaffolder/dal/base_sql_query_execution.html#BaseSQLQueryExecution.TryToConnect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.dal.base_sql_query_execution.BaseSQLQueryExecution.TryToConnect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Try to open the database File.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">if the file can be opened and is a database file</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-plasoscaffolder.dal.base_type_helper">
+<span id="plasoscaffolder-dal-base-type-helper-module"></span><h2>plasoscaffolder.dal.base_type_helper module<a class="headerlink" href="#module-plasoscaffolder.dal.base_type_helper" title="Permalink to this headline">¶</a></h2>
+<p>Base SQLite Type Helper.</p>
+<dl class="class">
+<dt id="plasoscaffolder.dal.base_type_helper.BaseTypeHelper">
+<em class="property">class </em><code class="descclassname">plasoscaffolder.dal.base_type_helper.</code><code class="descname">BaseTypeHelper</code><a class="reference internal" href="_modules/plasoscaffolder/dal/base_type_helper.html#BaseTypeHelper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.dal.base_type_helper.BaseTypeHelper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Base class representing the type helper for SQLite.</p>
+<dl class="method">
+<dt id="plasoscaffolder.dal.base_type_helper.BaseTypeHelper.AddMissingTypesFromSchema">
+<code class="descname">AddMissingTypesFromSchema</code><span class="sig-paren">(</span><em>columns: [&lt;class 'plasoscaffolder.model.sql_query_column_model.SQLColumnModel'&gt;], query: str</em><span class="sig-paren">)</span> &#x2192; [&lt;class 'plasoscaffolder.model.sql_query_column_model.SQLColumnModel'&gt;]<a class="reference internal" href="_modules/plasoscaffolder/dal/base_type_helper.html#BaseTypeHelper.AddMissingTypesFromSchema"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.dal.base_type_helper.BaseTypeHelper.AddMissingTypesFromSchema" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getting Information for the column out of the cursor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>columns</strong> (<em></em><em>[</em><a class="reference internal" href="plasoscaffolder.model.html#plasoscaffolder.model.sql_query_column_model.SQLColumnModel" title="plasoscaffolder.model.sql_query_column_model.SQLColumnModel"><em>sql_query_column_model.SQLColumnModel</em></a><em>]</em><em></em>) &#8211; the columns with all
+the column names</li>
+<li><strong>query</strong> &#8211; the query</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a list with all the columns</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[<a class="reference internal" href="plasoscaffolder.model.html#plasoscaffolder.model.sql_query_column_model.SQLColumnModel" title="plasoscaffolder.model.sql_query_column_model.SQLColumnModel">sql_query_column_model.SQLColumnModel</a>]</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.dal.base_type_helper.BaseTypeHelper.GetColumnInformationFromDescription">
+<code class="descname">GetColumnInformationFromDescription</code><span class="sig-paren">(</span><em>description: []</em><span class="sig-paren">)</span> &#x2192; [&lt;class 'plasoscaffolder.model.sql_query_column_model.SQLColumnModel'&gt;]<a class="reference internal" href="_modules/plasoscaffolder/dal/base_type_helper.html#BaseTypeHelper.GetColumnInformationFromDescription"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.dal.base_type_helper.BaseTypeHelper.GetColumnInformationFromDescription" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getting Information for the column out of the cursor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>description</strong> &#8211; the description of the cursor</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>a list with all the column</dt>
+<dd>names, the types are None</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">[<a class="reference internal" href="plasoscaffolder.model.html#plasoscaffolder.model.sql_query_column_model.SQLColumnModel" title="plasoscaffolder.model.sql_query_column_model.SQLColumnModel">sql_query_column_model.SQLColumnModel</a>]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.dal.base_type_helper.BaseTypeHelper.GetDuplicateColumnNames">
+<code class="descname">GetDuplicateColumnNames</code><span class="sig-paren">(</span><em>columns: plasoscaffolder.model.sql_query_column_model.SQLColumnModel</em><span class="sig-paren">)</span> &#x2192; [&lt;class 'str'&gt;]<a class="reference internal" href="_modules/plasoscaffolder/dal/base_type_helper.html#BaseTypeHelper.GetDuplicateColumnNames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.dal.base_type_helper.BaseTypeHelper.GetDuplicateColumnNames" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Find out if the query has duplicate column names and if a alias is</dt>
+<dd>needed.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>columns</strong> (<a class="reference internal" href="plasoscaffolder.model.html#plasoscaffolder.model.sql_query_column_model.SQLColumnModel" title="plasoscaffolder.model.sql_query_column_model.SQLColumnModel"><em>sql_query_column_model.SQLColumnModel</em></a>) &#8211; all columns parsed
+from the cursor</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>a list of all the duplicate column names, if its empty it means it</dt>
+<dd>is a distinct list of columns</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">[str]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-plasoscaffolder.dal.explain_query_plan">
+<span id="plasoscaffolder-dal-explain-query-plan-module"></span><h2>plasoscaffolder.dal.explain_query_plan module<a class="headerlink" href="#module-plasoscaffolder.dal.explain_query_plan" title="Permalink to this headline">¶</a></h2>
+<p>Class for the explain query plan.</p>
+<dl class="class">
+<dt id="plasoscaffolder.dal.explain_query_plan.ExplainQueryPlan">
+<em class="property">class </em><code class="descclassname">plasoscaffolder.dal.explain_query_plan.</code><code class="descname">ExplainQueryPlan</code><span class="sig-paren">(</span><em>sql_execution: plasoscaffolder.dal.base_sql_query_execution.BaseSQLQueryExecution</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plasoscaffolder/dal/explain_query_plan.html#ExplainQueryPlan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.dal.explain_query_plan.ExplainQueryPlan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plasoscaffolder.dal.base_explain_query_plan.BaseExplainQueryPlan" title="plasoscaffolder.dal.base_explain_query_plan.BaseExplainQueryPlan"><code class="xref py py-class docutils literal"><span class="pre">plasoscaffolder.dal.base_explain_query_plan.BaseExplainQueryPlan</span></code></a></p>
+<p>Class representing the explain query plan.</p>
+<dl class="method">
+<dt id="plasoscaffolder.dal.explain_query_plan.ExplainQueryPlan.GetLockedTables">
+<code class="descname">GetLockedTables</code><span class="sig-paren">(</span><em>query: str</em><span class="sig-paren">)</span> &#x2192; [&lt;class 'str'&gt;]<a class="reference internal" href="_modules/plasoscaffolder/dal/explain_query_plan.html#ExplainQueryPlan.GetLockedTables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.dal.explain_query_plan.ExplainQueryPlan.GetLockedTables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines the table that were locked during the SQL query.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>query</strong> (<em>str</em>) &#8211; the sql query to get the locked tables from</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the list of tables</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">[str]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.dal.explain_query_plan.ExplainQueryPlan.IsReadOnly">
+<code class="descname">IsReadOnly</code><span class="sig-paren">(</span><em>query: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/plasoscaffolder/dal/explain_query_plan.html#ExplainQueryPlan.IsReadOnly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.dal.explain_query_plan.ExplainQueryPlan.IsReadOnly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines if the query is read only.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>query</strong> (<em>str</em>) &#8211; the sql query to determine if it is read only</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">true if it is read only, false if it is not</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="plasoscaffolder-dal-sql-query-data-module">
+<h2>plasoscaffolder.dal.sql_query_data module<a class="headerlink" href="#plasoscaffolder-dal-sql-query-data-module" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-plasoscaffolder.dal.sql_query_data"></span><p>Data class for the SQL Query</p>
+<dl class="class">
+<dt id="plasoscaffolder.dal.sql_query_data.SQLQueryData">
+<em class="property">class </em><code class="descclassname">plasoscaffolder.dal.sql_query_data.</code><code class="descname">SQLQueryData</code><a class="reference internal" href="_modules/plasoscaffolder/dal/sql_query_data.html#SQLQueryData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.dal.sql_query_data.SQLQueryData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>The Data to the executed query.</p>
+<dl class="attribute">
+<dt id="plasoscaffolder.dal.sql_query_data.SQLQueryData.has_error">
+<code class="descname">has_error</code><a class="headerlink" href="#plasoscaffolder.dal.sql_query_data.SQLQueryData.has_error" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>bool</em> &#8211; if the query execution was erroneous</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plasoscaffolder.dal.sql_query_data.SQLQueryData.data">
+<code class="descname">data</code><a class="headerlink" href="#plasoscaffolder.dal.sql_query_data.SQLQueryData.data" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>[str]</em> &#8211; the rows returned after execution</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plasoscaffolder.dal.sql_query_data.SQLQueryData.error_message">
+<code class="descname">error_message</code><a class="headerlink" href="#plasoscaffolder.dal.sql_query_data.SQLQueryData.error_message" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> &#8211; the error message if the query was erroneous</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plasoscaffolder.dal.sql_query_data.SQLQueryData.columns">
+<code class="descname">columns</code><a class="headerlink" href="#plasoscaffolder.dal.sql_query_data.SQLQueryData.columns" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>[sql_query_column_model.SQLColumnModel]</em> &#8211; the column names of
+the query</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-plasoscaffolder.dal.sqlite_database_information">
+<span id="plasoscaffolder-dal-sqlite-database-information-module"></span><h2>plasoscaffolder.dal.sqlite_database_information module<a class="headerlink" href="#module-plasoscaffolder.dal.sqlite_database_information" title="Permalink to this headline">¶</a></h2>
+<p>Information for the SQLite Database.</p>
+<dl class="class">
+<dt id="plasoscaffolder.dal.sqlite_database_information.SQLiteDatabaseInformation">
+<em class="property">class </em><code class="descclassname">plasoscaffolder.dal.sqlite_database_information.</code><code class="descname">SQLiteDatabaseInformation</code><span class="sig-paren">(</span><em>sql_execution: plasoscaffolder.dal.base_sql_query_execution.BaseSQLQueryExecution</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plasoscaffolder/dal/sqlite_database_information.html#SQLiteDatabaseInformation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.dal.sqlite_database_information.SQLiteDatabaseInformation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plasoscaffolder.dal.base_database_information.BaseDatabaseInformation" title="plasoscaffolder.dal.base_database_information.BaseDatabaseInformation"><code class="xref py py-class docutils literal"><span class="pre">plasoscaffolder.dal.base_database_information.BaseDatabaseInformation</span></code></a></p>
+<p>Class representing the SQLite Query validator.</p>
+<dl class="method">
+<dt id="plasoscaffolder.dal.sqlite_database_information.SQLiteDatabaseInformation.GetTableColumnsAndType">
+<code class="descname">GetTableColumnsAndType</code><span class="sig-paren">(</span><em>table: str</em>, <em>all_lowercase: bool = False</em><span class="sig-paren">)</span> &#x2192; [&lt;class 'str'&gt;]<a class="reference internal" href="_modules/plasoscaffolder/dal/sqlite_database_information.html#SQLiteDatabaseInformation.GetTableColumnsAndType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.dal.sqlite_database_information.SQLiteDatabaseInformation.GetTableColumnsAndType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the table information from the database</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>table</strong> (<em>str</em>) &#8211; the name of the table</li>
+<li><strong>all_lowercase</strong> (<em>bool</em>) &#8211; if the table name and the type should be returned
+in lower case</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><dl class="docutils">
+<dt>the table information, with the name of the column and the</dt>
+<dd><p class="first last">type of the column</p>
+</dd>
+</dl>
+</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">{name, type}</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.dal.sqlite_database_information.SQLiteDatabaseInformation.GetTablesFromDatabase">
+<code class="descname">GetTablesFromDatabase</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; [&lt;class 'str'&gt;]<a class="reference internal" href="_modules/plasoscaffolder/dal/sqlite_database_information.html#SQLiteDatabaseInformation.GetTablesFromDatabase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.dal.sqlite_database_information.SQLiteDatabaseInformation.GetTablesFromDatabase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all tables from the database</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the names of the tables</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">[str]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-plasoscaffolder.dal.sqlite_query_execution">
+<span id="plasoscaffolder-dal-sqlite-query-execution-module"></span><h2>plasoscaffolder.dal.sqlite_query_execution module<a class="headerlink" href="#module-plasoscaffolder.dal.sqlite_query_execution" title="Permalink to this headline">¶</a></h2>
+<p>SQLite Query Execution</p>
+<dl class="class">
+<dt id="plasoscaffolder.dal.sqlite_query_execution.SQLiteQueryExecution">
+<em class="property">class </em><code class="descclassname">plasoscaffolder.dal.sqlite_query_execution.</code><code class="descname">SQLiteQueryExecution</code><span class="sig-paren">(</span><em>database_path: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plasoscaffolder/dal/sqlite_query_execution.html#SQLiteQueryExecution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.dal.sqlite_query_execution.SQLiteQueryExecution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plasoscaffolder.dal.base_sql_query_execution.BaseSQLQueryExecution" title="plasoscaffolder.dal.base_sql_query_execution.BaseSQLQueryExecution"><code class="xref py py-class docutils literal"><span class="pre">plasoscaffolder.dal.base_sql_query_execution.BaseSQLQueryExecution</span></code></a></p>
+<p>Class representing the SQLite Query validator.</p>
+<dl class="method">
+<dt id="plasoscaffolder.dal.sqlite_query_execution.SQLiteQueryExecution.ExecuteQuery">
+<code class="descname">ExecuteQuery</code><span class="sig-paren">(</span><em>query: str</em><span class="sig-paren">)</span> &#x2192; plasoscaffolder.dal.sql_query_data.SQLQueryData<a class="reference internal" href="_modules/plasoscaffolder/dal/sqlite_query_execution.html#SQLiteQueryExecution.ExecuteQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.dal.sqlite_query_execution.SQLiteQueryExecution.ExecuteQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executes the SQL Query.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>query</strong> (<em>str</em>) &#8211; The SQL Query to execute on the SQLite database.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The data to the Query</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#plasoscaffolder.dal.sql_query_data.SQLQueryData" title="plasoscaffolder.dal.sql_query_data.SQLQueryData">sql_query_data.SQLQueryData</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.dal.sqlite_query_execution.SQLiteQueryExecution.ExecuteQueryDetailed">
+<code class="descname">ExecuteQueryDetailed</code><span class="sig-paren">(</span><em>query: str</em><span class="sig-paren">)</span> &#x2192; plasoscaffolder.dal.sql_query_data.SQLQueryData<a class="reference internal" href="_modules/plasoscaffolder/dal/sqlite_query_execution.html#SQLiteQueryExecution.ExecuteQueryDetailed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.dal.sqlite_query_execution.SQLiteQueryExecution.ExecuteQueryDetailed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executes the SQL Query and gets detailed information.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>query</strong> (<em>str</em>) &#8211; The SQL Query to execute on the SQLite database.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The data to the Query</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#plasoscaffolder.dal.sql_query_data.SQLQueryData" title="plasoscaffolder.dal.sql_query_data.SQLQueryData">sql_query_data.SQLQueryData</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.dal.sqlite_query_execution.SQLiteQueryExecution.ExecuteReadOnlyQuery">
+<code class="descname">ExecuteReadOnlyQuery</code><span class="sig-paren">(</span><em>query: str</em><span class="sig-paren">)</span> &#x2192; plasoscaffolder.dal.sql_query_data.SQLQueryData<a class="reference internal" href="_modules/plasoscaffolder/dal/sqlite_query_execution.html#SQLiteQueryExecution.ExecuteReadOnlyQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.dal.sqlite_query_execution.SQLiteQueryExecution.ExecuteReadOnlyQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executes the SQL Query if it is read only, and valid to parse.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>query</strong> (<em>str</em>) &#8211; the SQL Query to execute on the SQLite database</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the data to the Query</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#plasoscaffolder.dal.sql_query_data.SQLQueryData" title="plasoscaffolder.dal.sql_query_data.SQLQueryData">sql_query_data.SQLQueryData</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.dal.sqlite_query_execution.SQLiteQueryExecution.TryToConnect">
+<code class="descname">TryToConnect</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/plasoscaffolder/dal/sqlite_query_execution.html#SQLiteQueryExecution.TryToConnect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.dal.sqlite_query_execution.SQLiteQueryExecution.TryToConnect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Try to open the database File.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">if the file can be opened and is a database file</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-plasoscaffolder.dal.sqlite_type_helper">
+<span id="plasoscaffolder-dal-sqlite-type-helper-module"></span><h2>plasoscaffolder.dal.sqlite_type_helper module<a class="headerlink" href="#module-plasoscaffolder.dal.sqlite_type_helper" title="Permalink to this headline">¶</a></h2>
+<p>SQLite Type Helper.</p>
+<dl class="class">
+<dt id="plasoscaffolder.dal.sqlite_type_helper.SQLiteTypeHelper">
+<em class="property">class </em><code class="descclassname">plasoscaffolder.dal.sqlite_type_helper.</code><code class="descname">SQLiteTypeHelper</code><span class="sig-paren">(</span><em>execution: plasoscaffolder.dal.base_sql_query_execution.BaseSQLQueryExecution</em>, <em>explain: plasoscaffolder.dal.base_explain_query_plan.BaseExplainQueryPlan</em>, <em>database_information: plasoscaffolder.dal.base_database_information.BaseDatabaseInformation</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plasoscaffolder/dal/sqlite_type_helper.html#SQLiteTypeHelper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.dal.sqlite_type_helper.SQLiteTypeHelper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plasoscaffolder.dal.base_type_helper.BaseTypeHelper" title="plasoscaffolder.dal.base_type_helper.BaseTypeHelper"><code class="xref py py-class docutils literal"><span class="pre">plasoscaffolder.dal.base_type_helper.BaseTypeHelper</span></code></a></p>
+<p>Class representing the type helper for SQLite.</p>
+<dl class="method">
+<dt id="plasoscaffolder.dal.sqlite_type_helper.SQLiteTypeHelper.AddMissingTypesFromSchema">
+<code class="descname">AddMissingTypesFromSchema</code><span class="sig-paren">(</span><em>columns: [&lt;class 'plasoscaffolder.model.sql_query_column_model.SQLColumnModel'&gt;], query: str</em><span class="sig-paren">)</span> &#x2192; [&lt;class 'plasoscaffolder.model.sql_query_column_model.SQLColumnModel'&gt;]<a class="reference internal" href="_modules/plasoscaffolder/dal/sqlite_type_helper.html#SQLiteTypeHelper.AddMissingTypesFromSchema"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.dal.sqlite_type_helper.SQLiteTypeHelper.AddMissingTypesFromSchema" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getting Information for the column out of the cursor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>columns</strong> (<em></em><em>[</em><a class="reference internal" href="plasoscaffolder.model.html#plasoscaffolder.model.sql_query_column_model.SQLColumnModel" title="plasoscaffolder.model.sql_query_column_model.SQLColumnModel"><em>sql_query_column_model.SQLColumnModel</em></a><em>]</em><em></em>) &#8211; the columns with all
+the column names</li>
+<li><strong>query</strong> &#8211; the query</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a list with all the columns</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[<a class="reference internal" href="plasoscaffolder.model.html#plasoscaffolder.model.sql_query_column_model.SQLColumnModel" title="plasoscaffolder.model.sql_query_column_model.SQLColumnModel">sql_query_column_model.SQLColumnModel</a>]</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.dal.sqlite_type_helper.SQLiteTypeHelper.GetColumnInformationFromDescription">
+<code class="descname">GetColumnInformationFromDescription</code><span class="sig-paren">(</span><em>descriptions: []</em><span class="sig-paren">)</span> &#x2192; [&lt;class 'plasoscaffolder.model.sql_query_column_model.SQLColumnModel'&gt;]<a class="reference internal" href="_modules/plasoscaffolder/dal/sqlite_type_helper.html#SQLiteTypeHelper.GetColumnInformationFromDescription"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.dal.sqlite_type_helper.SQLiteTypeHelper.GetColumnInformationFromDescription" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getting Information for the column out of the cursor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>descriptions</strong> &#8211; the descriptions of the cursor</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>a list with all the column</dt>
+<dd>names, the types are None</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">[<a class="reference internal" href="plasoscaffolder.model.html#plasoscaffolder.model.sql_query_column_model.SQLColumnModel" title="plasoscaffolder.model.sql_query_column_model.SQLColumnModel">sql_query_column_model.SQLColumnModel</a>]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.dal.sqlite_type_helper.SQLiteTypeHelper.GetDuplicateColumnNames">
+<code class="descname">GetDuplicateColumnNames</code><span class="sig-paren">(</span><em>columns: plasoscaffolder.model.sql_query_column_model.SQLColumnModel</em><span class="sig-paren">)</span> &#x2192; [&lt;class 'str'&gt;]<a class="reference internal" href="_modules/plasoscaffolder/dal/sqlite_type_helper.html#SQLiteTypeHelper.GetDuplicateColumnNames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.dal.sqlite_type_helper.SQLiteTypeHelper.GetDuplicateColumnNames" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Find out if the query has duplicate column names and if a alias is</dt>
+<dd>needed.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>columns</strong> (<a class="reference internal" href="plasoscaffolder.model.html#plasoscaffolder.model.sql_query_column_model.SQLColumnModel" title="plasoscaffolder.model.sql_query_column_model.SQLColumnModel"><em>sql_query_column_model.SQLColumnModel</em></a>) &#8211; all columns parsed
+from the cursor</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>a list of all the duplicate column names, if its empty it means it</dt>
+<dd>is a distinct list of columns</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">[str]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-plasoscaffolder.dal">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-plasoscaffolder.dal" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">plasoscaffolder.dal package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-plasoscaffolder.dal.base_database_information">plasoscaffolder.dal.base_database_information module</a></li>
+<li><a class="reference internal" href="#module-plasoscaffolder.dal.base_explain_query_plan">plasoscaffolder.dal.base_explain_query_plan module</a></li>
+<li><a class="reference internal" href="#module-plasoscaffolder.dal.base_sql_query_execution">plasoscaffolder.dal.base_sql_query_execution module</a></li>
+<li><a class="reference internal" href="#module-plasoscaffolder.dal.base_type_helper">plasoscaffolder.dal.base_type_helper module</a></li>
+<li><a class="reference internal" href="#module-plasoscaffolder.dal.explain_query_plan">plasoscaffolder.dal.explain_query_plan module</a></li>
+<li><a class="reference internal" href="#plasoscaffolder-dal-sql-query-data-module">plasoscaffolder.dal.sql_query_data module</a></li>
+<li><a class="reference internal" href="#module-plasoscaffolder.dal.sqlite_database_information">plasoscaffolder.dal.sqlite_database_information module</a></li>
+<li><a class="reference internal" href="#module-plasoscaffolder.dal.sqlite_query_execution">plasoscaffolder.dal.sqlite_query_execution module</a></li>
+<li><a class="reference internal" href="#module-plasoscaffolder.dal.sqlite_type_helper">plasoscaffolder.dal.sqlite_type_helper module</a></li>
+<li><a class="reference internal" href="#module-plasoscaffolder.dal">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/plasoscaffolder.dal.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Plaso Sqlite Plugin Scaffolder 20170614 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Claudia Saxer.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.
+    </div>
+  </body>
+</html>

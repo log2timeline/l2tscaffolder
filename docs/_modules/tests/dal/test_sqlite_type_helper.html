@@ -1,0 +1,371 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>tests.dal.test_sqlite_type_helper &#8212; Plaso Sqlite Plugin Scaffolder 20170614 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '20170614',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Plaso Sqlite Plugin Scaffolder 20170614 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for tests.dal.test_sqlite_type_helper</h1><div class="highlight"><pre>
+<span></span><span class="c1"># !/usr/bin/python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># pylint: disable=protected-access</span>
+<span class="c1"># because tests should access protected members</span>
+<span class="sd">&quot;&quot;&quot;test class&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">unittest</span>
+
+<span class="kn">from</span> <span class="nn">plasoscaffolder.dal</span> <span class="k">import</span> <span class="n">sqlite_type_helper</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.model</span> <span class="k">import</span> <span class="n">sql_query_column_model</span>
+<span class="kn">from</span> <span class="nn">tests.fake</span> <span class="k">import</span> <span class="n">fake_database_information</span><span class="p">,</span> <span class="n">fake_explain_query_plan</span>
+
+
+<div class="viewcode-block" id="SQLiteQueryExecutionTest"><a class="viewcode-back" href="../../../tests.dal.html#tests.dal.test_sqlite_type_helper.SQLiteQueryExecutionTest">[docs]</a><span class="k">class</span> <span class="nc">SQLiteQueryExecutionTest</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;test the SQLite Query execution test&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SQLiteQueryExecutionTest.setUp"><a class="viewcode-back" href="../../../tests.dal.html#tests.dal.test_sqlite_type_helper.SQLiteQueryExecutionTest.setUp">[docs]</a>  <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">sql_type_helper</span> <span class="o">=</span> <span class="n">sqlite_type_helper</span><span class="o">.</span><span class="n">SQLiteTypeHelper</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SQLiteQueryExecutionTest.testGetDuplicateColumnNamesIfDistinct"><a class="viewcode-back" href="../../../tests.dal.html#tests.dal.test_sqlite_type_helper.SQLiteQueryExecutionTest.testGetDuplicateColumnNamesIfDistinct">[docs]</a>  <span class="k">def</span> <span class="nf">testGetDuplicateColumnNamesIfDistinct</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;test a distinct list&quot;&quot;&quot;</span>
+    <span class="n">columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">))</span>
+    <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">))</span>
+    <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">))</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sql_type_helper</span><span class="o">.</span><span class="n">GetDuplicateColumnNames</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SQLiteQueryExecutionTest.testGetDuplicateColumnNamesIfOneDuplicate"><a class="viewcode-back" href="../../../tests.dal.html#tests.dal.test_sqlite_type_helper.SQLiteQueryExecutionTest.testGetDuplicateColumnNamesIfOneDuplicate">[docs]</a>  <span class="k">def</span> <span class="nf">testGetDuplicateColumnNamesIfOneDuplicate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;test a duplicate list with one duplicate&quot;&quot;&quot;</span>
+    <span class="n">columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">))</span>
+    <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">))</span>
+    <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">))</span>
+    <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">))</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sql_type_helper</span><span class="o">.</span><span class="n">GetDuplicateColumnNames</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SQLiteQueryExecutionTest.testGetDuplicateColumnNamesIfMultipleDuplicates"><a class="viewcode-back" href="../../../tests.dal.html#tests.dal.test_sqlite_type_helper.SQLiteQueryExecutionTest.testGetDuplicateColumnNamesIfMultipleDuplicates">[docs]</a>  <span class="k">def</span> <span class="nf">testGetDuplicateColumnNamesIfMultipleDuplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;test a duplicate list with multiple duplicates&quot;&quot;&quot;</span>
+    <span class="n">columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">))</span>
+    <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">))</span>
+    <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">))</span>
+    <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">))</span>
+    <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">))</span>
+    <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">))</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sql_type_helper</span><span class="o">.</span><span class="n">GetDuplicateColumnNames</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SQLiteQueryExecutionTest.testGetColumnDescriptionWithElements"><a class="viewcode-back" href="../../../tests.dal.html#tests.dal.test_sqlite_type_helper.SQLiteQueryExecutionTest.testGetColumnDescriptionWithElements">[docs]</a>  <span class="k">def</span> <span class="nf">testGetColumnDescriptionWithElements</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;test getting column description if description is not empty.&quot;&quot;&quot;</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;this&#39;</span><span class="p">,</span> <span class="s1">&#39;that&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;second&#39;</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="s1">&#39;hat&#39;</span><span class="p">]]</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sql_type_helper</span><span class="o">.</span><span class="n">GetColumnInformationFromDescription</span><span class="p">(</span>
+        <span class="n">description</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column</span><span class="p">,</span> <span class="s1">&#39;this&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column_type</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column</span><span class="p">,</span> <span class="s1">&#39;second&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column_type</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="SQLiteQueryExecutionTest.testGetColumnDescriptionEmpty"><a class="viewcode-back" href="../../../tests.dal.html#tests.dal.test_sqlite_type_helper.SQLiteQueryExecutionTest.testGetColumnDescriptionEmpty">[docs]</a>  <span class="k">def</span> <span class="nf">testGetColumnDescriptionEmpty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;test getting column description if description is empty.&quot;&quot;&quot;</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sql_type_helper</span><span class="o">.</span><span class="n">GetColumnInformationFromDescription</span><span class="p">(</span>
+        <span class="n">description</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[])</span></div>
+
+<div class="viewcode-block" id="SQLiteQueryExecutionTest.testGetColumnDescriptionNone"><a class="viewcode-back" href="../../../tests.dal.html#tests.dal.test_sqlite_type_helper.SQLiteQueryExecutionTest.testGetColumnDescriptionNone">[docs]</a>  <span class="k">def</span> <span class="nf">testGetColumnDescriptionNone</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;test getting column description if description is none.&quot;&quot;&quot;</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sql_type_helper</span><span class="o">.</span><span class="n">GetColumnInformationFromDescription</span><span class="p">(</span>
+        <span class="n">description</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[])</span></div>
+
+<div class="viewcode-block" id="SQLiteQueryExecutionTest.testGetPositionAfterSeparatorSpace"><a class="viewcode-back" href="../../../tests.dal.html#tests.dal.test_sqlite_type_helper.SQLiteQueryExecutionTest.testGetPositionAfterSeparatorSpace">[docs]</a>  <span class="k">def</span> <span class="nf">testGetPositionAfterSeparatorSpace</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;test getting position after space&quot;&quot;&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;this is a db.test&#39;</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sql_type_helper</span><span class="o">.</span><span class="n">_GetPositionAfterSeparator</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="s1">&#39;db.text&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SQLiteQueryExecutionTest.testGetPositionAfterSeparatorComma"><a class="viewcode-back" href="../../../tests.dal.html#tests.dal.test_sqlite_type_helper.SQLiteQueryExecutionTest.testGetPositionAfterSeparatorComma">[docs]</a>  <span class="k">def</span> <span class="nf">testGetPositionAfterSeparatorComma</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;test getting position after comma&quot;&quot;&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;this is a,db.test&#39;</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sql_type_helper</span><span class="o">.</span><span class="n">_GetPositionAfterSeparator</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="s1">&#39;db.text&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SQLiteQueryExecutionTest.testGetPositionAfterSeparatorCommaAndSpace"><a class="viewcode-back" href="../../../tests.dal.html#tests.dal.test_sqlite_type_helper.SQLiteQueryExecutionTest.testGetPositionAfterSeparatorCommaAndSpace">[docs]</a>  <span class="k">def</span> <span class="nf">testGetPositionAfterSeparatorCommaAndSpace</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;test getting position after comma and space.&quot;&quot;&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;this is a ,db.test&#39;</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sql_type_helper</span><span class="o">.</span><span class="n">_GetPositionAfterSeparator</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="s1">&#39;db.text&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SQLiteQueryExecutionTest.testGetPositionAfterSeparatorCommaAndSpaceAfter"><a class="viewcode-back" href="../../../tests.dal.html#tests.dal.test_sqlite_type_helper.SQLiteQueryExecutionTest.testGetPositionAfterSeparatorCommaAndSpaceAfter">[docs]</a>  <span class="k">def</span> <span class="nf">testGetPositionAfterSeparatorCommaAndSpaceAfter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;test getting position after comma and space afterwards&quot;&quot;&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;this is a, db.test&#39;</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sql_type_helper</span><span class="o">.</span><span class="n">_GetPositionAfterSeparator</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="s1">&#39;db.text&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SQLiteQueryExecutionTest.testGetPositionAfterSeparatorCommaAndSpaceBeforeAndAfter"><a class="viewcode-back" href="../../../tests.dal.html#tests.dal.test_sqlite_type_helper.SQLiteQueryExecutionTest.testGetPositionAfterSeparatorCommaAndSpaceBeforeAndAfter">[docs]</a>  <span class="k">def</span> <span class="nf">testGetPositionAfterSeparatorCommaAndSpaceBeforeAndAfter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;test getting position after comma and space before and after comma&quot;&quot;&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;this is a , db.test&#39;</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sql_type_helper</span><span class="o">.</span><span class="n">_GetPositionAfterSeparator</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="s1">&#39;db.text&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SQLiteQueryExecutionTest.testGetPositionAfterSeparatorCommaAndMultipleSpaceBeforeAndAfter"><a class="viewcode-back" href="../../../tests.dal.html#tests.dal.test_sqlite_type_helper.SQLiteQueryExecutionTest.testGetPositionAfterSeparatorCommaAndMultipleSpaceBeforeAndAfter">[docs]</a>  <span class="k">def</span> <span class="nf">testGetPositionAfterSeparatorCommaAndMultipleSpaceBeforeAndAfter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;test getting position after comma and multiple space before and after</span>
+<span class="sd">    comma&quot;&quot;&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;this is a  ,   db.test&#39;</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sql_type_helper</span><span class="o">.</span><span class="n">_GetPositionAfterSeparator</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="s1">&#39;db.text&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SQLiteQueryExecutionTest.testGetEndOfTableIfNotAliasEasy"><a class="viewcode-back" href="../../../tests.dal.html#tests.dal.test_sqlite_type_helper.SQLiteQueryExecutionTest.testGetEndOfTableIfNotAliasEasy">[docs]</a>  <span class="k">def</span> <span class="nf">testGetEndOfTableIfNotAliasEasy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;test get the end of a table with easy query&quot;&quot;&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;select db.id from db&#39;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sql_type_helper</span><span class="o">.</span><span class="n">_GetEndOfTableIfNotAlias</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">)</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="s1">&#39;select db&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SQLiteQueryExecutionTest.testGetEndOfTableIfNotAliasWithAliasAfterWithSpace"><a class="viewcode-back" href="../../../tests.dal.html#tests.dal.test_sqlite_type_helper.SQLiteQueryExecutionTest.testGetEndOfTableIfNotAliasWithAliasAfterWithSpace">[docs]</a>  <span class="k">def</span> <span class="nf">testGetEndOfTableIfNotAliasWithAliasAfterWithSpace</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;test get the end of a table with alias after&quot;&quot;&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;select db.id, x.id as another from db&#39;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sql_type_helper</span><span class="o">.</span><span class="n">_GetEndOfTableIfNotAlias</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">)</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="s1">&#39;select db&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SQLiteQueryExecutionTest.testGetEndOfTableIfNotAliasWithAliasAfterWithComma"><a class="viewcode-back" href="../../../tests.dal.html#tests.dal.test_sqlite_type_helper.SQLiteQueryExecutionTest.testGetEndOfTableIfNotAliasWithAliasAfterWithComma">[docs]</a>  <span class="k">def</span> <span class="nf">testGetEndOfTableIfNotAliasWithAliasAfterWithComma</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;test get the end of a table with alias after&quot;&quot;&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;select db.id,x.id as another from db&#39;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sql_type_helper</span><span class="o">.</span><span class="n">_GetEndOfTableIfNotAlias</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">)</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="s1">&#39;select db&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SQLiteQueryExecutionTest.testGetEndOfTableIfNotAliasWithAliasBefore"><a class="viewcode-back" href="../../../tests.dal.html#tests.dal.test_sqlite_type_helper.SQLiteQueryExecutionTest.testGetEndOfTableIfNotAliasWithAliasBefore">[docs]</a>  <span class="k">def</span> <span class="nf">testGetEndOfTableIfNotAliasWithAliasBefore</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;test get the end of a table with alias before&quot;&quot;&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;select db.id as this, db2.id from db join db2&#39;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sql_type_helper</span><span class="o">.</span><span class="n">_GetEndOfTableIfNotAlias</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">)</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="s1">&#39;select db.id as this, db2&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SQLiteQueryExecutionTest.testGetEndOfTableIfNotAliasWithMultipleAliasBefore"><a class="viewcode-back" href="../../../tests.dal.html#tests.dal.test_sqlite_type_helper.SQLiteQueryExecutionTest.testGetEndOfTableIfNotAliasWithMultipleAliasBefore">[docs]</a>  <span class="k">def</span> <span class="nf">testGetEndOfTableIfNotAliasWithMultipleAliasBefore</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;test get the end of a table with alias before&quot;&quot;&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;select db.id as this db3.id as that, db4.id as here, db2.id &#39;</span>
+            <span class="s1">&#39;from db join db2&#39;</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sql_type_helper</span><span class="o">.</span><span class="n">_GetEndOfTableIfNotAlias</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">)</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="s1">&#39;select db.id as this db3.id as that, db4.id as here, db2&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SQLiteQueryExecutionTest.testGetEndOfTableIfNotAliasWithOnlyAlias"><a class="viewcode-back" href="../../../tests.dal.html#tests.dal.test_sqlite_type_helper.SQLiteQueryExecutionTest.testGetEndOfTableIfNotAliasWithOnlyAlias">[docs]</a>  <span class="k">def</span> <span class="nf">testGetEndOfTableIfNotAliasWithOnlyAlias</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;test get the end of a table with only an alias&quot;&quot;&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;select x.id as another from db&#39;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sql_type_helper</span><span class="o">.</span><span class="n">_GetEndOfTableIfNotAlias</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">)</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SQLiteQueryExecutionTest.testColumnTypeForOnlyOneTable"><a class="viewcode-back" href="../../../tests.dal.html#tests.dal.test_sqlite_type_helper.SQLiteQueryExecutionTest.testColumnTypeForOnlyOneTable">[docs]</a>  <span class="k">def</span> <span class="nf">testColumnTypeForOnlyOneTable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;test getting the column type for only one table&quot;&quot;&quot;</span>
+    <span class="n">mappings</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;that&#39;</span><span class="p">:</span> <span class="s1">&#39;varchar&#39;</span><span class="p">,</span> <span class="s1">&#39;different&#39;</span><span class="p">:</span> <span class="s1">&#39;integer&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;bla&#39;</span><span class="p">:</span> <span class="s1">&#39;real&#39;</span><span class="p">}</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">sql_type_helper</span><span class="o">.</span><span class="n">_information</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">fake_database_information</span><span class="o">.</span><span class="n">FakeDatabaseInformation</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">mappings</span><span class="p">))</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="p">[</span><span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">),</span>
+             <span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span><span class="s1">&#39;that&#39;</span><span class="p">),</span>
+             <span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span><span class="s1">&#39;different&#39;</span><span class="p">),</span>
+             <span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span><span class="s1">&#39;bla&#39;</span><span class="p">)]</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sql_type_helper</span><span class="o">.</span><span class="n">_ColumnTypeForMultipleTables</span><span class="p">(</span>
+        <span class="s1">&#39;other&#39;</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column</span><span class="p">,</span> <span class="s1">&#39;that&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column</span><span class="p">,</span> <span class="s1">&#39;different&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column</span><span class="p">,</span> <span class="s1">&#39;bla&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column_type</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column_type</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column_type</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column_type</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SQLiteQueryExecutionTest.testColumnTypeForMultipleTables"><a class="viewcode-back" href="../../../tests.dal.html#tests.dal.test_sqlite_type_helper.SQLiteQueryExecutionTest.testColumnTypeForMultipleTables">[docs]</a>  <span class="k">def</span> <span class="nf">testColumnTypeForMultipleTables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;test getting the column type for multiple table&quot;&quot;&quot;</span>
+    <span class="n">mappings</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;blob&#39;</span><span class="p">,</span> <span class="s1">&#39;that&#39;</span><span class="p">:</span> <span class="s1">&#39;varchar&#39;</span><span class="p">,</span> <span class="s1">&#39;different&#39;</span><span class="p">:</span> <span class="s1">&#39;integer&#39;</span><span class="p">}</span>
+    <span class="n">tables</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;db1&#39;</span><span class="p">,</span> <span class="s1">&#39;db2&#39;</span><span class="p">,</span> <span class="s1">&#39;db3&#39;</span><span class="p">]</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;select db1.id , db2.that, db1.different,db2.id as id2, db3.id as &#39;</span>
+             <span class="s1">&#39;id3 from db1 join db2 join db3&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">sql_type_helper</span><span class="o">.</span><span class="n">_information</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">fake_database_information</span><span class="o">.</span><span class="n">FakeDatabaseInformation</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">mappings</span><span class="p">))</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="p">[</span><span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">),</span>
+             <span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span><span class="s1">&#39;that&#39;</span><span class="p">),</span>
+             <span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span><span class="s1">&#39;different&#39;</span><span class="p">),</span>
+             <span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span><span class="s1">&#39;id2&#39;</span><span class="p">),</span>
+             <span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span><span class="s1">&#39;id3&#39;</span><span class="p">)]</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sql_type_helper</span><span class="o">.</span><span class="n">_ColumnTypeForMultipleTables</span><span class="p">(</span>
+        <span class="n">tables</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="mi">5</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column</span><span class="p">,</span> <span class="s1">&#39;that&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column</span><span class="p">,</span> <span class="s1">&#39;different&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column</span><span class="p">,</span> <span class="s1">&#39;id2&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column</span><span class="p">,</span> <span class="s1">&#39;id3&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column_type</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column_type</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column_type</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column_type</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column_type</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SQLiteQueryExecutionTest.testAddMissingTypesFromSchemaForOnlyOneTable"><a class="viewcode-back" href="../../../tests.dal.html#tests.dal.test_sqlite_type_helper.SQLiteQueryExecutionTest.testAddMissingTypesFromSchemaForOnlyOneTable">[docs]</a>  <span class="k">def</span> <span class="nf">testAddMissingTypesFromSchemaForOnlyOneTable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;test getting missing types from schema if only one table&quot;&quot;&quot;</span>
+    <span class="n">mappings</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;that&#39;</span><span class="p">:</span> <span class="s1">&#39;varchar&#39;</span><span class="p">,</span> <span class="s1">&#39;different&#39;</span><span class="p">:</span> <span class="s1">&#39;integer&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;bla&#39;</span><span class="p">:</span> <span class="s1">&#39;real&#39;</span><span class="p">}</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;select id, that, db.different, bla from db&quot;</span>
+    <span class="n">tables</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;db&#39;</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">sql_type_helper</span><span class="o">.</span><span class="n">_explain</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">fake_explain_query_plan</span><span class="o">.</span><span class="n">FakeExplainQueryPlan</span><span class="p">(</span><span class="n">locked_tables</span><span class="o">=</span><span class="n">tables</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">sql_type_helper</span><span class="o">.</span><span class="n">_information</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">fake_database_information</span><span class="o">.</span><span class="n">FakeDatabaseInformation</span><span class="p">(</span><span class="n">tables</span><span class="p">,</span> <span class="n">mappings</span><span class="p">))</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="p">[</span><span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">),</span>
+             <span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span><span class="s1">&#39;that&#39;</span><span class="p">),</span>
+             <span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span><span class="s1">&#39;different&#39;</span><span class="p">),</span>
+             <span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span><span class="s1">&#39;bla&#39;</span><span class="p">)]</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sql_type_helper</span><span class="o">.</span><span class="n">AddMissingTypesFromSchema</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column</span><span class="p">,</span> <span class="s1">&#39;that&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column</span><span class="p">,</span> <span class="s1">&#39;different&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column</span><span class="p">,</span> <span class="s1">&#39;bla&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column_type</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column_type</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column_type</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column_type</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SQLiteQueryExecutionTest.testAddMissingTypesFromSchemaForMultipleOneTable"><a class="viewcode-back" href="../../../tests.dal.html#tests.dal.test_sqlite_type_helper.SQLiteQueryExecutionTest.testAddMissingTypesFromSchemaForMultipleOneTable">[docs]</a>  <span class="k">def</span> <span class="nf">testAddMissingTypesFromSchemaForMultipleOneTable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;test getting missing types from schema multiple tables&quot;&quot;&quot;</span>
+    <span class="n">mappings</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;blob&#39;</span><span class="p">,</span> <span class="s1">&#39;that&#39;</span><span class="p">:</span> <span class="s1">&#39;varchar&#39;</span><span class="p">,</span> <span class="s1">&#39;different&#39;</span><span class="p">:</span> <span class="s1">&#39;integer&#39;</span><span class="p">}</span>
+    <span class="n">tables</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;db1&#39;</span><span class="p">,</span> <span class="s1">&#39;db2&#39;</span><span class="p">,</span> <span class="s1">&#39;db3&#39;</span><span class="p">]</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;select db1.id , db2.that, db1.different,db2.id as id2, db3.id as &#39;</span>
+             <span class="s1">&#39;id3 from db1 join db2 join db3&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">sql_type_helper</span><span class="o">.</span><span class="n">_information</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">fake_database_information</span><span class="o">.</span><span class="n">FakeDatabaseInformation</span><span class="p">(</span><span class="n">tables</span><span class="p">,</span> <span class="n">mappings</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">sql_type_helper</span><span class="o">.</span><span class="n">_explain</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">fake_explain_query_plan</span><span class="o">.</span><span class="n">FakeExplainQueryPlan</span><span class="p">(</span><span class="n">locked_tables</span><span class="o">=</span><span class="n">tables</span><span class="p">))</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="p">[</span><span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">),</span>
+             <span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span><span class="s1">&#39;that&#39;</span><span class="p">),</span>
+             <span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span><span class="s1">&#39;different&#39;</span><span class="p">),</span>
+             <span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span><span class="s1">&#39;id2&#39;</span><span class="p">),</span>
+             <span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span><span class="s1">&#39;id3&#39;</span><span class="p">)]</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sql_type_helper</span><span class="o">.</span><span class="n">AddMissingTypesFromSchema</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="mi">5</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column</span><span class="p">,</span> <span class="s1">&#39;that&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column</span><span class="p">,</span> <span class="s1">&#39;different&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column</span><span class="p">,</span> <span class="s1">&#39;id2&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column</span><span class="p">,</span> <span class="s1">&#39;id3&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column_type</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column_type</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column_type</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column_type</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">sql_column_type</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span></div>
+
+  <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">()</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Plaso Sqlite Plugin Scaffolder 20170614 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Claudia Saxer.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,335 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plasoscaffolder.dal.sqlite_type_helper &#8212; Plaso Sqlite Plugin Scaffolder 20170614 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '20170614',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Plaso Sqlite Plugin Scaffolder 20170614 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for plasoscaffolder.dal.sqlite_type_helper</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;SQLite Type Helper.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">from</span> <span class="nn">plasoscaffolder.common</span> <span class="k">import</span> <span class="n">type_mapper</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.dal</span> <span class="k">import</span> <span class="n">base_database_information</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.dal</span> <span class="k">import</span> <span class="n">base_explain_query_plan</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.dal</span> <span class="k">import</span> <span class="n">base_sql_query_execution</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.dal</span> <span class="k">import</span> <span class="n">base_type_helper</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.model</span> <span class="k">import</span> <span class="n">sql_query_column_model</span>
+
+
+<div class="viewcode-block" id="SQLiteTypeHelper"><a class="viewcode-back" href="../../../plasoscaffolder.dal.html#plasoscaffolder.dal.sqlite_type_helper.SQLiteTypeHelper">[docs]</a><span class="k">class</span> <span class="nc">SQLiteTypeHelper</span><span class="p">(</span><span class="n">base_type_helper</span><span class="o">.</span><span class="n">BaseTypeHelper</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Class representing the type helper for SQLite.&quot;&quot;&quot;</span>
+  <span class="n">_POSSIBLEQUERYSEPERATOR</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="p">]</span>
+
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+      <span class="bp">self</span><span class="p">,</span> <span class="n">execution</span><span class="p">:</span> <span class="n">base_sql_query_execution</span><span class="o">.</span><span class="n">BaseSQLQueryExecution</span><span class="p">,</span>
+      <span class="n">explain</span><span class="p">:</span> <span class="n">base_explain_query_plan</span><span class="o">.</span><span class="n">BaseExplainQueryPlan</span><span class="p">,</span>
+      <span class="n">database_information</span><span class="p">:</span> <span class="n">base_database_information</span><span class="o">.</span><span class="n">BaseDatabaseInformation</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Initializes the SQLite Type Helper</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      execution (base_sql_query_execution.BaseSQLQueryExecution): the class</span>
+<span class="sd">          for the execution of the SQLite queries</span>
+<span class="sd">      explain (base_explain_query_plan.BaseExplainQueryPlan): the class for</span>
+<span class="sd">          explain information</span>
+<span class="sd">      database_information (base_database_information.BaseDatabaseInformation):</span>
+<span class="sd">          the class for information about the database</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_execute</span> <span class="o">=</span> <span class="n">execution</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_explain</span> <span class="o">=</span> <span class="n">explain</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_information</span> <span class="o">=</span> <span class="n">database_information</span>
+
+<div class="viewcode-block" id="SQLiteTypeHelper.GetDuplicateColumnNames"><a class="viewcode-back" href="../../../plasoscaffolder.dal.html#plasoscaffolder.dal.sqlite_type_helper.SQLiteTypeHelper.GetDuplicateColumnNames">[docs]</a>  <span class="k">def</span> <span class="nf">GetDuplicateColumnNames</span><span class="p">(</span>
+      <span class="bp">self</span><span class="p">,</span> <span class="n">columns</span><span class="p">:</span> <span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Find out if the query has duplicate column names and if a alias is</span>
+<span class="sd">        needed.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      columns (sql_query_column_model.SQLColumnModel): all columns parsed</span>
+<span class="sd">          from the cursor</span>
+<span class="sd">    Returns:</span>
+<span class="sd">      [str]: a list of all the duplicate column names, if its empty it means it</span>
+<span class="sd">          is a distinct list of columns</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">single_column_name_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">column</span><span class="o">.</span><span class="n">sql_column</span> <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">]</span>
+    <span class="n">duplicate_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">column</span> <span class="k">for</span> <span class="n">column</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span>
+                      <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">(</span><span class="n">single_column_name_list</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span>
+                      <span class="n">count</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">duplicate_list</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SQLiteTypeHelper.GetColumnInformationFromDescription"><a class="viewcode-back" href="../../../plasoscaffolder.dal.html#plasoscaffolder.dal.sqlite_type_helper.SQLiteTypeHelper.GetColumnInformationFromDescription">[docs]</a>  <span class="k">def</span> <span class="nf">GetColumnInformationFromDescription</span><span class="p">(</span>
+      <span class="bp">self</span><span class="p">,</span> <span class="n">descriptions</span><span class="p">:</span> <span class="p">[])</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Getting Information for the column out of the cursor.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      descriptions: the descriptions of the cursor</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      [sql_query_column_model.SQLColumnModel]: a list with all the column</span>
+<span class="sd">          names, the types are None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sql_column</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">descriptions</span><span class="p">:</span>
+      <span class="n">sql_column</span> <span class="o">=</span> <span class="p">[</span><span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">(</span>
+          <span class="n">description</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span> <span class="k">for</span> <span class="n">description</span> <span class="ow">in</span> <span class="n">descriptions</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">sql_column</span></div>
+
+<div class="viewcode-block" id="SQLiteTypeHelper.AddMissingTypesFromSchema"><a class="viewcode-back" href="../../../plasoscaffolder.dal.html#plasoscaffolder.dal.sqlite_type_helper.SQLiteTypeHelper.AddMissingTypesFromSchema">[docs]</a>  <span class="k">def</span> <span class="nf">AddMissingTypesFromSchema</span><span class="p">(</span>
+      <span class="bp">self</span><span class="p">,</span> <span class="n">columns</span><span class="p">:</span> <span class="p">[</span><span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">],</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+  <span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Getting Information for the column out of the cursor.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      columns ([sql_query_column_model.SQLColumnModel]): the columns with all</span>
+<span class="sd">          the column names</span>
+<span class="sd">      query: the query</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      [sql_query_column_model.SQLColumnModel]: a list with all the columns</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">locked</span> <span class="o">=</span> <span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_explain</span><span class="o">.</span><span class="n">GetLockedTables</span><span class="p">(</span><span class="n">query</span><span class="p">)]</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ColumnTypeForMultipleTables</span><span class="p">(</span><span class="n">locked</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span></div>
+
+  <span class="k">def</span> <span class="nf">_ColumnTypeForMultipleTables</span><span class="p">(</span>
+      <span class="bp">self</span><span class="p">,</span> <span class="n">tables</span><span class="p">:</span> <span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+      <span class="n">column_model</span><span class="p">:</span> <span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span>
+  <span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Getting Types for Column if there is are multiple tables</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      tables ([str]): the name of the table</span>
+<span class="sd">      column_model ([sql_query_column_model.SQLColumnModel]): the column to</span>
+<span class="sd">          find the type for</span>
+<span class="sd">      query (str): the SQL query</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      [sql_query_column_model.SQLColumnModel]: the column model with the types,</span>
+<span class="sd">          or None if there was a prefix error and it could not be parsed</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+    <span class="n">table_and_type</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">table</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_information</span><span class="o">.</span><span class="n">GetTableColumnsAndType</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">table</span>
+        <span class="ow">in</span> <span class="n">tables</span><span class="p">}</span>
+
+    <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">column_model</span><span class="p">:</span>
+      <span class="n">column_name</span> <span class="o">=</span> <span class="n">column</span><span class="o">.</span><span class="n">sql_column</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+      <span class="c1"># calling cell var from loop because column_name is needed multiple times</span>
+      <span class="c1"># pylint: disable=cell-var-from-loop</span>
+      <span class="n">as_column_string_start</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">start</span><span class="p">:</span> <span class="n">start</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">map</span><span class="p">(</span>
+          <span class="k">lambda</span> <span class="n">space</span><span class="p">:</span> <span class="n">query</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39; as </span><span class="si">{0}{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">column_name</span><span class="p">,</span> <span class="n">space</span><span class="p">)),</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">_POSSIBLEQUERYSEPERATOR</span><span class="p">)),</span> <span class="kc">None</span><span class="p">)</span>
+
+      <span class="c1"># column with alias</span>
+      <span class="k">if</span> <span class="n">as_column_string_start</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_IsPrefixedWithAlias</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">tables</span><span class="p">,</span> <span class="n">column_name</span><span class="p">):</span>
+          <span class="n">table_end</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">as_column_string_start</span><span class="p">)</span>
+          <span class="n">table_start</span> <span class="o">=</span> <span class="n">table_end</span>
+        <span class="k">else</span><span class="p">:</span>
+          <span class="n">table_end</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">as_column_string_start</span><span class="p">)</span>
+          <span class="n">table_start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_GetPositionAfterSeparator</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">table_end</span><span class="p">)</span>
+
+        <span class="n">sqlite_column_name</span> <span class="o">=</span> <span class="n">query</span><span class="p">[</span><span class="n">table_end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span><span class="n">as_column_string_start</span><span class="p">]</span>
+
+      <span class="c1"># column without alias</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_IsPrefixedWithoutAlias</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">tables</span><span class="p">,</span> <span class="n">column_name</span><span class="p">):</span>
+          <span class="n">table_end</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">as_column_string_start</span><span class="p">)</span>
+          <span class="n">table_start</span> <span class="o">=</span> <span class="n">table_end</span>
+        <span class="k">else</span><span class="p">:</span>
+          <span class="n">table_end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_GetEndOfTableIfNotAlias</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">column_name</span><span class="p">)</span>
+          <span class="n">table_start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_GetPositionAfterSeparator</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">table_end</span><span class="p">)</span>
+        <span class="n">sqlite_column_name</span> <span class="o">=</span> <span class="n">column_name</span>
+
+      <span class="n">table_name</span> <span class="o">=</span> <span class="n">query</span><span class="p">[</span><span class="n">table_start</span><span class="p">:</span><span class="n">table_end</span><span class="p">]</span>
+
+      <span class="c1"># has no table prefix</span>
+      <span class="k">if</span> <span class="n">table_name</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="n">types_sqlite</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">[</span><span class="n">table_and_type</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sqlite_column_name</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">table</span>
+             <span class="ow">in</span> <span class="n">tables</span> <span class="k">if</span> <span class="n">sqlite_column_name</span> <span class="ow">in</span> <span class="n">table_and_type</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="p">{})])</span>
+        <span class="n">type_sqlite</span> <span class="o">=</span> <span class="n">types_sqlite</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">types_sqlite</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+
+      <span class="k">else</span><span class="p">:</span>
+        <span class="n">type_sqlite</span> <span class="o">=</span> <span class="n">table_and_type</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="n">table_name</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sqlite_column_name</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+
+      <span class="n">type_sqlite_basic</span> <span class="o">=</span> <span class="n">type_sqlite</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;(&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+      <span class="n">type_python</span> <span class="o">=</span> <span class="n">type_mapper</span><span class="o">.</span><span class="n">TypeMapperSQLitePython</span><span class="o">.</span><span class="n">MAPPINGS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+          <span class="n">type_sqlite_basic</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>
+      <span class="n">column</span><span class="o">.</span><span class="n">sql_column_type</span> <span class="o">=</span> <span class="n">type_python</span>
+
+    <span class="k">return</span> <span class="n">column_model</span>
+
+  <span class="k">def</span> <span class="nf">_GetEndOfTableIfNotAlias</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">column_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Getting the start of the column if it is not an alias column</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      query (str): the query to be searched</span>
+<span class="sd">      column_name (str): the name to be searched for</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      bool: 0 if no column could be found or the starting position of the</span>
+<span class="sd">          column</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">wrong_positions</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span><span class="o">.</span><span class="n">start</span><span class="p">()</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span>
+                       <span class="n">re</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="s1">&#39;.</span><span class="si">{0}</span><span class="s1"> as&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">column_name</span><span class="p">),</span> <span class="n">query</span><span class="p">)]</span>
+    <span class="n">found_positions</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">space</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_POSSIBLEQUERYSEPERATOR</span><span class="p">:</span>
+      <span class="n">found_positions</span> <span class="o">+=</span> <span class="p">[</span><span class="n">name</span><span class="o">.</span><span class="n">start</span><span class="p">()</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span>
+                          <span class="n">re</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="s1">&#39;.</span><span class="si">{0}{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">column_name</span><span class="p">,</span> <span class="n">space</span><span class="p">),</span>
+                                      <span class="n">query</span><span class="p">)]</span>
+
+    <span class="n">position</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">found_positions</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">wrong_positions</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">position</span><span class="p">:</span>
+      <span class="k">return</span> <span class="n">position</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="k">return</span> <span class="mi">0</span>
+
+  <span class="k">def</span> <span class="nf">_GetPositionAfterSeparator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">end_position</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Get the first separator position, starting at the end and searching</span>
+<span class="sd">     in reverse</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      text (str): the text to be searched through</span>
+<span class="sd">      end_position (int): the end position the search should be started from</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      int: the first separator position found in the text started from the end</span>
+<span class="sd">          position</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">all_appearances</span> <span class="o">=</span> <span class="p">[</span><span class="n">text</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="n">space</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">end_position</span><span class="p">)</span> <span class="k">for</span> <span class="n">space</span> <span class="ow">in</span>
+                       <span class="bp">self</span><span class="o">.</span><span class="n">_POSSIBLEQUERYSEPERATOR</span>
+                       <span class="k">if</span> <span class="n">text</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="n">space</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">end_position</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">all_appearances</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+  <span class="k">def</span> <span class="nf">_IsPrefixedWithAlias</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tables</span><span class="p">:</span> <span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+                           <span class="n">column_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;If the column has a table prefixed and has an alias</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      query (str): the query to parse</span>
+<span class="sd">      tables ([str]): the possible tables</span>
+<span class="sd">      column_name (str): the column name</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      bool: True if it is prefixed, false if it isn&#39;t.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">matches</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">re</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span>
+            <span class="s1">&#39;.*(</span><span class="si">{0}</span><span class="s1">.)+([^ ])*( )*(as)( )*</span><span class="si">{1}</span><span class="s1">( ,)*.*&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">column_name</span><span class="p">),</span>
+            <span class="n">query</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="n">tables</span> <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span>
+            <span class="s1">&#39;.*(</span><span class="si">{0}</span><span class="s1">.)+([^ ])*( )*(as)( )*</span><span class="si">{1}</span><span class="s1">( ,)*.*&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">table</span><span class="p">,</span> <span class="n">column_name</span><span class="p">),</span> <span class="n">query</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span>
+
+  <span class="k">def</span> <span class="nf">_IsPrefixedWithoutAlias</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tables</span><span class="p">:</span> <span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+                              <span class="n">column_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;If the column has a table prefixed and has an no alias</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      query (str): the query to parse</span>
+<span class="sd">      tables ([str]): the possible tables</span>
+<span class="sd">      column_name (str): the column name</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      bool: True if it is prefixed, false if it isn&#39;t.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">matches</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">re</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span>
+            <span class="s1">&#39;.*(</span><span class="si">{0}</span><span class="s1">.</span><span class="si">{1}</span><span class="s1">)+([^ ])*( ,)*.*&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">column_name</span><span class="p">),</span> <span class="n">query</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="n">tables</span> <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span>
+            <span class="s1">&#39;.*(</span><span class="si">{0}</span><span class="s1">.</span><span class="si">{1}</span><span class="s1">)+([^ ])*( ,)*.*&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">table</span><span class="p">,</span> <span class="n">column_name</span><span class="p">),</span> <span class="n">query</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Plaso Sqlite Plugin Scaffolder 20170614 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Claudia Saxer.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.
+    </div>
+  </body>
+</html>

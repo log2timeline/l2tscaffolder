@@ -1,0 +1,274 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>src &#8212; Plaso Sqlite Plugin Scaffolder 20170614 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '20170614',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Plaso Sqlite Plugin Scaffolder 20170614 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="src">
+<h1>src<a class="headerlink" href="#src" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="plasoscaffolder.html">plasoscaffolder package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="plasoscaffolder.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="plasoscaffolder.bll.html">plasoscaffolder.bll package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.bll.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.bll.html#module-plasoscaffolder.bll">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="plasoscaffolder.common.html">plasoscaffolder.common package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.common.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.common.html#module-plasoscaffolder.common.base_code_formatter">plasoscaffolder.common.base_code_formatter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.common.html#module-plasoscaffolder.common.base_file_handler">plasoscaffolder.common.base_file_handler module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.common.html#module-plasoscaffolder.common.base_output_handler">plasoscaffolder.common.base_output_handler module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.common.html#module-plasoscaffolder.common.code_formatter">plasoscaffolder.common.code_formatter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.common.html#module-plasoscaffolder.common.file_handler">plasoscaffolder.common.file_handler module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.common.html#module-plasoscaffolder.common.output_handler_click">plasoscaffolder.common.output_handler_click module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.common.html#module-plasoscaffolder.common.type_mapper">plasoscaffolder.common.type_mapper module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.common.html#module-plasoscaffolder.common">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="plasoscaffolder.dal.html">plasoscaffolder.dal package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.dal.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.dal.html#module-plasoscaffolder.dal.base_database_information">plasoscaffolder.dal.base_database_information module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.dal.html#module-plasoscaffolder.dal.base_explain_query_plan">plasoscaffolder.dal.base_explain_query_plan module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.dal.html#module-plasoscaffolder.dal.base_sql_query_execution">plasoscaffolder.dal.base_sql_query_execution module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.dal.html#module-plasoscaffolder.dal.base_type_helper">plasoscaffolder.dal.base_type_helper module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.dal.html#module-plasoscaffolder.dal.explain_query_plan">plasoscaffolder.dal.explain_query_plan module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.dal.html#plasoscaffolder-dal-sql-query-data-module">plasoscaffolder.dal.sql_query_data module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.dal.html#module-plasoscaffolder.dal.sqlite_database_information">plasoscaffolder.dal.sqlite_database_information module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.dal.html#module-plasoscaffolder.dal.sqlite_query_execution">plasoscaffolder.dal.sqlite_query_execution module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.dal.html#module-plasoscaffolder.dal.sqlite_type_helper">plasoscaffolder.dal.sqlite_type_helper module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.dal.html#module-plasoscaffolder.dal">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="plasoscaffolder.frontend.html">plasoscaffolder.frontend package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.frontend.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.frontend.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.frontend.html#module-plasoscaffolder.frontend.main">plasoscaffolder.frontend.main module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.frontend.html#module-plasoscaffolder.frontend">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="plasoscaffolder.model.html">plasoscaffolder.model package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.model.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.model.html#module-plasoscaffolder.model.base_data_model">plasoscaffolder.model.base_data_model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.model.html#module-plasoscaffolder.model.formatter_data_model">plasoscaffolder.model.formatter_data_model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.model.html#module-plasoscaffolder.model.formatter_test_data_model">plasoscaffolder.model.formatter_test_data_model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.model.html#module-plasoscaffolder.model.init_data_model">plasoscaffolder.model.init_data_model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.model.html#module-plasoscaffolder.model.parser_data_model">plasoscaffolder.model.parser_data_model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.model.html#module-plasoscaffolder.model.parser_test_data_model">plasoscaffolder.model.parser_test_data_model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.model.html#module-plasoscaffolder.model.sql_query_column_model">plasoscaffolder.model.sql_query_column_model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.model.html#plasoscaffolder-model-sql-query-column-model-data-module">plasoscaffolder.model.sql_query_column_model_data module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.model.html#module-plasoscaffolder.model.sql_query_column_model_timestamp">plasoscaffolder.model.sql_query_column_model_timestamp module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.model.html#module-plasoscaffolder.model.sql_query_model">plasoscaffolder.model.sql_query_model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plasoscaffolder.model.html#module-plasoscaffolder.model">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="plasoscaffolder.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plasoscaffolder.html#module-plasoscaffolder.dependencies">plasoscaffolder.dependencies module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plasoscaffolder.html#module-plasoscaffolder">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="run_tests.html">run_tests module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run_tests_for_coverage.html">run_tests_for_coverage module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">setup module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">tests package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tests.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tests.bll.html">tests.bll package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.bll.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.bll.html#module-tests.bll">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.common.html">tests.common package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.common.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.common.html#module-tests.common.test_file_handler">tests.common.test_file_handler module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.common.html#module-tests.common.test_output_handler_click">tests.common.test_output_handler_click module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.common.html#module-tests.common.test_output_handler_file">tests.common.test_output_handler_file module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.common.html#module-tests.common">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.dal.html">tests.dal package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.dal.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.dal.html#module-tests.dal.test_explain_query_plan">tests.dal.test_explain_query_plan module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.dal.html#module-tests.dal.test_sqlite_database_information">tests.dal.test_sqlite_database_information module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.dal.html#module-tests.dal.test_sqlite_query_execution">tests.dal.test_sqlite_query_execution module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.dal.html#module-tests.dal.test_sqlite_type_helper">tests.dal.test_sqlite_type_helper module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.dal.html#module-tests.dal">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.end_to_end_test.html">tests.end_to_end_test package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.end_to_end_test.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.end_to_end_test.html#module-tests.end_to_end_test.end_to_end_test_helper">tests.end_to_end_test.end_to_end_test_helper module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.end_to_end_test.html#module-tests.end_to_end_test.test_easy_generation">tests.end_to_end_test.test_easy_generation module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.end_to_end_test.html#module-tests.end_to_end_test.test_easy_generation_with_abort">tests.end_to_end_test.test_easy_generation_with_abort module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.end_to_end_test.html#module-tests.end_to_end_test.test_easy_generation_with_customizing">tests.end_to_end_test.test_easy_generation_with_customizing module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.end_to_end_test.html#module-tests.end_to_end_test.test_easy_generation_with_multiple_selects">tests.end_to_end_test.test_easy_generation_with_multiple_selects module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.end_to_end_test.html#module-tests.end_to_end_test.test_easy_generation_with_output_example">tests.end_to_end_test.test_easy_generation_with_output_example module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.end_to_end_test.html#module-tests.end_to_end_test.test_easy_generation_with_own_row_name">tests.end_to_end_test.test_easy_generation_with_own_row_name module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.end_to_end_test.html#module-tests.end_to_end_test.test_easy_generation_with_own_time_event">tests.end_to_end_test.test_easy_generation_with_own_time_event module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.end_to_end_test.html#module-tests.end_to_end_test.test_generation_with_an_existing_name">tests.end_to_end_test.test_generation_with_an_existing_name module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.end_to_end_test.html#module-tests.end_to_end_test.test_generation_with_option_at_tool_call">tests.end_to_end_test.test_generation_with_option_at_tool_call module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.end_to_end_test.html#module-tests.end_to_end_test.test_help_function">tests.end_to_end_test.test_help_function module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.end_to_end_test.html#module-tests.end_to_end_test.test_help_function_of_sqlite">tests.end_to_end_test.test_help_function_of_sqlite module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.end_to_end_test.html#module-tests.end_to_end_test.test_select_easy_join">tests.end_to_end_test.test_select_easy_join module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.end_to_end_test.html#module-tests.end_to_end_test.test_select_with_special_characters">tests.end_to_end_test.test_select_with_special_characters module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.end_to_end_test.html#module-tests.end_to_end_test.test_wrong_path">tests.end_to_end_test.test_wrong_path module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.end_to_end_test.html#module-tests.end_to_end_test.test_wrong_plugin_name">tests.end_to_end_test.test_wrong_plugin_name module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.end_to_end_test.html#module-tests.end_to_end_test.test_wrong_sql_query_input">tests.end_to_end_test.test_wrong_sql_query_input module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.end_to_end_test.html#module-tests.end_to_end_test.test_wrong_test_file">tests.end_to_end_test.test_wrong_test_file module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.end_to_end_test.html#module-tests.end_to_end_test">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.fake.html">tests.fake package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.fake.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.fake.html#module-tests.fake.fake_database_information">tests.fake.fake_database_information module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.fake.html#module-tests.fake.fake_explain_query_plan">tests.fake.fake_explain_query_plan module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.fake.html#module-tests.fake.fake_file_handler">tests.fake.fake_file_handler module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.fake.html#module-tests.fake.fake_mapping_helper">tests.fake.fake_mapping_helper module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.fake.html#module-tests.fake.fake_sqlite_database_information">tests.fake.fake_sqlite_database_information module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.fake.html#module-tests.fake.fake_sqlite_plugin_helper">tests.fake.fake_sqlite_plugin_helper module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.fake.html#module-tests.fake.fake_sqlite_plugin_path_helper">tests.fake.fake_sqlite_plugin_path_helper module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.fake.html#module-tests.fake.fake_sqlite_query_execution">tests.fake.fake_sqlite_query_execution module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.fake.html#module-tests.fake.fake_sqliteplugin_mapping">tests.fake.fake_sqliteplugin_mapping module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.fake.html#module-tests.fake">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.frontend.html">tests.frontend package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.frontend.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.frontend.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.frontend.html#module-tests.frontend.test_main">tests.frontend.test_main module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.frontend.html#module-tests.frontend">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.integrationtests.html">tests.integrationtests package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.integrationtests.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.integrationtests.html#module-tests.integrationtests.test_generating_the_files">tests.integrationtests.test_generating_the_files module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.integrationtests.html#module-tests.integrationtests">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.model.html">tests.model package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.model.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.model.html#module-tests.model.test_sql_query_column_model">tests.model.test_sql_query_column_model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.model.html#module-tests.model.test_sql_query_column_model_timestamp">tests.model.test_sql_query_column_model_timestamp module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.model.html#module-tests.model">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.other.html">tests.other package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.other.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.other.html#module-tests.other.test_dependencies">tests.other.test_dependencies module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.other.html#module-tests.other.test_version">tests.other.test_version module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.other.html#module-tests.other">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.test_database.html">tests.test_database package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.test_database.html#module-tests.test_database">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.test_helper.html">tests.test_helper package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.test_helper.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.test_helper.html#module-tests.test_helper.output_handler_file">tests.test_helper.output_handler_file module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.test_helper.html#module-tests.test_helper.path_helper">tests.test_helper.path_helper module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.test_helper.html#module-tests.test_helper">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.test_template.html">tests.test_template package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.test_template.html#module-tests.test_template">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html#module-tests">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/modules.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Plaso Sqlite Plugin Scaffolder 20170614 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Claudia Saxer.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.
+    </div>
+  </body>
+</html>

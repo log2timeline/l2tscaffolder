@@ -1,0 +1,579 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plasoscaffolder.frontend.controller.sqlite_controller &#8212; Plaso Sqlite Plugin Scaffolder 20170614 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '20170614',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">Plaso Sqlite Plugin Scaffolder 20170614 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for plasoscaffolder.frontend.controller.sqlite_controller</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;File representing the Controller for SQLite plugin.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">click</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.bll.mappings</span> <span class="k">import</span> <span class="n">formatter_init_mapping</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.bll.mappings</span> <span class="k">import</span> <span class="n">formatter_mapping</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.bll.mappings</span> <span class="k">import</span> <span class="n">formatter_test_mapping</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.bll.mappings</span> <span class="k">import</span> <span class="n">mapping_helper</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.bll.mappings</span> <span class="k">import</span> <span class="n">parser_init_mapping</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.bll.mappings</span> <span class="k">import</span> <span class="n">parser_mapping</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.bll.mappings</span> <span class="k">import</span> <span class="n">parser_test_mapping</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.bll.services</span> <span class="k">import</span> <span class="n">base_sqlite_plugin_helper</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.bll.services</span> <span class="k">import</span> <span class="n">sqlite_generator</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.bll.services</span> <span class="k">import</span> <span class="n">sqlite_plugin_helper</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.bll.services</span> <span class="k">import</span> <span class="n">sqlite_plugin_path_helper</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.common</span> <span class="k">import</span> <span class="n">base_output_handler</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.common</span> <span class="k">import</span> <span class="n">file_handler</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.dal</span> <span class="k">import</span> <span class="n">base_sql_query_execution</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.dal</span> <span class="k">import</span> <span class="n">explain_query_plan</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.dal</span> <span class="k">import</span> <span class="n">sqlite_database_information</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.dal</span> <span class="k">import</span> <span class="n">sqlite_query_execution</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.model</span> <span class="k">import</span> <span class="n">sql_query_column_model</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.model</span> <span class="k">import</span> <span class="n">sql_query_column_model_data</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.model</span> <span class="k">import</span> <span class="n">sql_query_column_model_timestamp</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.model</span> <span class="k">import</span> <span class="n">sql_query_model</span>
+
+
+<div class="viewcode-block" id="SQLiteController"><a class="viewcode-back" href="../../../../plasoscaffolder.frontend.controller.html#plasoscaffolder.frontend.controller.sqlite_controller.SQLiteController">[docs]</a><span class="k">class</span> <span class="nc">SQLiteController</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Class representing the SQLite Controller.&quot;&quot;&quot;</span>
+
+  <span class="n">_NUMBER_OF_SQLITE_OUTPUT_EXAMPLES</span> <span class="o">=</span> <span class="mi">3</span>
+
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_handler</span><span class="p">:</span> <span class="n">base_output_handler</span><span class="o">.</span><span class="n">BaseOutputHandler</span><span class="p">(),</span>
+               <span class="n">plugin_helper</span><span class="p">:</span>
+               <span class="n">base_sqlite_plugin_helper</span><span class="o">.</span><span class="n">BaseSQLitePluginHelper</span><span class="p">()):</span>
+    <span class="sd">&quot;&quot;&quot;Initializes the SQLite Controller.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      output_handler (base_output_handler.BaseOutputHandler): the handler for</span>
+<span class="sd">          the output</span>
+<span class="sd">      plugin_helper (base_sqlite_plugin_helper.BaseSQLitePluginHelper): the</span>
+<span class="sd">          helper for the SQLite plugin</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">SQLiteController</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_testfile</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_sql_query</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_plugin_helper</span> <span class="o">=</span> <span class="n">plugin_helper</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span> <span class="o">=</span> <span class="n">output_handler</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_query_execution</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="SQLiteController.SourcePath"><a class="viewcode-back" href="../../../../plasoscaffolder.frontend.controller.html#plasoscaffolder.frontend.controller.sqlite_controller.SQLiteController.SourcePath">[docs]</a>  <span class="k">def</span> <span class="nf">SourcePath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unused_ctx</span><span class="p">:</span> <span class="n">click</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Context</span><span class="p">,</span>
+                 <span class="n">unused_param</span><span class="p">:</span> <span class="n">click</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Option</span><span class="p">,</span>
+                 <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Saving the source path.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      unused_ctx (click.core.Context): the click context (automatically given</span>
+<span class="sd">        via callback)</span>
+<span class="sd">      unused_param (click.core.Option): the click command (automatically</span>
+<span class="sd">        given via callback)</span>
+<span class="sd">      value (str): the source path (automatically given via callback)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      str: the source path representing the same as value</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plugin_helper</span><span class="o">.</span><span class="n">FolderExists</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+      <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="o">.</span><span class="n">PromptError</span><span class="p">(</span>
+          <span class="s1">&#39;Folder does not exists. Enter correct one&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="k">return</span> <span class="n">value</span></div>
+
+<div class="viewcode-block" id="SQLiteController.PluginName"><a class="viewcode-back" href="../../../../plasoscaffolder.frontend.controller.html#plasoscaffolder.frontend.controller.sqlite_controller.SQLiteController.PluginName">[docs]</a>  <span class="k">def</span> <span class="nf">PluginName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unused_ctx</span><span class="p">:</span> <span class="n">click</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Context</span><span class="p">,</span>
+                 <span class="n">unused_param</span><span class="p">:</span> <span class="n">click</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Option</span><span class="p">,</span>
+                 <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Saving the plugin name.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      unused_ctx (click.core.Context): the click context (automatically given</span>
+<span class="sd">          via callback)</span>
+<span class="sd">      unused_param (click.core.Option): the click command (automatically</span>
+<span class="sd">          given via callback)</span>
+<span class="sd">      value (str): the source path (automatically given via callback)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      str: the plugin name representing the same as value</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ValidatePluginName</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plugin_helper</span><span class="o">.</span><span class="n">PluginExists</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="n">sqlite_plugin_path_helper</span><span class="o">.</span><span class="n">SQLitePluginPathHelper</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)):</span>
+      <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="o">.</span><span class="n">PromptError</span><span class="p">(</span>
+          <span class="s1">&#39;Plugin exists. Choose new Name&#39;</span><span class="p">)</span>
+      <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ValidatePluginName</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="k">return</span> <span class="n">value</span></div>
+
+<div class="viewcode-block" id="SQLiteController.TestPath"><a class="viewcode-back" href="../../../../plasoscaffolder.frontend.controller.html#plasoscaffolder.frontend.controller.sqlite_controller.SQLiteController.TestPath">[docs]</a>  <span class="k">def</span> <span class="nf">TestPath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unused_ctx</span><span class="p">:</span> <span class="n">click</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Context</span><span class="p">,</span>
+               <span class="n">unused_param</span><span class="p">:</span> <span class="n">click</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Option</span><span class="p">,</span>
+               <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Saving the path to the test file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      unused_ctx (click.core.Context): the click context (automatically given</span>
+<span class="sd">          via callback)</span>
+<span class="sd">      unused_param (click.core.Option): the click command (automatically</span>
+<span class="sd">          given via callback)</span>
+<span class="sd">      value (str): the source path (automatically given via callback)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      str: the test file path representing the same as the value</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">no_database_file</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">while</span> <span class="n">no_database_file</span><span class="p">:</span>
+      <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plugin_helper</span><span class="o">.</span><span class="n">FileExists</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="o">.</span><span class="n">PromptError</span><span class="p">(</span>
+            <span class="s1">&#39;File does not exists. Choose another.&#39;</span><span class="p">)</span>
+      <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_IsDatabaseFile</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="o">.</span><span class="n">PromptError</span><span class="p">(</span>
+            <span class="s1">&#39;Unable to open the database file. Choose another.&#39;</span><span class="p">)</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="n">no_database_file</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">_testfile</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="k">return</span> <span class="n">value</span></div>
+
+  <span class="k">def</span> <span class="nf">_IsDatabaseFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Try to open the database File.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      path (str): the database file path</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      bool: if the file can be opened and is a database file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">execution</span> <span class="o">=</span> <span class="n">sqlite_query_execution</span><span class="o">.</span><span class="n">SQLiteQueryExecution</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">execution</span><span class="o">.</span><span class="n">TryToConnect</span><span class="p">():</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">_query_execution</span> <span class="o">=</span> <span class="n">execution</span>
+      <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="SQLiteController.SQLQuery"><a class="viewcode-back" href="../../../../plasoscaffolder.frontend.controller.html#plasoscaffolder.frontend.controller.sqlite_controller.SQLiteController.SQLQuery">[docs]</a>  <span class="k">def</span> <span class="nf">SQLQuery</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unused_ctx</span><span class="p">:</span> <span class="n">click</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Context</span><span class="p">,</span>
+               <span class="n">unused_param</span><span class="p">:</span> <span class="n">click</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Option</span><span class="p">,</span>
+               <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">sql_query_model</span><span class="o">.</span><span class="n">SQLQueryModel</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;The SQL Query of the plugin.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      unused_ctx (click.core.Context): the click context (automatically given</span>
+<span class="sd">          via callback)</span>
+<span class="sd">      unused_param (click.core.Option): the click command (automatically</span>
+<span class="sd">          given via callback)</span>
+<span class="sd">      value (str): the SQL Query (automatically given via callback)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      [sql_query_model.SQLQueryModel]: a list of SQL Query models</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="n">add_more_queries</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">sql_query_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">while</span> <span class="n">add_more_queries</span><span class="p">:</span>
+      <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sql_query_list</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">sql_query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="o">.</span><span class="n">PromptInfo</span><span class="p">(</span>
+            <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Please write your SQL script for the plugin [</span><span class="se">\&#39;</span><span class="s1">abort</span><span class="se">\&#39;</span><span class="s1"> to &#39;</span>
+                 <span class="s1">&#39;continue]&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">sql_query</span> <span class="o">==</span> <span class="s1">&#39;abort&#39;</span><span class="p">:</span>
+          <span class="n">add_more_queries</span> <span class="o">=</span> <span class="kc">False</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="n">sql_query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="o">.</span><span class="n">PromptInfo</span><span class="p">(</span>
+            <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Please write your SQL script for the plugin&#39;</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">add_more_queries</span><span class="p">:</span>
+        <span class="n">query_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CreateSQLQueryModelWithUserInput</span><span class="p">(</span>
+            <span class="n">sql_query</span><span class="p">,</span> <span class="n">verbose</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_execution</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">query_model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+          <span class="n">sql_query_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">query_model</span><span class="p">)</span>
+          <span class="n">add_more_queries</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="o">.</span><span class="n">Confirm</span><span class="p">(</span>
+              <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Do you want to add another Query?&#39;</span><span class="p">,</span>
+              <span class="n">abort</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">_sql_query</span> <span class="o">=</span> <span class="n">sql_query_list</span>
+    <span class="k">return</span> <span class="n">sql_query_list</span></div>
+
+  <span class="k">def</span> <span class="nf">_CreateSQLQueryModelWithUserInput</span><span class="p">(</span>
+      <span class="bp">self</span><span class="p">,</span>
+      <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">with_examples</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+      <span class="n">query_execution</span><span class="p">:</span> <span class="n">base_sql_query_execution</span><span class="o">.</span><span class="n">BaseSQLQueryExecution</span><span class="p">()</span>
+  <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">sql_query_model</span><span class="o">.</span><span class="n">SQLQueryModel</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Asks the user information about the SQL Query.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      query (str): the SQL Query</span>
+<span class="sd">      with_examples (bool): if the user wants examples for the given Query</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      sql_query_model.SQLQueryModel: a SQL Query model</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">query_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plugin_helper</span><span class="o">.</span><span class="n">RunSQLQuery</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">query_execution</span><span class="p">)</span>
+    <span class="n">query_plan</span> <span class="o">=</span> <span class="n">explain_query_plan</span><span class="o">.</span><span class="n">ExplainQueryPlan</span><span class="p">(</span><span class="n">query_execution</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">query_data</span><span class="o">.</span><span class="n">has_error</span><span class="p">:</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="o">.</span><span class="n">PrintError</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">query_data</span><span class="o">.</span><span class="n">error_message</span><span class="p">))</span>
+      <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">else</span><span class="p">:</span>
+      <span class="k">if</span> <span class="n">with_examples</span><span class="p">:</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">query_data</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">length</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="o">.</span><span class="n">PrintInfo</span><span class="p">(</span><span class="s1">&#39;Your query does not return anything.&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="o">.</span><span class="n">PrintInfo</span><span class="p">(</span>
+              <span class="s1">&#39;Your query output could look like this.&#39;</span><span class="p">)</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="o">.</span><span class="n">PrintInfo</span><span class="p">(</span>
+              <span class="nb">str</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">sql_column</span><span class="p">,</span> <span class="n">query_data</span><span class="o">.</span><span class="n">columns</span><span class="p">))))</span>
+          <span class="n">amount</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_NUMBER_OF_SQLITE_OUTPUT_EXAMPLES</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
+          <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">amount</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="o">.</span><span class="n">PrintInfo</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">query_data</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">]))</span>
+
+        <span class="n">add_query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="o">.</span><span class="n">Confirm</span><span class="p">(</span>
+            <span class="s1">&#39;Do you want to add this query?&#39;</span><span class="p">,</span>
+            <span class="n">abort</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">add_query</span><span class="p">:</span>
+          <span class="k">return</span> <span class="kc">None</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="o">.</span><span class="n">PrintError</span><span class="p">(</span><span class="s1">&#39;The SQL query was ok.&#39;</span><span class="p">)</span>
+
+      <span class="n">locked_tables</span> <span class="o">=</span> <span class="n">query_plan</span><span class="o">.</span><span class="n">GetLockedTables</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+      <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">locked_tables</span><span class="p">)</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
+
+      <span class="n">question_parse</span> <span class="o">=</span> <span class="s1">&#39;Do you want to name the query parse row: </span><span class="si">{0}</span><span class="s1"> ?&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+          <span class="n">name</span><span class="p">)</span>
+      <span class="n">add_recommended_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="o">.</span><span class="n">Confirm</span><span class="p">(</span>
+          <span class="n">question_parse</span><span class="p">,</span> <span class="n">abort</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+      <span class="k">if</span> <span class="ow">not</span> <span class="n">add_recommended_name</span><span class="p">:</span>
+        <span class="n">question_event</span> <span class="o">=</span> <span class="s1">&#39;What row does the SQL Query parse?&#39;</span>
+        <span class="n">initial_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="o">.</span><span class="n">PromptInfo</span><span class="p">(</span><span class="n">question_event</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ValidateRowName</span><span class="p">(</span><span class="n">initial_name</span><span class="p">)</span>
+
+      <span class="n">data_column</span><span class="p">,</span> <span class="n">timestamp_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetTimestamps</span><span class="p">(</span>
+          <span class="n">query_data</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">query_data</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+      <span class="k">if</span> <span class="n">query_data</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">amount_events</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">query_data</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="n">amount_events</span> <span class="o">=</span> <span class="mi">0</span>
+
+      <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Does the event </span><span class="si">{0}</span><span class="s1"> need customizing?&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+      <span class="n">needs_customizing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="o">.</span><span class="n">Confirm</span><span class="p">(</span>
+          <span class="n">text</span><span class="o">=</span><span class="n">message</span><span class="p">,</span> <span class="n">abort</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">needs_customizing</span><span class="p">:</span>
+        <span class="n">data_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetCustomizable</span><span class="p">(</span><span class="n">data_column</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">sql_query_model</span><span class="o">.</span><span class="n">SQLQueryModel</span><span class="p">(</span>
+        <span class="n">query</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">name</span><span class="p">,</span> <span class="n">data_column</span><span class="p">,</span> <span class="n">timestamp_column</span><span class="p">,</span> <span class="n">needs_customizing</span><span class="p">,</span>
+        <span class="n">amount_events</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SQLiteController.GetTimestamps"><a class="viewcode-back" href="../../../../plasoscaffolder.frontend.controller.html#plasoscaffolder.frontend.controller.sqlite_controller.SQLiteController.GetTimestamps">[docs]</a>  <span class="k">def</span> <span class="nf">GetTimestamps</span><span class="p">(</span>
+      <span class="bp">self</span><span class="p">,</span> <span class="n">columns</span><span class="p">:</span> <span class="p">[</span><span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">],</span> <span class="n">data</span><span class="p">:</span> <span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+  <span class="p">)</span> <span class="o">-&gt;</span> <span class="p">([</span><span class="n">sql_query_column_model_data</span><span class="o">.</span><span class="n">SQLColumnModelData</span><span class="p">],</span>
+        <span class="p">[</span><span class="n">sql_query_column_model_timestamp</span><span class="o">.</span><span class="n">SQLColumnModelTimestamp</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;Gets the timestamp from the user and the columns.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      columns ([sql_query_column_model.SQLColumnModel]): the columns from the</span>
+<span class="sd">          SQL query.</span>
+<span class="sd">      data ([str]): the data from the cursor</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">       [sql_query_column_model_data.SQLColumnModelData],</span>
+<span class="sd">           [sql_query_column_model_timestamp.SQLColumnModelTimestamp]: A</span>
+<span class="sd">           tuple of columns. The first column represents the</span>
+<span class="sd">           normal column for the query. The second</span>
+<span class="sd">           column represents the timestamp events.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">timestamps</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">wrong_timestamps</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="n">assumed_timestamps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plugin_helper</span><span class="o">.</span><span class="n">GetAssumedTimestamps</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">timestamp</span> <span class="ow">in</span> <span class="n">assumed_timestamps</span><span class="p">:</span>
+      <span class="n">question_timestamp</span> <span class="o">=</span> <span class="s1">&#39;Is the column a time event? </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+      <span class="n">is_timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="o">.</span><span class="n">Confirm</span><span class="p">(</span><span class="n">question_timestamp</span><span class="p">,</span>
+                                                  <span class="n">abort</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">is_timestamp</span><span class="p">:</span>
+        <span class="n">timestamps</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+
+    <span class="n">add_own_timestamps</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">while</span> <span class="n">add_own_timestamps</span><span class="p">:</span>
+      <span class="n">own_timestamps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="o">.</span><span class="n">PromptInfo</span><span class="p">(</span>
+          <span class="s1">&#39;Enter (additional) timestamp events from the query [columnName,&#39;</span>
+          <span class="s1">&#39;aliasName...] or [abort]&#39;</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">own_timestamps</span> <span class="o">==</span> <span class="s1">&#39;abort&#39;</span><span class="p">:</span>
+        <span class="n">add_own_timestamps</span> <span class="o">=</span> <span class="kc">False</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">timestamps</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+          <span class="n">own_timestamps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="o">.</span><span class="n">PromptInfo</span><span class="p">(</span>
+              <span class="s1">&#39;At least one timestamp is required, please add a timestamp&#39;</span><span class="p">)</span>
+        <span class="n">own_timestamps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ValidateTimestampString</span><span class="p">(</span><span class="n">own_timestamps</span><span class="p">)</span>
+
+        <span class="n">new_columns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_GetValidColumnsAndInvalid</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="n">own_timestamps</span><span class="p">)</span>
+        <span class="n">timestamps</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">new_columns</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">wrong_timestamps</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">new_columns</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_PrintAddedAndFailedColumns</span><span class="p">(</span><span class="n">timestamps</span><span class="p">,</span> <span class="n">wrong_timestamps</span><span class="p">)</span>
+        <span class="n">add_own_timestamps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="o">.</span><span class="n">Confirm</span><span class="p">(</span>
+            <span class="s1">&#39;Do you want to add more timestamps?&#39;</span><span class="p">,</span> <span class="n">abort</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plugin_helper</span><span class="o">.</span><span class="n">GetColumnsAndTimestampColumn</span><span class="p">(</span>
+        <span class="n">columns</span><span class="p">,</span> <span class="n">timestamps</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SQLiteController.GetCustomizable"><a class="viewcode-back" href="../../../../plasoscaffolder.frontend.controller.html#plasoscaffolder.frontend.controller.sqlite_controller.SQLiteController.GetCustomizable">[docs]</a>  <span class="k">def</span> <span class="nf">GetCustomizable</span><span class="p">(</span>
+      <span class="bp">self</span><span class="p">,</span> <span class="n">columns</span><span class="p">:</span> <span class="p">[</span><span class="n">sql_query_column_model_data</span><span class="o">.</span><span class="n">SQLColumnModelData</span><span class="p">]</span>
+  <span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">sql_query_column_model_data</span><span class="o">.</span><span class="n">SQLColumnModelData</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Gets the customizable columns from the user</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      columns ([sql_query_column_model_data.SQLColumnModelData]): the columns</span>
+<span class="sd">          from the SQL query.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">     [sql_query_column_model_data.SQLColumnModelData]: the columns</span>
+<span class="sd">          from the SQL query an set if the column is customizable</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">customizable</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">wrong_customizable</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="n">add_own_customizable</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">while</span> <span class="n">add_own_customizable</span><span class="p">:</span>
+      <span class="n">own_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="o">.</span><span class="n">PromptInfo</span><span class="p">(</span>
+          <span class="s1">&#39;Enter columns that are customizable [columnName,aliasName...] or &#39;</span>
+          <span class="s1">&#39;[abort]&#39;</span><span class="p">)</span>
+      <span class="n">own_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ValidateColumnString</span><span class="p">(</span><span class="n">own_column</span><span class="p">)</span>
+
+      <span class="k">if</span> <span class="n">own_column</span> <span class="o">==</span> <span class="s1">&#39;abort&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">customizable</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+          <span class="n">own_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="o">.</span><span class="n">PromptInfo</span><span class="p">(</span>
+              <span class="s1">&#39;At least one column is required, please add a column&#39;</span><span class="p">)</span>
+          <span class="n">own_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ValidateColumnString</span><span class="p">(</span><span class="n">own_column</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+          <span class="n">add_own_customizable</span> <span class="o">=</span> <span class="kc">False</span>
+
+      <span class="k">if</span> <span class="n">add_own_customizable</span><span class="p">:</span>
+        <span class="n">new_columns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_GetValidColumnsAndInvalid</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="n">own_column</span><span class="p">)</span>
+        <span class="n">customizable</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">new_columns</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">wrong_customizable</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">new_columns</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_PrintAddedAndFailedColumns</span><span class="p">(</span><span class="n">customizable</span><span class="p">,</span> <span class="n">wrong_customizable</span><span class="p">)</span>
+        <span class="n">add_own_customizable</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="o">.</span><span class="n">Confirm</span><span class="p">(</span>
+            <span class="s1">&#39;Do you want to add more columns that are customizable?&#39;</span><span class="p">,</span>
+            <span class="n">abort</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+      <span class="k">if</span> <span class="n">column</span><span class="o">.</span><span class="n">sql_column</span> <span class="ow">in</span> <span class="n">customizable</span><span class="p">:</span>
+        <span class="n">column</span><span class="o">.</span><span class="n">customize</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="n">columns</span></div>
+
+<div class="viewcode-block" id="SQLiteController.Generate"><a class="viewcode-back" href="../../../../plasoscaffolder.frontend.controller.html#plasoscaffolder.frontend.controller.sqlite_controller.SQLiteController.Generate">[docs]</a>  <span class="k">def</span> <span class="nf">Generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">yapf_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generating the files.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      template_path (str): the path to the template directory</span>
+<span class="sd">      yapf_path (str): the path to the yapf style file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="o">.</span><span class="n">Confirm</span><span class="p">(</span><span class="s1">&#39;Do you want to Generate the files?&#39;</span><span class="p">)</span>
+
+    <span class="n">database_suffix</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_testfile</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="n">sqlite_mapping_helper</span> <span class="o">=</span> <span class="n">mapping_helper</span><span class="o">.</span><span class="n">MappingHelper</span><span class="p">(</span>
+        <span class="n">template_path</span><span class="p">,</span> <span class="n">yapf_path</span><span class="p">)</span>
+
+    <span class="n">generator</span> <span class="o">=</span> <span class="n">sqlite_generator</span><span class="o">.</span><span class="n">SQLiteGenerator</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_testfile</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sql_query</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="p">,</span>
+        <span class="n">sqlite_plugin_helper</span><span class="o">.</span><span class="n">SQLitePluginHelper</span><span class="p">(),</span>
+        <span class="n">sqlite_plugin_path_helper</span><span class="o">.</span><span class="n">SQLitePluginPathHelper</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="n">database_suffix</span><span class="p">))</span>
+
+    <span class="n">generator</span><span class="o">.</span><span class="n">GenerateSQLitePlugin</span><span class="p">(</span>
+        <span class="n">template_path</span><span class="p">,</span> <span class="n">file_handler</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">(),</span>
+        <span class="n">formatter_init_mapping</span><span class="o">.</span><span class="n">FormatterInitMapping</span><span class="p">(</span><span class="n">sqlite_mapping_helper</span><span class="p">),</span>
+        <span class="n">parser_init_mapping</span><span class="o">.</span><span class="n">ParserInitMapping</span><span class="p">(</span><span class="n">sqlite_mapping_helper</span><span class="p">),</span>
+        <span class="n">parser_mapping</span><span class="o">.</span><span class="n">ParserMapper</span><span class="p">(</span><span class="n">sqlite_mapping_helper</span><span class="p">),</span>
+        <span class="n">formatter_mapping</span><span class="o">.</span><span class="n">FormatterMapper</span><span class="p">(</span><span class="n">sqlite_mapping_helper</span><span class="p">),</span>
+        <span class="n">parser_test_mapping</span><span class="o">.</span><span class="n">ParserTestMapper</span><span class="p">(</span><span class="n">sqlite_mapping_helper</span><span class="p">),</span>
+        <span class="n">formatter_test_mapping</span><span class="o">.</span><span class="n">FormatterTestMapper</span><span class="p">(</span><span class="n">sqlite_mapping_helper</span><span class="p">),</span>
+        <span class="n">sqlite_mapping_helper</span><span class="p">,</span>
+        <span class="n">sqlite_database_information</span><span class="o">.</span><span class="n">SQLiteDatabaseInformation</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_query_execution</span><span class="p">))</span></div>
+
+  <span class="k">def</span> <span class="nf">_ValidatePluginName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plugin_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Validate plugin name and prompt until name is valid.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      plugin_name (str): the name of the plugin</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      str: a valid plugin name</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plugin_helper</span><span class="o">.</span><span class="n">IsValidPluginName</span><span class="p">(</span><span class="n">plugin_name</span><span class="p">):</span>
+      <span class="n">plugin_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="o">.</span><span class="n">PromptError</span><span class="p">(</span>
+          <span class="s1">&#39;Plugin is not in a valid format. Choose new Name [&#39;</span>
+          <span class="s1">&#39;plugin_name_...]&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">plugin_name</span>
+
+  <span class="k">def</span> <span class="nf">_ValidateRowName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Validate row name and prompt until name is valid.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      row_name (str): the name of the row</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      str: a valid row name</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plugin_helper</span><span class="o">.</span><span class="n">IsValidRowName</span><span class="p">(</span><span class="n">row_name</span><span class="p">):</span>
+      <span class="n">row_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="o">.</span><span class="n">PromptError</span><span class="p">(</span>
+          <span class="s1">&#39;Row name is not in a valid format. Choose new Name [RowName...]&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">row_name</span>
+
+  <span class="k">def</span> <span class="nf">_ValidateTimestampString</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestamp_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Validate the timestamp string and prompt until valid</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      timestamp_string (str): the string with the timestamps</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      str: a comma separated string with timestamps</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plugin_helper</span><span class="o">.</span><span class="n">IsValidCommaSeparatedString</span><span class="p">(</span><span class="n">timestamp_string</span><span class="p">):</span>
+      <span class="n">timestamp_string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="o">.</span><span class="n">PromptError</span><span class="p">(</span>
+          <span class="s1">&#39;Timestamps are not in valid format. Reenter them correctly [name,&#39;</span>
+          <span class="s1">&#39;name...]&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">timestamp_string</span>
+
+  <span class="k">def</span> <span class="nf">_ValidateColumnString</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Validate the timestamp string and prompt until valid</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      column_string (str): the string with the column names</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      str: a comma separated string with column names</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plugin_helper</span><span class="o">.</span><span class="n">IsValidCommaSeparatedString</span><span class="p">(</span><span class="n">column_string</span><span class="p">):</span>
+      <span class="n">column_string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="o">.</span><span class="n">PromptError</span><span class="p">(</span>
+          <span class="s1">&#39;Column names are not in valid format. Reenter them correctly [name,&#39;</span>
+          <span class="s1">&#39;name...]&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">column_string</span>
+
+  <span class="k">def</span> <span class="nf">_PrintAddedAndFailedColumns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">added</span><span class="p">:</span> <span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">failed</span><span class="p">:</span> <span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;Prints the user which columns failed and which are added</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      added ([str]): the added columns</span>
+<span class="sd">      failed ([str]): the failed columns</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">added_string</span> <span class="o">=</span> <span class="s1">&#39;Added: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">added</span><span class="p">)))</span>
+    <span class="n">failed_string</span> <span class="o">=</span> <span class="s1">&#39;Failed: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">failed</span><span class="p">)))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="o">.</span><span class="n">PrintInfo</span><span class="p">(</span><span class="n">added_string</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_output_handler</span><span class="o">.</span><span class="n">PrintInfo</span><span class="p">(</span><span class="n">failed_string</span><span class="p">)</span>
+
+  <span class="k">def</span> <span class="nf">_GetValidColumnsAndInvalid</span><span class="p">(</span>
+      <span class="bp">self</span><span class="p">,</span> <span class="n">columns</span><span class="p">:</span> <span class="p">[</span><span class="n">sql_query_column_model</span><span class="o">.</span><span class="n">SQLColumnModel</span><span class="p">],</span> <span class="n">user_input</span><span class="p">:</span> <span class="nb">str</span>
+  <span class="p">)</span> <span class="o">-&gt;</span> <span class="p">([</span><span class="nb">str</span><span class="p">],</span> <span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      columns ([sql_query_column_model.SQLColumnModel]): the columns from the</span>
+<span class="sd">          SQL query.</span>
+<span class="sd">      user_input: a comma separated list of column names</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      [str], [str]: the columns for the right column names and the wrong</span>
+<span class="sd">          column names as the second part of the tuple</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">right_columns</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">wrong_columns</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">user_input</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">):</span>
+      <span class="n">column_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">column</span><span class="o">.</span><span class="n">sql_column</span> <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">]</span>
+      <span class="k">if</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">column_names</span><span class="p">:</span>
+        <span class="n">right_columns</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="n">wrong_columns</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">right_columns</span><span class="p">,</span> <span class="n">wrong_columns</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">Plaso Sqlite Plugin Scaffolder 20170614 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Claudia Saxer.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.
+    </div>
+  </body>
+</html>
