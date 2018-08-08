@@ -25,6 +25,6 @@ install:
 - pip install -r requirements.txt
 - pip install coverage
 script:
-- if test ${TARGET} = "linux-python36"; then coverage run --source=plasoscaffolder ./src/run_tests_for_coverage.py test; else ./src/run_tests.py; fi
+- if test ${TARGET} = "linux-python36"; then coverage run --source=plasoscaffolder ./run_tests_for_coverage.py test; else ./run_tests.py; fi
 after_success:
 - if test ${TARGET} = "linux-python36"; then curl -o codecov.sh -s https://codecov.io/bash && /bin/bash ./codecov.sh; fi
