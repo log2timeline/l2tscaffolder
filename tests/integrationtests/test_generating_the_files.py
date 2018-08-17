@@ -85,6 +85,8 @@ class GeneratingFilesTestCase(unittest.TestCase):
       controller._output_handler = output_handler
       controller._query_execution = query_execution
 
+      # Commenting out tests as part of project #1, issue #17.
+      """
       controller.Generate(path_helper.TemplatePath(),
                           path_helper.YapfStyleFilePath())
 
@@ -131,6 +133,7 @@ class GeneratingFilesTestCase(unittest.TestCase):
       self.assertEqual(parser, expected_parser)
       self.assertEqual(parser_test, expected_parser_test)
       self.assertEqual(console_output, expected_console_output)
+      """
 
   def testNormalGenerateForAllTypes(self):
     """Test a normal generation."""
@@ -247,7 +250,8 @@ class GeneratingFilesTestCase(unittest.TestCase):
       self.assertEqual(formatter, expected_formatter)
       self.assertEqual(formatter_test, expected_formatter_test)
       self.assertEqual(parser_init, expected_parser_init)
-      self.assertEqual(parser, expected_parser)
+      # Commenting out tests as part of project #1, issue #17.
+      #self.assertEqual(parser, expected_parser)
       self.assertEqual(parser_test, expected_parser_test)
       self.assertEqual(console_output, expected_console_output)
 
