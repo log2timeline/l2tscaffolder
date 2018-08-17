@@ -255,6 +255,8 @@ class GeneratingFilesTestCase(unittest.TestCase):
       self.assertEqual(parser_test, expected_parser_test)
       self.assertEqual(console_output, expected_console_output)
 
+  # Pylint runs on python2 and therefore fails on this function definition.
+  # pylint: disable=syntax-error
   def _ReadFromFile(self, path: str):
     """read from file helper"""
     with open(path, 'r') as f:

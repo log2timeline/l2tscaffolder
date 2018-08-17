@@ -454,6 +454,8 @@ class SQLiteQueryExecutionTest(unittest.TestCase):
     self.assertIsNone(result.data)
     self.assertIsNone(result.columns)
 
+  # Pylint runs on python2 and therefore fails on this function definition.
+  # pylint: disable=syntax-error
   def _ReadFromFileRelative(self, path: str):
     """Read from file with relative path
 
