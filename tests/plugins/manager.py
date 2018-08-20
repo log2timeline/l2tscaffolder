@@ -96,6 +96,9 @@ class PluginManagerTest(unittest.TestCase):
     manager.PluginManager.DeregisterPlugin(TestPluginOne)
     self.assertEqual(len(list(manager.PluginManager.GetPlugins())), 2)
 
+    with self.assertRaises(KeyError):
+      manager.PluginManager.DeregisterPlugin(TestRegisterPlugin)
+
     # Let's register it again for other tests to succeed.
     manager.PluginManager.RegisterPlugin(TestPluginOne)
 
