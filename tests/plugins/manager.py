@@ -4,75 +4,40 @@
 import collections
 import unittest
 
+from plasoscaffolder.plugins import interface
 from plasoscaffolder.plugins import manager
 
-# TODO: Remove this class once the interface has been checked in (issue #21).
-question = collections.namedtuple(
-    'question', ['attribute', 'prompt', 'help', 'type'])
-
-# TODO: Remove this class once the interface has been checked in (issue #21).
-class TestPluginInterface(object):
-  """The test plugin interface."""
-
-  PROVIDES = 'base_parser'
-  DESCRIPTION = ''
-  QUESTIONS = []
-
-  def __init__(self):
-    """Initializes the plugin."""
-    super(TestPluginInterface, self).__init__()
-    self._attributes = {}
-    self._defined_attributes = set()
-    self._ExtractAttributes()
-    self._plugin_file_name = ''
-    self._plugin_name = ''
-
-  def _ExtractAttributes(self):
-    """Extract all attributes from the set of questions and store."""
-    for quest in self.QUESTIONS:
-      self._defined_attributes.add(quest.attribute)
-
-  def SetPluginName(self, plugin_name: str):
-    """Sets the plugin name as chosen by the user."""
-    self._plugin_file_name = plugin_name.replace(' ', '_').lower()
-    self._plugin_name = self._plugin_file_name.replace(
-        '_', ' ').title().replace(' ', '')
-
-
-# TODO: This should implement the ScaffolderPlugin once that is pushed in.
-class TestPluginOne(TestPluginInterface):
+class TestPluginOne(interface.ScaffolderPlugin):
   """First test plugin."""
   PROVIDES = 'Awesome'
   DESCRIPTION = 'This is a really awesome thing.'
   QUESTIONS = [
-      question('test1', 'a', 'b', str),
-      question('test2', 'a', 'b', str),
-      question('test3', 'a', 'b', str)]
+      interface.question('test1', 'a', 'b', str),
+      interface.question('test2', 'a', 'b', str),
+      interface.question('test3', 'a', 'b', str)]
 
 
-# TODO: This should implement the ScaffolderPlugin once that is pushed in.
-class TestPluginTwo(TestPluginInterface):
+class TestPluginTwo(interface.ScaffolderPlugin):
   """Second test plugin."""
   PROVIDES = 'Average'
   DESCRIPTION = 'This plugin implements the average parser.'
   QUESTIONS = [
-      question('mediocre', 'a', 'b', str),
-      question('lala', 'a', 'b', str),
-      question('ok', 'a', 'b', str)]
+      interface.question('mediocre', 'a', 'b', str),
+      interface.question('lala', 'a', 'b', str),
+      interface.question('ok', 'a', 'b', str)]
 
 
-# TODO: This should implement the ScaffolderPlugin once that is pushed in.
-class TestPluginThree(TestPluginInterface):
+class TestPluginThree(interface.ScaffolderPlugin):
   """Third test plugin."""
   PROVIDES = 'Registration'
   DESCRIPTION = (
       'This plugin implements the registration plugin, required paperwork for '
       'many ISO standards of the future.')
   QUESTIONS = [
-      question('27001', 'a', 'b', str),
-      question('9001', 'a', 'b', str),
-      question('3120512', 'a', 'b', str),
-      question('12362323', 'a', 'b', str)]
+      interface.question('27001', 'a', 'b', str),
+      interface.question('9001', 'a', 'b', str),
+      interface.question('3120512', 'a', 'b', str),
+      interface.question('12362323', 'a', 'b', str)]
 
 
 class TestRegisterPlugin(TestPluginOne):
