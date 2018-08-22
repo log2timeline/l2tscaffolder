@@ -10,6 +10,7 @@ from plasoscaffolder.plugins import manager
 question = collections.namedtuple(
     'question', ['attribute', 'prompt', 'help', 'type'])
 
+
 # TODO: Remove this class once the interface has been checked in (issue #21).
 class TestPluginInterface(object):
   """The test plugin interface."""
@@ -112,7 +113,6 @@ class PluginManagerTest(unittest.TestCase):
 
     self.assertSetEqual(correct_names, plugin_name_set)
 
-  
   def testGetPluginInformation(self):
     """Testing the plugin information gathering of the manager."""
     plugin_description = {}
@@ -146,7 +146,6 @@ class PluginManagerTest(unittest.TestCase):
 
     self.assertSetEqual(set(attributes), set(correct))
 
-
   def testGetPluginQuestions(self):
     """Test getting all plugin questions."""
     questions = manager.PluginManager.GetPluginQuestions()
@@ -171,7 +170,6 @@ class PluginManagerTest(unittest.TestCase):
 
     question_attributes = [x.attribute for x in reg_questions]
     self.assertIn('27001', question_attributes)
-
 
   def testGetPlugins(self):
     """Test getting plugins from the manager."""

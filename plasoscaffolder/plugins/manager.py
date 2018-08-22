@@ -1,6 +1,13 @@
 # -*- coding: utf-8 -*-
 """The plugin manager."""
 
+from typing import Dict
+from typing import List
+from typing import Optional
+from typing import Generator
+from typing import Tuple
+from typing import Type
+
 from plasoscaffolder.plugins import interface
 
 
@@ -10,7 +17,7 @@ class PluginManager(object):
   _plugin_classes = {}
 
   @classmethod
-  def DeregisterPlugin(cls, plugin_class: interface.ScaffolderPlugin):
+  def DeregisterPlugin(cls, plugin_class: Type[interface.ScaffolderPlugin]):
     """Deregisters a plugin class.
 
     The plugin classes are identified based on their lower case name.
@@ -29,7 +36,7 @@ class PluginManager(object):
     del cls._plugin_classes[plugin_provides]
 
   @classmethod
-  def GetPluginNames(cls):
+  def GetPluginNames(cls) -> Generator[str, None, None]:
     """Retrieves the plugin names.
 
     Yields:
@@ -39,7 +46,7 @@ class PluginManager(object):
       yield plugin_provides
 
   @classmethod
-  def GetPluginInformation(cls):
+  def GetPluginInformation(cls) -> Generator[Tuple[str, str], None, None]:
     """Retrieves the plugin information.
 
     Yields:
@@ -50,7 +57,7 @@ class PluginManager(object):
       yield (plugin_provides, description)
 
   @classmethod
-  def GetPluginObjectByProvides(cls, plugin_provides) -> interface.ScaffolderPlugin:
+  def GetPluginObjectByProvides(cls, plugin_provides) -> Optional[interface.ScaffolderPlugin]:
     """Retrieves a specific plugin object by the parser it provides.
 
     Args:
@@ -65,7 +72,7 @@ class PluginManager(object):
     return None
 
   @classmethod
-  def GetPluginObjects(cls):
+  def GetPluginObjects(cls) -> Dict[str, Type[interface.ScaffolderPlugin]]:
     """Retrieves the plugin objects.
 
     Returns:
@@ -79,7 +86,7 @@ class PluginManager(object):
     return plugin_objects
 
   @classmethod
-  def GetPluginQuestions(cls):
+  def GetPluginQuestions(cls) -> List[List[str]]:
     """Retrieves all the questions asked by plugins."""
     questions = []
     for plugin_class in cls._plugin_classes.values():
@@ -96,8 +103,8 @@ class PluginManager(object):
 
     Returns:
       list: a list with all the questions (namedtuple) needed to setup the
-            plugin. If plugin_provides is not registered an empty list will
-            be returned.
+          plugin. If plugin_provides is not registered an empty list will
+          be returned.
     """
     plugin_class = cls._plugin_classes.get(plugin_provides.lower(), None)
     if not plugin_class:
@@ -121,7 +128,7 @@ class PluginManager(object):
       yield plugin_provides, plugin_class
 
   @classmethod
-  def RegisterPlugin(cls, plugin_class):
+  def RegisterPlugin(cls, plugin_class: Type[interface.ScaffolderPlugin]):
     """Registers a plugin class.
 
     The plugin classes are identified based on their lower case name.
@@ -140,14 +147,14 @@ class PluginManager(object):
     cls._plugin_classes[plugin_provides] = plugin_class
 
   @classmethod
-  def RegisterPlugins(cls, plugin_classes):
+  def RegisterPlugins(cls, plugin_classes: List[Type[interface.ScaffolderPlugin]]):
     """Registers plugin classes.
 
     The plugin classes are identified based on their lower case name.
 
     Args:
       plugin_classes (list[type]): plugins classes
-                                   (subclasses of ScaffolderPlugin).
+          (subclasses of ScaffolderPlugin).
 
     Raises:
       KeyError: if plugin class is already set for the corresponding name.
