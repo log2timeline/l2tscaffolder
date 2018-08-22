@@ -1,6 +1,6 @@
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
-"""test class for the plugin manager."""
+"""Tests for the plugin manager."""
 import collections
 import unittest
 
