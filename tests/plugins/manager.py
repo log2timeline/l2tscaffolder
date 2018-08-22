@@ -1,6 +1,6 @@
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
-"""test class for the plugin manager."""
+"""Tests for the plugin manager."""
 import collections
 import unittest
 
@@ -77,7 +77,6 @@ class PluginManagerTest(unittest.TestCase):
 
     self.assertSetEqual(correct_names, plugin_name_set)
 
-  
   def testGetPluginInformation(self):
     """Testing the plugin information gathering of the manager."""
     plugin_description = {}
@@ -111,7 +110,6 @@ class PluginManagerTest(unittest.TestCase):
 
     self.assertSetEqual(set(attributes), set(correct))
 
-
   def testGetPluginQuestions(self):
     """Test getting all plugin questions."""
     questions = manager.PluginManager.GetPluginQuestions()
@@ -136,7 +134,6 @@ class PluginManagerTest(unittest.TestCase):
 
     question_attributes = [x.attribute for x in reg_questions]
     self.assertIn('27001', question_attributes)
-
 
   def testGetPlugins(self):
     """Test getting plugins from the manager."""
