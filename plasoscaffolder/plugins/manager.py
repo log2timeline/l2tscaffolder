@@ -28,12 +28,12 @@ class PluginManager(object):
     Raises:
       KeyError: if plugin class is not set for the corresponding name.
     """
-    plugin_provides = plugin_class.PROVIDES.lower()
-    if plugin_provides not in cls._plugin_classes:
+    plugin_name = plugin_class.NAME.lower()
+    if plugin_name not in cls._plugin_classes:
       raise KeyError('Plugin class not set for name: {0:s}.'.format(
-          plugin_class.PROVIDES))
+          plugin_class.NAME))
 
-    del cls._plugin_classes[plugin_provides]
+    del cls._plugin_classes[plugin_name]
 
   @classmethod
   def GetPluginNames(cls) -> Generator[str, None, None]:
@@ -42,8 +42,8 @@ class PluginManager(object):
     Yields:
       str: plugin names.
     """
-    for plugin_provides, plugin_class in cls.GetPlugins():
-      yield plugin_provides
+    for plugin_name, plugin_class in cls.GetPlugins():
+      yield plugin_name
 
   @classmethod
   def GetPluginInformation(cls) -> Generator[Tuple[str, str], None, None]:
@@ -52,21 +52,20 @@ class PluginManager(object):
     Yields:
       tuple[str, str]: pairs of plugin names and descriptions.
     """
-    for plugin_provides, plugin_class in cls.GetPlugins():
-      description = getattr(plugin_class, 'DESCRIPTION', '')
-      yield (plugin_provides, description)
+    for plugin_name, plugin_class in cls.GetPlugins():
+      yield (plugin_name, plugin_class.DESCRIPTION)
 
   @classmethod
-  def GetPluginObjectByProvides(cls, plugin_provides) -> Optional[interface.ScaffolderPlugin]:
-    """Retrieves a specific plugin object by the parser it provides.
+  def GetPluginObjectByName(cls, plugin_name) -> Optional[interface.ScaffolderPlugin]:
+    """Retrieves a specific plugin object by the component it provides.
 
     Args:
-      plugin_provides (str): name of the plugin or parser it provides.
+      plugin_name (str): name of the plugin or parser it provides.
 
     Returns:
       ScaffolderPlugin: plugin object or None.
     """
-    plugin_class = cls._plugin_classes.get(plugin_provides.lower(), None)
+    plugin_class = cls._plugin_classes.get(plugin_name.lower(), None)
     if plugin_class:
       return plugin_class()
     return None
@@ -79,14 +78,14 @@ class PluginManager(object):
       dict[str, ScaffolderPlugin]: plugins per name.
     """
     plugin_objects = {}
-    for plugin_provides, plugin_class in iter(cls._plugin_classes.items()):
+    for plugin_name, plugin_class in iter(cls._plugin_classes.items()):
       plugin_object = plugin_class()
-      plugin_objects[plugin_provides] = plugin_object
+      plugin_objects[plugin_name] = plugin_object
 
     return plugin_objects
 
   @classmethod
-  def GetPluginQuestions(cls) -> List[List[str]]:
+  def GetPluginQuestions(cls) -> List[Type[interface.Question]]:
     """Retrieves all the questions asked by plugins."""
     questions = []
     for plugin_class in cls._plugin_classes.values():
@@ -95,18 +94,18 @@ class PluginManager(object):
     return questions
 
   @classmethod
-  def GetPluginQuestionByName(cls, plugin_provides: str) -> list:
+  def GetPluginQuestionByName(cls, plugin_name: str) -> list:
     """Retrieve a list of questions asked by a plugin based on name.
 
     Args:
-      plugin_provides (str): name of the plugin or parser the plugin provides.
+      plugin_name (str): name of the plugin or parser the plugin provides.
 
     Returns:
       list: a list with all the questions (namedtuple) needed to setup the
-          plugin. If plugin_provides is not registered an empty list will
+          plugin. If plugin_name is not registered an empty list will
           be returned.
     """
-    plugin_class = cls._plugin_classes.get(plugin_provides.lower(), None)
+    plugin_class = cls._plugin_classes.get(plugin_name.lower(), None)
     if not plugin_class:
       return list()
 
@@ -124,8 +123,8 @@ class PluginManager(object):
       * str: name of the plugin:
       * type: plugin class (subclass of ScaffolderPlugin).
     """
-    for plugin_provides, plugin_class in iter(cls._plugin_classes.items()):
-      yield plugin_provides, plugin_class
+    for plugin_name, plugin_class in iter(cls._plugin_classes.items()):
+      yield plugin_name, plugin_class
 
   @classmethod
   def RegisterPlugin(cls, plugin_class: Type[interface.ScaffolderPlugin]):
@@ -139,12 +138,12 @@ class PluginManager(object):
     Raises:
       KeyError: if plugin class is already set for the corresponding name.
     """
-    plugin_provides = plugin_class.PROVIDES.lower()
-    if plugin_provides in cls._plugin_classes:
+    plugin_name = plugin_class.NAME.lower()
+    if plugin_name in cls._plugin_classes:
       raise KeyError('Plugin class already set for name: {0:s}.'.format(
-          plugin_class.PROVIDES))
+          plugin_class.NAME))
 
-    cls._plugin_classes[plugin_provides] = plugin_class
+    cls._plugin_classes[plugin_name] = plugin_class
 
   @classmethod
   def RegisterPlugins(cls, plugin_classes: List[Type[interface.ScaffolderPlugin]]):

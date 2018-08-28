@@ -9,40 +9,40 @@ from plasoscaffolder.plugins import manager
 
 class TestPluginOne(interface.ScaffolderPlugin):
   """First test plugin."""
-  PROVIDES = 'Awesome'
+  NAME = 'Awesome'
   DESCRIPTION = 'This is a really awesome thing.'
   QUESTIONS = [
-      interface.question('test1', 'a', 'b', str),
-      interface.question('test2', 'a', 'b', str),
-      interface.question('test3', 'a', 'b', str)]
+      interface.Question('test1', 'a', 'b', str),
+      interface.Question('test2', 'a', 'b', str),
+      interface.Question('test3', 'a', 'b', str)]
 
 
 class TestPluginTwo(interface.ScaffolderPlugin):
   """Second test plugin."""
-  PROVIDES = 'Average'
+  NAME = 'Average'
   DESCRIPTION = 'This plugin implements the average parser.'
   QUESTIONS = [
-      interface.question('mediocre', 'a', 'b', str),
-      interface.question('lala', 'a', 'b', str),
-      interface.question('ok', 'a', 'b', str)]
+      interface.Question('mediocre', 'a', 'b', str),
+      interface.Question('lala', 'a', 'b', str),
+      interface.Question('ok', 'a', 'b', str)]
 
 
 class TestPluginThree(interface.ScaffolderPlugin):
   """Third test plugin."""
-  PROVIDES = 'Registration'
+  NAME = 'Registration'
   DESCRIPTION = (
       'This plugin implements the registration plugin, required paperwork for '
       'many ISO standards of the future.')
   QUESTIONS = [
-      interface.question('27001', 'a', 'b', str),
-      interface.question('9001', 'a', 'b', str),
-      interface.question('3120512', 'a', 'b', str),
-      interface.question('12362323', 'a', 'b', str)]
+      interface.Question('27001', 'a', 'b', str),
+      interface.Question('9001', 'a', 'b', str),
+      interface.Question('3120512', 'a', 'b', str),
+      interface.Question('12362323', 'a', 'b', str)]
 
 
 class TestRegisterPlugin(TestPluginOne):
   """Test plugin for the Register function."""
-  PROVIDES = 'Clearly not awesome'
+  NAME = 'Clearly not awesome'
 
 
 class PluginManagerTest(unittest.TestCase):
@@ -93,19 +93,19 @@ class PluginManagerTest(unittest.TestCase):
         plugin_description.get('average', None),
         'This plugin implements the average parser.')
 
-  def testGetPluginObjectByProvides(self):
+  def testGetPluginObjectByName(self):
     """Testing getting the plugin object by name of provides."""
-    plugin = manager.PluginManager.GetPluginObjectByProvides(
-        TestPluginThree.PROVIDES)
+    plugin = manager.PluginManager.GetPluginObjectByName(
+        TestPluginThree.NAME)
 
-    self.assertEqual(plugin.PROVIDES, TestPluginThree.PROVIDES)
+    self.assertEqual(plugin.NAME, TestPluginThree.NAME)
 
   def testGetPluginObjects(self):
     """Testing plugin objects."""
     objs = manager.PluginManager.GetPluginObjects().values()
     self.assertEquals(len(objs), 3)
 
-    attributes = [x.PROVIDES.lower() for x in objs]
+    attributes = [x.NAME.lower() for x in objs]
     correct = ['awesome', 'average', 'registration']
 
     self.assertSetEqual(set(attributes), set(correct))

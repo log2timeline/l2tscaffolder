@@ -4,9 +4,10 @@ import abc
 import collections
 
 from plasoscaffolder.lib import definitions
+from plasoscaffolder.lib import errors
 
 
-question = collections.namedtuple(
+Question = collections.namedtuple(
     'question', ['attribute', 'prompt', 'help', 'type'])
 
 
@@ -14,7 +15,9 @@ class ScaffolderPlugin(object):
   """The plugin interface."""
 
   # The name of the plugin or parser this scaffolder plugin provides.
-  PROVIDES = 'base_parser'
+  NAME = 'base_parser'
+
+  # One liner describing what the plugin provides.
   DESCRIPTION = ''
 
   # Define which project this particular plugin belongs to.
@@ -44,6 +47,7 @@ class ScaffolderPlugin(object):
       list: file name and content of the file to be written to disk.
     """
 
+  @abc.abstractmethod
   def GetFilesToCopy(self) -> (str, str):
     """Return a list of files that need to be copied.
 
@@ -51,31 +55,27 @@ class ScaffolderPlugin(object):
       list (str, str): file name of source and destination.
     """
 
-  def IsPluginConfigured(self) -> (bool, str):
+  def IsPluginConfigured(self):
     """Check to see if all attributes are set to start generating files.
 
-    Returns:
-      bool: Boolean indicating whether or not the plugin is fully configured.
-      str: If the plugin is not fully configured the second value is a string
-           that contains the reason why it is not fully configured.
+    Raises:
+      PluginNotConfigured: if the plugin is not fully configured.
     """
     configured_attributes = set(self._attributes.keys())
     if configured_attributes != self._defined_attributes:
       mismatch = self._defined_attributes.difference(self._attributes)
-      return False, (
+      raise errors.PluginNotConfigured((
           'Not all required attributes have been defined, the following '
           'attributes are missing: {}').format(
-              ','.join(str(x) for x in mismatch))
-
-    return True, ''
+              ','.join(str(x) for x in mismatch)))
 
   def SetOutputName(self, output_name: str):
     """Sets the name of the output module.
 
     Args:
       output_name (str): the name of the output that the plugin provides,
-                         whether that is an output module, plugin, parser,
-                         analyzer or something else.
+          whether that is an output module, plugin, parser,
+          analyzer or something else.
     """
     self._output_name = output_name
 
@@ -83,24 +83,24 @@ class ScaffolderPlugin(object):
     """Store an attribute read from the CLI.
 
     Args:
-      name (str): The attribute name.
-      value (object): The attribute value.
-      value_type (type): The attribute type.
+      name (str): the attribute name.
+      value (object): the attribute value.
+      value_type (type): the attribute type.
 
     Raises:
-      ValueError: If the value is not of the correct type.
+      ValueError: if the value is not of the correct type.
       KeyError: If the attribute name is already defined.
     """
     if name in self._attributes:
       raise KeyError('Attribute {} already exists.'.format(name))
 
     if not isinstance(value, value_type):
-      raise ValueError('Value is of type {}, not {}'.format(
+      raise ValueError('Value is of type {0:s}, not {1:s}'.format(
           type(value), value_type))
 
     self._attributes[name] = value
 
   def SetupPlugin(self):
     """Sets up the plugin."""
-    for quest in self.GetQuestions():
-      self._defined_attributes.add(quest.attribute)
+    for question in self.GetQuestions():
+      self._defined_attributes.add(question.attribute)
