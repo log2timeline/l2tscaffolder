@@ -17,7 +17,7 @@ class DefinitionManager(object):
       cls, definition_class: Type[interface.ScaffolderDefinition]):
     """Deregisters a definition class.
 
-    The project classes are identified based on their defined type.
+    The project classes are identified based on their defined NAME attribute.
 
     Args:
       definition_class (type): definition class (subclass of
@@ -36,7 +36,7 @@ class DefinitionManager(object):
 
   @classmethod
   def GetDefinitionNames(cls) -> Iterator[str]:
-    """Retrieves the definition names.
+    """Yields all names of registered definition classes.
 
     Yields:
       str: definition names.
@@ -45,8 +45,9 @@ class DefinitionManager(object):
       yield project_provides
 
   @classmethod
-  def GetDefinitionObjects(cls) -> Iterator[Type[interface.ScaffolderDefinition]]:
-    """Retrieves the definition objects.
+  def GetDefinitionObjects(
+      cls) -> Iterator[Type[interface.ScaffolderDefinition]]:
+    """Yields instances of each registered definition class.
 
     Yields:
       ScaffolderDefinition: definition object.
@@ -59,7 +60,8 @@ class DefinitionManager(object):
       cls, definition_class: Type[interface.ScaffolderDefinition]):
     """Registers a definition class.
 
-    The definition classes are identified based on their name.
+    The definition classes are identified based on their name, as
+    set in the NAME attribute.
 
     Args:
       definition_class (ScaffolderDefinition): definition class.

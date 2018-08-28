@@ -13,20 +13,20 @@ class PlasoProjectTest(unittest.TestCase):
 
   def testPlasoProject(self):
     """Test plaso project definitions."""
-    test_path = os.path.join(
-        os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'tests')
+    test_path = os.path.join(os.path.dirname(
+        os.path.dirname(os.path.dirname(__file__))), 'test_data')
 
     project_test = plaso.PlasoProject()
     self.assertEquals(project_test.NAME, definitions.DEFINITION_PLASO)
 
     self.assertTrue(project_test.ValidatePath(os.path.join(
-      test_path, 'definitions', 'PlasoPath')))
+      test_path, 'PlasoPath')))
 
     self.assertFalse(project_test.ValidatePath(os.path.join(
-      test_path, 'definitions', 'PlasoFailPath1')))
+      test_path, 'PlasoFailPath1')))
 
     self.assertFalse(project_test.ValidatePath(os.path.join(
-      test_path, 'definitions', 'PlasoFailPath2')))
+      test_path, 'PlasoFailPath2')))
 
 
 if __name__ == '__main__':
