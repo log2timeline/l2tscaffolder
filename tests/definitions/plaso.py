@@ -5,7 +5,7 @@ import os
 import unittest
 
 from plasoscaffolder.lib import definitions
-from plasoscaffolder.projects import plaso
+from plasoscaffolder.definitions import plaso
 
 
 class PlasoProjectTest(unittest.TestCase):
@@ -20,13 +20,13 @@ class PlasoProjectTest(unittest.TestCase):
     self.assertEquals(project_test.NAME, definitions.DEFINITION_PLASO)
 
     self.assertTrue(project_test.ValidatePath(os.path.join(
-      test_path, 'projects', 'PlasoPath')))
+      test_path, 'definitions', 'PlasoPath')))
 
     self.assertFalse(project_test.ValidatePath(os.path.join(
-      test_path, 'projects', 'PlasoFailPath1')))
+      test_path, 'definitions', 'PlasoFailPath1')))
 
     self.assertFalse(project_test.ValidatePath(os.path.join(
-      test_path, 'projects', 'PlasoFailPath2')))
+      test_path, 'definitions', 'PlasoFailPath2')))
 
 
 if __name__ == '__main__':

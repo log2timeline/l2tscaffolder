@@ -4,7 +4,7 @@
 from typing import Iterator
 from typing import Type
 
-from plasoscaffolder.projects import interface
+from plasoscaffolder.definitions import interface
 
 
 class DefinitionManager(object):

@@ -1,7 +1,7 @@
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
 """Project definitions used for testing purposes."""
-from plasoscaffolder.projects import interface
+from plasoscaffolder.definitions import interface
 
 
 class TestProject(interface.ScaffolderDefinition):

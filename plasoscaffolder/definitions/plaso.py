@@ -4,8 +4,8 @@
 import os
 
 from plasoscaffolder.lib import definitions
-from plasoscaffolder.projects import interface
-from plasoscaffolder.projects import manager
+from plasoscaffolder.definitions import interface
+from plasoscaffolder.definitions import manager
 
 class PlasoProject(interface.ScaffolderDefinition):
   """Plaso project definition."""

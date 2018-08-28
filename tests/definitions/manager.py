@@ -3,9 +3,9 @@
 """Test class for the definition manager."""
 import unittest
 
-from plasoscaffolder.projects import manager
+from plasoscaffolder.definitions import manager
 
-from tests.projects import test_helper
+from tests.definitions import test_helper
 
 
 class DefinitionManagerTest(unittest.TestCase):
