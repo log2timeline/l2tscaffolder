@@ -1,11 +1,11 @@
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
 """Tests for the plugin manager."""
-import collections
 import unittest
 
 from plasoscaffolder.plugins import interface
 from plasoscaffolder.plugins import manager
+
 
 class TestPluginOne(interface.ScaffolderPlugin):
   """First test plugin."""
