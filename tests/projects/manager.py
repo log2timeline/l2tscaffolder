@@ -1,6 +1,6 @@
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
-"""Test class for the project manager."""
+"""Test class for the definition manager."""
 import unittest
 
 from plasoscaffolder.projects import manager
@@ -8,43 +8,48 @@ from plasoscaffolder.projects import manager
 from tests.projects import test_helper
 
 
-class ProjectManagerTest(unittest.TestCase):
-  """Test case for the project manager. """
+class DefinitionManagerTest(unittest.TestCase):
+  """Test case for the definition manager. """
 
   @classmethod
   def setUpClass(cls):
+    """Sets up the test class."""
     # Need to make sure there are no registered projects, and can't iterate
     # directly over projects since changing the dict in the middle of an iter
     # causes errors.
-    existing_projects = list(manager.ProjectManager.GetProjectObjects())
-    for project_class in existing_projects:
-      manager.ProjectManager.DeregisterPlugin(project_class)
+    existing_definition = list(manager.DefinitionManager.GetDefinitionObjects())
+    for definition_class in existing_definition:
+      manager.DefinitionManager.DeregisterDefinition(definition_class)
 
-    manager.ProjectManager.RegisterProject(test_helper.TestProject)
-    manager.ProjectManager.RegisterProject(test_helper.TestProjectFails)
+    manager.DefinitionManager.RegisterDefinition(test_helper.TestProject)
+    manager.DefinitionManager.RegisterDefinition(test_helper.TestProjectFails)
 
   def testRegisteringAndDeregistering(self):
-    """Test registering and deregistering projects."""
-    projects = list(manager.ProjectManager.GetProjectNames())
-    self.assertEqual(len(projects), 2)
+    """Test registering and deregistering definitions."""
+    definitions = list(manager.DefinitionManager.GetDefinitionNames())
+    self.assertEqual(len(definitions), 2)
 
-    manager.ProjectManager.RegisterProject(test_helper.SecondTestProject)
-    self.assertEqual(len(list(manager.ProjectManager.GetProjectNames())), 3)
+    manager.DefinitionManager.RegisterDefinition(test_helper.SecondTestProject)
+    self.assertEqual(
+        len(list(manager.DefinitionManager.GetDefinitionNames())), 3)
 
     with self.assertRaises(KeyError):
-      manager.ProjectManager.RegisterProject(test_helper.SecondTestProject)
+      manager.DefinitionManager.RegisterDefinition(
+          test_helper.SecondTestProject)
 
-    manager.ProjectManager.DeregisterPlugin(test_helper.SecondTestProject)
-    self.assertEqual(len(list(manager.ProjectManager.GetProjectNames())), 2)
+    manager.DefinitionManager.DeregisterDefinition(
+        test_helper.SecondTestProject)
+    self.assertEqual(
+        len(list(manager.DefinitionManager.GetDefinitionNames())), 2)
 
-  def testGetProjectNames(self):
-    """Test getting project names."""
-    projects = list(manager.ProjectManager.GetProjectNames())
+  def testGetDefinitionNames(self):
+    """Test getting definition names."""
+    definitions = list(manager.DefinitionManager.GetDefinitionNames())
 
-    self.assertEquals(len(projects), 2)
-    correct_projects = ['stranger', 'failing']
+    self.assertEquals(len(definitions), 2)
+    correct_definitions = ['stranger', 'failing']
 
-    self.assertSetEqual(set(projects), set(correct_projects))
+    self.assertSetEqual(set(definitions), set(correct_definitions))
 
 
 if __name__ == '__main__':

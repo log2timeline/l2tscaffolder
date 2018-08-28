@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""The plaso project class."""
+"""The plaso definition class."""
 
 import os
 
@@ -7,10 +7,10 @@ from plasoscaffolder.lib import definitions
 from plasoscaffolder.projects import interface
 from plasoscaffolder.projects import manager
 
-class PlasoProject(interface.ScaffolderProject):
+class PlasoProject(interface.ScaffolderDefinition):
   """Plaso project definition."""
 
-  PROJECT_TYPE = definitions.PROJECT_PLASO
+  NAME = definitions.DEFINITION_PLASO
 
   def ValidatePath(self, root_path: str) -> bool:
     """Validate the path to the root directory.
@@ -37,4 +37,4 @@ class PlasoProject(interface.ScaffolderProject):
     return True
 
 
-manager.ProjectManager.RegisterProject(PlasoProject)
+manager.DefinitionManager.RegisterDefinition(PlasoProject)

@@ -1,74 +1,76 @@
 # -*- coding: utf-8 -*-
-"""The project manager."""
+"""The definition manager."""
 
-
+from typing import Iterator
 from typing import Type
 
 from plasoscaffolder.projects import interface
 
 
-class ProjectManager(object):
-  """The project manager."""
+class DefinitionManager(object):
+  """The definition manager."""
 
-  _project_classes = {}
+  _definition_classes = {}
 
   @classmethod
-  def DeregisterPlugin(cls, project_class: Type[interface.ScaffolderProject]):
-    """Deregisters a project class.
+  def DeregisterDefinition(
+      cls, definition_class: Type[interface.ScaffolderDefinition]):
+    """Deregisters a definition class.
 
     The project classes are identified based on their defined type.
 
     Args:
-      project_class (type): project class (subclass of ScaffolderProject).
+      definition_class (type): definition class (subclass of
+      ScaffolderDefinition).
 
     Raises:
-      KeyError: if project class is not set for the corresponding name.
+      KeyError: if definition class is not set for the corresponding name.
     """
-    project_type = project_class.PROJECT_TYPE
+    definition_name = definition_class.NAME
 
-    if project_type not in cls._project_classes:
-      raise KeyError('Project class not set for name: {0:s}.'.format(
-          project_type))
+    if definition_name not in cls._definition_classes:
+      raise KeyError('Definition class not set for name: {0:s}.'.format(
+          definition_name))
 
-    del cls._project_classes[project_type]
+    del cls._definition_classes[definition_name]
 
   @classmethod
-  def GetProjectNames(cls):
-    """Retrieves the project names.
+  def GetDefinitionNames(cls) -> Iterator[str]:
+    """Retrieves the definition names.
 
     Yields:
-      str: project names.
+      str: definition names.
     """
-    for project_provides in cls._project_classes:
+    for project_provides in cls._definition_classes:
       yield project_provides
 
   @classmethod
-  def GetProjectObjects(cls) -> Type[interface.ScaffolderProject]:
-    """Retrieves the project objects.
+  def GetDefinitionObjects(cls) -> Iterator[Type[interface.ScaffolderDefinition]]:
+    """Retrieves the definition objects.
 
     Yields:
-      ScaffolderProject: project object.
+      ScaffolderDefinition: definition object.
     """
-    for project_class in cls._project_classes.values():
-      project_object = project_class()
-      yield project_object
+    for definition_class in cls._definition_classes.values():
+      yield definition_class()
 
   @classmethod
-  def RegisterProject(cls, project_class: Type[interface.ScaffolderProject]):
-    """Registers a project class.
+  def RegisterDefinition(
+      cls, definition_class: Type[interface.ScaffolderDefinition]):
+    """Registers a definition class.
 
-    The project classes are identified based on their provided type.
+    The definition classes are identified based on their name.
 
     Args:
-      project_class (ScaffolderProject): plugin class.
+      definition_class (ScaffolderDefinition): definition class.
 
     Raises:
-      KeyError: if project class is already set for the corresponding name.
+      KeyError: if definition class is already set for the corresponding name.
     """
-    project_type = project_class.PROJECT_TYPE
+    definition_name = definition_class.NAME
 
-    if project_type in cls._project_classes:
+    if definition_name in cls._definition_classes:
       raise KeyError('Project class already set for name: {0:s}.'.format(
-          project_type))
+          definition_name))
 
-    cls._project_classes[project_type] = project_class
+    cls._definition_classes[definition_name] = definition_class

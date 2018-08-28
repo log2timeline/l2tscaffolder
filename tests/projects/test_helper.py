@@ -4,10 +4,10 @@
 from plasoscaffolder.projects import interface
 
 
-class TestProject(interface.ScaffolderProject):
+class TestProject(interface.ScaffolderDefinition):
   """Test project."""
 
-  PROJECT_TYPE = 'stranger'
+  NAME = 'stranger'
 
   def ValidatePath(self, root_path: str) -> bool:
     """Test validation."""
@@ -17,10 +17,10 @@ class TestProject(interface.ScaffolderProject):
     return False
 
 
-class SecondTestProject(interface.ScaffolderProject):
+class SecondTestProject(interface.ScaffolderDefinition):
   """Test project."""
 
-  PROJECT_TYPE = 'danger'
+  NAME = 'danger'
 
   def ValidatePath(self, root_path: str) -> bool:
     """Test validation."""
@@ -30,10 +30,10 @@ class SecondTestProject(interface.ScaffolderProject):
     return False
 
 
-class TestProjectFails(interface.ScaffolderProject):
+class TestProjectFails(interface.ScaffolderDefinition):
   """Test project that always fails."""
 
-  PROJECT_TYPE = 'failing'
+  NAME = 'failing'
 
   def ValidatePath(self, root_path: str) -> bool:
     """Test validation."""

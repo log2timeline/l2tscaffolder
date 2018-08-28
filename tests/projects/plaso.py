@@ -17,7 +17,7 @@ class PlasoProjectTest(unittest.TestCase):
         os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'tests')
 
     project_test = plaso.PlasoProject()
-    self.assertEquals(project_test.PROJECT_TYPE, definitions.PROJECT_PLASO)
+    self.assertEquals(project_test.NAME, definitions.DEFINITION_PLASO)
 
     self.assertTrue(project_test.ValidatePath(os.path.join(
       test_path, 'projects', 'PlasoPath')))

@@ -4,10 +4,10 @@ import abc
 
 from plasoscaffolder.lib import definitions
 
-class ScaffolderProject(object):
-  """Scaffolder project interface."""
+class ScaffolderDefinition(object):
+  """Scaffolder definition interface."""
 
-  PROJECT_TYPE = definitions.PROJECT_UNDEFINED
+  NAME = definitions.DEFINITION_UNDEFINED
 
   @abc.abstractmethod
   def ValidatePath(self, root_path: str) -> bool:
