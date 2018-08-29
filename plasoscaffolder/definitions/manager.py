@@ -7,7 +7,7 @@ from typing import Type
 from plasoscaffolder.definitions import interface
 
 
-class DefinitionManager(object):
+class DefinitionManager:
   """The definition manager."""
 
   _definition_classes = {}

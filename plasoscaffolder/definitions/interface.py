@@ -4,7 +4,7 @@ import abc
 
 from plasoscaffolder.lib import definitions
 
-class ScaffolderDefinition(object):
+class ScaffolderDefinition:
   """Scaffolder definition interface."""
 
   NAME = definitions.DEFINITION_UNDEFINED
