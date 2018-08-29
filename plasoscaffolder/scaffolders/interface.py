@@ -3,6 +3,7 @@
 import abc
 import collections
 
+from typing import List
 from typing import Tuple
 
 from plasoscaffolder.lib import definitions
@@ -10,13 +11,13 @@ from plasoscaffolder.lib import errors
 
 
 Question = collections.namedtuple(
-    'question', ['attribute', 'prompt', 'help', 'type'])
+    'Question', ['attribute', 'prompt', 'help', 'type'])
 
 
-class Scaffolder(object):
+class Scaffolder:
   """The scaffolder interface."""
 
-  # The name of the scaffolder or parser this scaffolder plugin provides.
+  # The name of the component/parser/submodule this scaffolder plugin generates.
   NAME = 'base_parser'
 
   # One liner describing what the scaffolder provides.
@@ -37,7 +38,7 @@ class Scaffolder(object):
     self._defined_attributes = set()
     self._output_name = ''
 
-  def GetQuestions(self) -> list:
+  def GetQuestions(self) -> List[Question]:
     """Returns all scaffolder questions."""
     return self.QUESTIONS
 
@@ -66,10 +67,10 @@ class Scaffolder(object):
     configured_attributes = set(self._attributes.keys())
     if configured_attributes != self._defined_attributes:
       mismatch = self._defined_attributes.difference(self._attributes)
+      mismatch = ','.join(str(attribute) for attribute in mismatch)
       raise errors.ScaffolderNotConfigured((
           'Not all required attributes have been defined, the following '
-          'attributes are missing: {}').format(
-              ','.join(str(x) for x in mismatch)))
+          'attributes are missing: {0:s}').format(mismatch))
 
   def SetOutputName(self, output_name: str):
     """Sets the name of the output module.
@@ -84,7 +85,7 @@ class Scaffolder(object):
     """
     self._output_name = output_name
 
-  def SetAttribute(self, name: str, value: object, value_type: object):
+  def SetAttribute(self, name: str, value: object, value_type: type):
     """Store an attribute read from the CLI.
 
     Args:

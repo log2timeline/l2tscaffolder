@@ -10,5 +10,5 @@ class NoValidProject(Error):
   """Raised when no valid project has been identified."""
 
 
-class PluginNotConfigured(Error):
+class ScaffolderNotConfigured(Error):
   """Raised when the plugin object has not been configured correctly."""

@@ -2,16 +2,16 @@
 """The scaffolder manager."""
 
 from typing import Dict
+from typing import Iterator
 from typing import List
 from typing import Optional
-from typing import Generator
 from typing import Tuple
 from typing import Type
 
 from plasoscaffolder.scaffolders import interface
 
 
-class ScaffolderManager(object):
+class ScaffolderManager:
   """The scaffolder manager."""
 
   _scaffolder_classes = {}
@@ -36,17 +36,17 @@ class ScaffolderManager(object):
     del cls._scaffolder_classes[scaffolder_name]
 
   @classmethod
-  def GetScaffolderNames(cls) -> Generator[str, None, None]:
+  def GetScaffolderNames(cls) -> Iterator[str]:
     """Retrieves the scaffolder names.
 
     Yields:
       str: scaffolder names.
     """
-    for scaffolder_name, scaffolder_class in cls.GetScaffolders():
+    for scaffolder_name, _ in cls.GetScaffolders():
       yield scaffolder_name
 
   @classmethod
-  def GetScaffolderInformation(cls) -> Generator[Tuple[str, str], None, None]:
+  def GetScaffolderInformation(cls) -> Iterator[Tuple[str, str]]:
     """Retrieves the scaffolder information.
 
     Yields:
@@ -66,7 +66,8 @@ class ScaffolderManager(object):
     Returns:
       Scaffolder: scaffolder object or None.
     """
-    scaffolder_class = cls._scaffolder_classes.get(scaffolder_name.lower(), None)
+    scaffolder_class = cls._scaffolder_classes.get(
+        scaffolder_name.lower(), None)
     if scaffolder_class:
       return scaffolder_class()
     return None
@@ -95,7 +96,8 @@ class ScaffolderManager(object):
     return questions
 
   @classmethod
-  def GetScaffolderQuestionByName(cls, scaffolder_name: str) -> list:
+  def GetScaffolderQuestionByName(
+      cls, scaffolder_name: str) -> List[interface.Question]:
     """Retrieve a list of questions asked by a scaffolder based on name.
 
     Args:
@@ -115,7 +117,7 @@ class ScaffolderManager(object):
     return scaffolder_class.QUESTIONS
 
   @classmethod
-  def GetScaffolders(cls):
+  def GetScaffolders(cls) -> Iterator[Tuple[str, Type[interface.Scaffolder]]]:
     """Retrieves the registered scaffolders.
 
     Retrieves a dictionary of all registered scaffolders.
