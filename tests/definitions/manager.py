@@ -19,7 +19,7 @@ class GoldTestProject(interface.ScaffolderDefinition):
       root_path (str): path to a project source tree.
 
     Returns:
-      bool: true if the path contains 'gold'
+      bool: true if the path contains 'gold'.
     """
     if 'gold' in root_path:
       return True
@@ -39,7 +39,7 @@ class SilverTestProject(interface.ScaffolderDefinition):
       root_path (str): path to a project source tree.
 
     Returns:
-      bool: true if the path contains 'gold'
+      bool: true if the path contains 'gold'.
     """
     if 'silver' in root_path:
       return True
@@ -61,7 +61,6 @@ class FailingTestProject(interface.ScaffolderDefinition):
     Returns:
       bool: always False, for testing.
     """
-    """Test validation."""
     return False
 
 
