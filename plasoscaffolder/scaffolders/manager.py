@@ -58,10 +58,10 @@ class ScaffolderManager:
   @classmethod
   def GetScaffolderObjectByName(
       cls, scaffolder_name) -> Optional[interface.Scaffolder]:
-    """Retrieves a specific scaffolder object by the component it provides.
+    """Retrieves a specific scaffolder object by its name.
 
     Args:
-      scaffolder_name (str): name of the scaffolder or parser it provides.
+      scaffolder_name (str): name of the scaffolder.
 
     Returns:
       Scaffolder: scaffolder object or None.
@@ -101,8 +101,7 @@ class ScaffolderManager:
     """Retrieve a list of questions asked by a scaffolder based on name.
 
     Args:
-      scaffolder_name (str): name of the scaffolder or parser the scaffolder
-          provides.
+      scaffolder_name (str): name of the scaffolder.
 
     Returns:
       list: a list with all the questions (namedtuple) needed to setup the

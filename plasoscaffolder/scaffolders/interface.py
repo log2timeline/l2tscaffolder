@@ -17,10 +17,10 @@ Question = collections.namedtuple(
 class Scaffolder:
   """The scaffolder interface."""
 
-  # The name of the component/parser/submodule this scaffolder plugin generates.
+  # The name of the component/parser/submodule this scaffolder generates.
   NAME = 'base_parser'
 
-  # One liner describing what the scaffolder provides.
+  # One liner describing what the scaffolder generates.
   DESCRIPTION = ''
 
   # Define which project this particular scaffolder belongs to.
@@ -79,7 +79,7 @@ class Scaffolder:
     implements.
 
     Args:
-      output_name (str): the name of the output that the scaffolder provides,
+      output_name (str): the name of the output that the scaffolder generates,
           whether that is an output module, plugin, parser, analyzer or
           something else.
     """

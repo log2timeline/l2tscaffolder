@@ -108,7 +108,7 @@ class ScaffolderManagerTest(unittest.TestCase):
         'This scaffolder implements the average parser.')
 
   def testGetScaffolderObjectByName(self):
-    """Testing getting the scaffolder object by name of provides."""
+    """Testing getting the scaffolder object by name."""
     scaffolder = manager.ScaffolderManager.GetScaffolderObjectByName(
         RegistrationTestScaffolder.NAME)
 
