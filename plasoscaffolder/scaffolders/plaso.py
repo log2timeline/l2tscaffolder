@@ -1,29 +1,31 @@
 # -*- coding: utf-8 -*-
-"""Plaso plugin that generates plaso parser and plugins."""
+"""Plaso scaffolder that generates plaso parser and plugins."""
 import os
 
+from typing import List
 from typing import Tuple
+from typing import Type
 
-from plasoscaffolder.plugins import interface
+from plasoscaffolder.scaffolders import interface
 from plasoscaffolder.lib import definitions
 from plasoscaffolder.lib import file_handler
 from plasoscaffolder.lib import mapping_helper
 
 
-class PlasoPlugin(interface.ScaffolderPlugin):
-  """The plaso plugin interface."""
+class PlasoScaffolder(interface.Scaffolder):
+  """The plaso scaffolder interface."""
 
   # The name of the plugin or parser this scaffolder plugin provides.
   NAME = 'base'
 
-  # One liner describing what the plugin provides.
+  # One liner describing what the scaffolder provides.
   DESCRIPTION = ''
 
   # Plugin type can be either 'parser' or 'plugin'.
   # If this is a plugin a plugin directory is based off the PROVIDES name.
   PLUGIN_TYPE = 'parser'
 
-  # Define which project this particular plugin belongs to.
+  # Define which project this particular scaffolder belongs to.
   PROJECT = definitions.DEFINITION_PLASO
 
   # Filename of templates.
@@ -57,7 +59,7 @@ class PlasoPlugin(interface.ScaffolderPlugin):
     return self._mapping_helper.RenderTemplate(
         self.TEMPLATE_FORMATTER_TEST, self._attributes)
 
-  def GetQuestions(self) -> list:
+  def GetQuestions(self) -> List[Type[interface.Scaffolder]]:
     """Return back a list of all questions."""
     questions = self.QUESTIONS
     questions.append(interface.question(
@@ -115,9 +117,9 @@ class PlasoPlugin(interface.ScaffolderPlugin):
     self._attributes['test_file_path'] = test_file_path
     yield test_file, test_file_path
 
-  def SetupPlugin(self):
-    """Sets up the plugin."""
-    super(PlasoPlugin, self).SetupPlugin()
+  def SetupScaffolder(self):
+    """Sets up the scaffolder."""
+    super(PlasoScaffolder, self).SetupScaffolder()
     self._parser_path= os.path.join('plaso', 'parsers')
     self._parser_test_path = os.path.join('tests', 'parsers')
 
