@@ -59,7 +59,7 @@ class Scaffolder:
     """
 
   def RaiseIfNotReady(self):
-    """Check to see if all attributes are set to start generating files.
+    """Checks to see if all attributes are set to start generating files.
 
     Raises:
       ScaffolderNotConfigured: if the scaffolder is not fully configured.
@@ -80,8 +80,8 @@ class Scaffolder:
 
     Args:
       output_name (str): the name of the output that the scaffolder provides,
-          whether that is an output module, plugin, parser,
-          analyzer or something else.
+          whether that is an output module, plugin, parser, analyzer or
+          something else.
     """
     self._output_name = output_name
 

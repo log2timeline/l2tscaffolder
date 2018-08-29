@@ -17,7 +17,7 @@ class BaseScaffolderTest(interface.Scaffolder):
     """Empty files to copy."""
 
 
-class TestScaffolderOne(BaseScaffolderTest):
+class AwesomeTestScaffolder(BaseScaffolderTest):
   """First test scaffolder."""
   NAME = 'Awesome'
   DESCRIPTION = 'This is a really awesome thing.'
@@ -27,7 +27,7 @@ class TestScaffolderOne(BaseScaffolderTest):
       interface.Question('test3', 'a', 'b', str)]
 
 
-class TestScaffolderTwo(BaseScaffolderTest):
+class AverageTestScaffolder(BaseScaffolderTest):
   """Second test scaffolder."""
   NAME = 'Average'
   DESCRIPTION = 'This scaffolder implements the average parser.'
@@ -37,7 +37,7 @@ class TestScaffolderTwo(BaseScaffolderTest):
       interface.Question('ok', 'a', 'b', str)]
 
 
-class TestScaffolderThree(BaseScaffolderTest):
+class RegistrationTestScaffolder(BaseScaffolderTest):
   """Third test scaffolder."""
   NAME = 'Registration'
   DESCRIPTION = (
@@ -50,7 +50,7 @@ class TestScaffolderThree(BaseScaffolderTest):
       interface.Question('12362323', 'a', 'b', str)]
 
 
-class TestRegisterScaffolder(TestScaffolderOne):
+class NotAwesomeTestScaffolder(AwesomeTestScaffolder):
   """Test scaffolder for the Register function."""
   NAME = 'Clearly not awesome'
 
@@ -62,20 +62,24 @@ class ScaffolderManagerTest(unittest.TestCase):
   def setUpClass(cls):
     """Setup the tests by registering three scaffolders."""
     manager.ScaffolderManager.RegisterScaffolders(
-        [TestScaffolderOne, TestScaffolderTwo, TestScaffolderThree])
+        [AwesomeTestScaffolder, AverageTestScaffolder, RegistrationTestScaffolder])
 
   def testDeregisterScaffolder(self):
     """Testing whether we can remove a scaffolder from the registration."""
-    self.assertEqual(len(list(manager.ScaffolderManager.GetScaffolders())), 3)
+    number_of_scaffolders = len(
+        list(manager.ScaffolderManager.GetScaffolders()))
+    self.assertEqual(number_of_scaffolders, 3)
 
-    manager.ScaffolderManager.DeregisterScaffolder(TestScaffolderOne)
-    self.assertEqual(len(list(manager.ScaffolderManager.GetScaffolders())), 2)
+    manager.ScaffolderManager.DeregisterScaffolder(AwesomeTestScaffolder)
+    number_of_scaffolders = len(
+        list(manager.ScaffolderManager.GetScaffolders()))
+    self.assertEqual(number_of_scaffolders, 2)
 
     with self.assertRaises(KeyError):
-      manager.ScaffolderManager.DeregisterScaffolder(TestRegisterScaffolder)
+      manager.ScaffolderManager.DeregisterScaffolder(NotAwesomeTestScaffolder)
 
     # Let's register it again for other tests to succeed.
-    manager.ScaffolderManager.RegisterScaffolder(TestScaffolderOne)
+    manager.ScaffolderManager.RegisterScaffolder(AwesomeTestScaffolder)
 
   def testGetScaffolderNames(self):
     """Testing the scaffolder names."""
@@ -106,16 +110,17 @@ class ScaffolderManagerTest(unittest.TestCase):
   def testGetScaffolderObjectByName(self):
     """Testing getting the scaffolder object by name of provides."""
     scaffolder = manager.ScaffolderManager.GetScaffolderObjectByName(
-        TestScaffolderThree.NAME)
+        RegistrationTestScaffolder.NAME)
 
-    self.assertEqual(scaffolder.NAME, TestScaffolderThree.NAME)
+    self.assertEqual(scaffolder.NAME, RegistrationTestScaffolder.NAME)
 
   def testGetScaffolderObjects(self):
     """Testing scaffolder objects."""
     scaffolder_objects = manager.ScaffolderManager.GetScaffolderObjects()
     self.assertEqual(len(scaffolder_objects), 3)
 
-    attributes = [x.NAME.lower() for x in scaffolder_objects.values()]
+    attributes = [
+      scaffolder.NAME.lower() for scaffolder in scaffolder_objects.values()]
     correct = ['awesome', 'average', 'registration']
 
     self.assertSetEqual(set(attributes), set(correct))
@@ -123,9 +128,9 @@ class ScaffolderManagerTest(unittest.TestCase):
   def testGetScaffolderQuestions(self):
     """Test getting all scaffolder questions."""
     questions = manager.ScaffolderManager.GetScaffolderQuestions()
-    question_count = len(TestScaffolderOne.QUESTIONS)
-    question_count += len(TestScaffolderTwo.QUESTIONS)
-    question_count += len(TestScaffolderThree.QUESTIONS)
+    question_count = len(AwesomeTestScaffolder.QUESTIONS)
+    question_count += len(AverageTestScaffolder.QUESTIONS)
+    question_count += len(RegistrationTestScaffolder.QUESTIONS)
 
     self.assertEqual(question_count, len(questions))
 
@@ -137,12 +142,12 @@ class ScaffolderManagerTest(unittest.TestCase):
 
   def testGetScaffolderQuestionByName(self):
     """Test fetching questions of a scaffolder scaffolder by NAME attribute."""
-    reg_questions = manager.ScaffolderManager.GetScaffolderQuestionByName(
+    questions = manager.ScaffolderManager.GetScaffolderQuestionByName(
         'registration')
 
-    self.assertEqual(len(reg_questions), 4)
+    self.assertEqual(len(questions), 4)
 
-    question_attributes = [x.attribute for x in reg_questions]
+    question_attributes = [question.attribute for question in questions]
     self.assertIn('27001', question_attributes)
 
   def testGetScaffolders(self):
@@ -156,27 +161,31 @@ class ScaffolderManagerTest(unittest.TestCase):
   def testRegisterScaffolder(self):
     """Test registering new scaffolders."""
     with self.assertRaises(KeyError):
-      manager.ScaffolderManager.RegisterScaffolder(TestScaffolderTwo)
+      manager.ScaffolderManager.RegisterScaffolder(AverageTestScaffolder)
 
     self.assertEqual(
         len(list(manager.ScaffolderManager.GetScaffolderNames())), 3)
-    manager.ScaffolderManager.RegisterScaffolder(TestRegisterScaffolder)
+    manager.ScaffolderManager.RegisterScaffolder(NotAwesomeTestScaffolder)
     scaffolder_names = list(manager.ScaffolderManager.GetScaffolderNames())
     self.assertEqual(len(scaffolder_names), 4)
     self.assertIn('clearly not awesome', scaffolder_names)
-    manager.ScaffolderManager.DeregisterScaffolder(TestRegisterScaffolder)
+    manager.ScaffolderManager.DeregisterScaffolder(NotAwesomeTestScaffolder)
 
   def testRegisterScaffolders(self):
     """Test registering multiple scaffolders."""
-    scaffolders = [TestScaffolderOne, TestScaffolderTwo, TestScaffolderThree]
+    scaffolders = [
+      AwesomeTestScaffolder, AverageTestScaffolder, RegistrationTestScaffolder]
     for scaffolder in scaffolders:
       manager.ScaffolderManager.DeregisterScaffolder(scaffolder)
 
-    self.assertEqual(
-        len(list(manager.ScaffolderManager.GetScaffolderNames())), 0)
+    number_of_scaffolder_names = len(
+        list(manager.ScaffolderManager.GetScaffolderNames()))
+    self.assertEqual(number_of_scaffolder_names, 0)
+
     manager.ScaffolderManager.RegisterScaffolders(scaffolders)
-    self.assertEqual(
-        len(list(manager.ScaffolderManager.GetScaffolderNames())), 3)
+    number_of_scaffolder_names = len(
+        list(manager.ScaffolderManager.GetScaffolderNames()))
+    self.assertEqual(number_of_scaffolder_names, 3)
 
 
 if __name__ == '__main__':
