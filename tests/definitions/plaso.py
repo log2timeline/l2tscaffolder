@@ -20,13 +20,13 @@ class PlasoProjectTest(unittest.TestCase):
     self.assertEquals(project_test.NAME, definitions.DEFINITION_PLASO)
 
     self.assertTrue(project_test.ValidatePath(os.path.join(
-      test_path, 'PlasoPath')))
+        test_path, 'PlasoPath')))
 
     self.assertFalse(project_test.ValidatePath(os.path.join(
-      test_path, 'PlasoFailPath1')))
+        test_path, 'PlasoFailPath1')))
 
     self.assertFalse(project_test.ValidatePath(os.path.join(
-      test_path, 'PlasoFailPath2')))
+        test_path, 'PlasoFailPath2')))
 
 
 if __name__ == '__main__':
