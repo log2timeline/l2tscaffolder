@@ -3,6 +3,8 @@
 import os
 import sqlite3
 
+from typing import Tuple
+
 from plasoscaffolder.lib import definitions
 from plasoscaffolder.lib import errors
 from plasoscaffolder.plugins import interface
@@ -14,7 +16,7 @@ class SQliteGenerator(plaso.PlasoPlugin):
   """The SQLite plugin interface."""
 
   # The name of the plugin or parser this scaffolder plugin provides.
-  PROVIDES = 'sqlite'
+  NAME = 'sqlite'
   DESCRIPTION = 'Provides a plugin to generate SQLite plugins.'
 
   # This plugin either defines a plaso parser or a plugin.
@@ -64,7 +66,7 @@ class SQliteGenerator(plaso.PlasoPlugin):
 
     return schema
 
-  def GenerateFiles(self) -> (str, str):
+  def GenerateFiles(self) -> Tuple[str, str]:
     """Generate all the files required for a plaso parser or a plugin.
 
     Yields:

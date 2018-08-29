@@ -2,6 +2,8 @@
 """Plaso plugin that generates plaso parser and plugins."""
 import os
 
+from typing import Tuple
+
 from plasoscaffolder.plugins import interface
 from plasoscaffolder.lib import definitions
 from plasoscaffolder.lib import file_handler
@@ -12,7 +14,9 @@ class PlasoPlugin(interface.ScaffolderPlugin):
   """The plaso plugin interface."""
 
   # The name of the plugin or parser this scaffolder plugin provides.
-  PROVIDES = 'base'
+  NAME = 'base'
+
+  # One liner describing what the plugin provides.
   DESCRIPTION = ''
 
   # Plugin type can be either 'parser' or 'plugin'.
@@ -20,7 +24,7 @@ class PlasoPlugin(interface.ScaffolderPlugin):
   PLUGIN_TYPE = 'parser'
 
   # Define which project this particular plugin belongs to.
-  PROJECT = definitions.PROJECT_PLASO
+  PROJECT = definitions.DEFINITION_PLASO
 
   # Filename of templates.
   TEMPLATE_PARSER_FILE = 'generic_plaso_parser.jinja2'
@@ -61,7 +65,7 @@ class PlasoPlugin(interface.ScaffolderPlugin):
         'Path to a test file used by the parser or plugin.', str))
     return questions
 
-  def GenerateFiles(self) -> (str, str):
+  def GenerateFiles(self) -> Tuple[str, str]:
     """Generate all the files required for a plaso parser or a plugin.
 
     Yields:
@@ -98,11 +102,11 @@ class PlasoPlugin(interface.ScaffolderPlugin):
             self._parser_path.replace(os.sep, '.'), self._output_name)
     yield os.path.join(self._parser_path, '__init__.py'), parser_string
 
-  def GetFilesToCopy(self) -> (str, str):
+  def GetFilesToCopy(self) -> Tuple[str, str]:
     """Return a list of files that need to be copied.
 
     Yields:
-      list (str, str): file name of source and destination.
+      tuple (str, str): file name of source and destination.
     """
     test_file = self._attributes.get('test_file', '')
     test_file_name = os.path.basename(test_file)
