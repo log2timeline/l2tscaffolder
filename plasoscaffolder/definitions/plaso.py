@@ -13,14 +13,14 @@ class PlasoProject(interface.ScaffolderDefinition):
   NAME = definitions.DEFINITION_PLASO
 
   def ValidatePath(self, root_path: str) -> bool:
-    """Validate the path to the root directory.
+    """Validates the path to a Plaso development tree.
 
     Args:
       root_path (str): the path to the root of the project directory.
 
     Returns:
-      (bool): determines whether the given path is the correct root path
-              of the project.
+      bool: whether the given path is the correct root path to a Plaso
+          development tree.
     """
     if not os.path.isdir(root_path):
       return False

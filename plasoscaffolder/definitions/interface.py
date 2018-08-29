@@ -11,12 +11,11 @@ class ScaffolderDefinition(object):
 
   @abc.abstractmethod
   def ValidatePath(self, root_path: str) -> bool:
-    """Validate the path to the root directory.
+    """Validates the path to the root directory of the project.
 
     Args:
       root_path (str): the path to the root of the project directory.
 
     Returns:
-      (bool): determines whether the given path is the correct root path
-              of the project.
+      bool: whether the given path is the correct root path of the project.
     """
