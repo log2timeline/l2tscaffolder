@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""The plugin interface classes."""
+"""The scaffolder interface classes."""
 import os
 import sqlite3
 
@@ -7,19 +7,19 @@ from typing import Tuple
 
 from plasoscaffolder.lib import definitions
 from plasoscaffolder.lib import errors
-from plasoscaffolder.plugins import interface
-from plasoscaffolder.plugins import plaso
-from plasoscaffolder.plugins import manager
+from plasoscaffolder.scaffolders import interface
+from plasoscaffolder.scaffolders import plaso
+from plasoscaffolder.scaffolders import manager
 
 
-class SQliteGenerator(plaso.PlasoPlugin):
-  """The SQLite plugin interface."""
+class SQliteGenerator(plaso.PlasoScaffolder):
+  """The SQLite scaffolder interface."""
 
-  # The name of the plugin or parser this scaffolder plugin provides.
+  # The name of the plugin or parser this scaffolder provides.
   NAME = 'sqlite'
-  DESCRIPTION = 'Provides a plugin to generate SQLite plugins.'
+  DESCRIPTION = 'Provides a scaffolder to generate SQLite plugins.'
 
-  # This plugin either defines a plaso parser or a plugin.
+  # This scaffolder either defines a plaso parser or a plugin.
   PLUGIN_TYPE = 'plugin'
 
   SCHEMA_QUERY = (
@@ -103,4 +103,4 @@ class SQliteGenerator(plaso.PlasoPlugin):
     return super(SQliteGenerator, self).GenerateFiles()
 
 
-manager.PluginManager.RegisterPlugin(SQliteGenerator)
+manager.ScaffolderManager.RegisterScaffolder(SQliteGenerator)
