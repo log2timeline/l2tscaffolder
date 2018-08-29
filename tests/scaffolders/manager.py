@@ -62,7 +62,8 @@ class ScaffolderManagerTest(unittest.TestCase):
   def setUpClass(cls):
     """Setup the tests by registering three scaffolders."""
     manager.ScaffolderManager.RegisterScaffolders(
-        [AwesomeTestScaffolder, AverageTestScaffolder, RegistrationTestScaffolder])
+        [AwesomeTestScaffolder, AverageTestScaffolder,
+         RegistrationTestScaffolder])
 
   def testDeregisterScaffolder(self):
     """Testing whether we can remove a scaffolder from the registration."""
@@ -120,7 +121,7 @@ class ScaffolderManagerTest(unittest.TestCase):
     self.assertEqual(len(scaffolder_objects), 3)
 
     attributes = [
-      scaffolder.NAME.lower() for scaffolder in scaffolder_objects.values()]
+        scaffolder.NAME.lower() for scaffolder in scaffolder_objects.values()]
     correct = ['awesome', 'average', 'registration']
 
     self.assertSetEqual(set(attributes), set(correct))
@@ -174,7 +175,8 @@ class ScaffolderManagerTest(unittest.TestCase):
   def testRegisterScaffolders(self):
     """Test registering multiple scaffolders."""
     scaffolders = [
-      AwesomeTestScaffolder, AverageTestScaffolder, RegistrationTestScaffolder]
+        AwesomeTestScaffolder, AverageTestScaffolder,
+        RegistrationTestScaffolder]
     for scaffolder in scaffolders:
       manager.ScaffolderManager.DeregisterScaffolder(scaffolder)
 
