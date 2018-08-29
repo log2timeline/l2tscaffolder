@@ -3,6 +3,8 @@
 import abc
 import collections
 
+from typing import Tuple
+
 from plasoscaffolder.lib import definitions
 from plasoscaffolder.lib import errors
 
@@ -40,7 +42,7 @@ class ScaffolderPlugin(object):
     return self.QUESTIONS
 
   @abc.abstractmethod
-  def GenerateFiles(self) -> (str, str):
+  def GenerateFiles(self) -> Tuple[str, str]:
     """Generate all the files this plugin provides.
 
     Yields:
@@ -48,11 +50,11 @@ class ScaffolderPlugin(object):
     """
 
   @abc.abstractmethod
-  def GetFilesToCopy(self) -> (str, str):
+  def GetFilesToCopy(self) -> Tuple[str, str]:
     """Return a list of files that need to be copied.
 
     Yields:
-      list (str, str): file name of source and destination.
+      tuple (str, str): file name of source and destination.
     """
 
   def IsPluginConfigured(self):
