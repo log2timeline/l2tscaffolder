@@ -57,7 +57,7 @@ class ScaffolderPlugin(object):
       tuple (str, str): file name of source and destination.
     """
 
-  def IsPluginConfigured(self):
+  def RaiseIfNotReady(self):
     """Check to see if all attributes are set to start generating files.
 
     Raises:
@@ -73,6 +73,9 @@ class ScaffolderPlugin(object):
 
   def SetOutputName(self, output_name: str):
     """Sets the name of the output module.
+
+    This is the name of the generated output module this scaffolder
+    plugin implements.
 
     Args:
       output_name (str): the name of the output that the plugin provides,

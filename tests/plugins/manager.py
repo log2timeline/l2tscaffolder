@@ -102,10 +102,10 @@ class PluginManagerTest(unittest.TestCase):
 
   def testGetPluginObjects(self):
     """Testing plugin objects."""
-    objs = manager.PluginManager.GetPluginObjects().values()
-    self.assertEquals(len(objs), 3)
+    plugin_objects = manager.PluginManager.GetPluginObjects().values()
+    self.assertEquals(len(plugin_objects), 3)
 
-    attributes = [x.NAME.lower() for x in objs]
+    attributes = [x.NAME.lower() for x in plugin_objects]
     correct = ['awesome', 'average', 'registration']
 
     self.assertSetEqual(set(attributes), set(correct))
@@ -126,7 +126,7 @@ class PluginManagerTest(unittest.TestCase):
     self.assertIn('27001', question_attributes)
 
   def testGetPluginQuestionByName(self):
-    """Test fetching a question by provides string."""
+    """Test fetching questions of a scaffolder plugin by NAME attribute."""
     reg_questions = manager.PluginManager.GetPluginQuestionByName(
         'registration')
 
@@ -156,7 +156,7 @@ class PluginManagerTest(unittest.TestCase):
     manager.PluginManager.DeregisterPlugin(TestRegisterPlugin)
 
   def testRegisterPlugins(self):
-    """Test registering mulitple plugins."""
+    """Test registering multiple plugins."""
     plugins = [TestPluginOne, TestPluginTwo, TestPluginThree]
     for plugin in plugins:
       manager.PluginManager.DeregisterPlugin(plugin)
