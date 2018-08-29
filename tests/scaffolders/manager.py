@@ -90,8 +90,8 @@ class ScaffolderManagerTest(unittest.TestCase):
   def testGetScaffolderInformation(self):
     """Testing the scaffolder information gathering of the manager."""
     scaffolder_description = {}
-    for name, description in manager.ScaffolderManager.GetScaffolderInformation():
-      scaffolder_description[name] = description
+    for name, desc in manager.ScaffolderManager.GetScaffolderInformation():
+      scaffolder_description[name] = desc
 
     self.assertEqual(len(scaffolder_description.keys()), 3)
 
