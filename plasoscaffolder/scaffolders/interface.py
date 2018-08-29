@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""The plugin interface classes."""
+"""The scaffolder interface classes."""
 import abc
 import collections
 
@@ -13,16 +13,16 @@ Question = collections.namedtuple(
     'question', ['attribute', 'prompt', 'help', 'type'])
 
 
-class ScaffolderPlugin(object):
-  """The plugin interface."""
+class Scaffolder(object):
+  """The scaffolder interface."""
 
-  # The name of the plugin or parser this scaffolder plugin provides.
+  # The name of the scaffolder or parser this scaffolder plugin provides.
   NAME = 'base_parser'
 
-  # One liner describing what the plugin provides.
+  # One liner describing what the scaffolder provides.
   DESCRIPTION = ''
 
-  # Define which project this particular plugin belongs to.
+  # Define which project this particular scaffolder belongs to.
   PROJECT = definitions.PROJECT_UNDEFINED
 
   # Questions, a list that contains all the needed questions that the
@@ -31,19 +31,19 @@ class ScaffolderPlugin(object):
   QUESTIONS = []
 
   def __init__(self):
-    """Initializes the plugin."""
-    super(ScaffolderPlugin, self).__init__()
+    """Initializes the scaffolder."""
+    super(Scaffolder, self).__init__()
     self._attributes = {}
     self._defined_attributes = set()
     self._output_name = ''
 
   def GetQuestions(self) -> list:
-    """Returns all plugin questions."""
+    """Returns all scaffolder questions."""
     return self.QUESTIONS
 
   @abc.abstractmethod
   def GenerateFiles(self) -> Tuple[str, str]:
-    """Generate all the files this plugin provides.
+    """Generate all the files this scaffolder provides.
 
     Yields:
       list: file name and content of the file to be written to disk.
@@ -61,12 +61,12 @@ class ScaffolderPlugin(object):
     """Check to see if all attributes are set to start generating files.
 
     Raises:
-      PluginNotConfigured: if the plugin is not fully configured.
+      ScaffolderNotConfigured: if the scaffolder is not fully configured.
     """
     configured_attributes = set(self._attributes.keys())
     if configured_attributes != self._defined_attributes:
       mismatch = self._defined_attributes.difference(self._attributes)
-      raise errors.PluginNotConfigured((
+      raise errors.ScaffolderNotConfigured((
           'Not all required attributes have been defined, the following '
           'attributes are missing: {}').format(
               ','.join(str(x) for x in mismatch)))
@@ -75,10 +75,10 @@ class ScaffolderPlugin(object):
     """Sets the name of the output module.
 
     This is the name of the generated output module this scaffolder
-    plugin implements.
+    implements.
 
     Args:
-      output_name (str): the name of the output that the plugin provides,
+      output_name (str): the name of the output that the scaffolder provides,
           whether that is an output module, plugin, parser,
           analyzer or something else.
     """
@@ -105,7 +105,7 @@ class ScaffolderPlugin(object):
 
     self._attributes[name] = value
 
-  def SetupPlugin(self):
-    """Sets up the plugin."""
+  def SetupScaffolder(self):
+    """Sets up the scaffolder."""
     for question in self.GetQuestions():
       self._defined_attributes.add(question.attribute)
