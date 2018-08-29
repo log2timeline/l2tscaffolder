@@ -7,7 +7,17 @@ from plasoscaffolder.scaffolders import interface
 from plasoscaffolder.scaffolders import manager
 
 
-class TestScaffolderOne(interface.Scaffolder):
+class BaseScaffolderTest(interface.Scaffolder):
+  """Basic class to inherit in tests."""
+
+  def GenerateFiles(self):
+    """Empty file generator."""
+
+  def GetFilesToCopy(self):
+    """Empty files to copy."""
+
+
+class TestScaffolderOne(BaseScaffolderTest):
   """First test scaffolder."""
   NAME = 'Awesome'
   DESCRIPTION = 'This is a really awesome thing.'
@@ -17,7 +27,7 @@ class TestScaffolderOne(interface.Scaffolder):
       interface.Question('test3', 'a', 'b', str)]
 
 
-class TestScaffolderTwo(interface.Scaffolder):
+class TestScaffolderTwo(BaseScaffolderTest):
   """Second test scaffolder."""
   NAME = 'Average'
   DESCRIPTION = 'This scaffolder implements the average parser.'
@@ -27,7 +37,7 @@ class TestScaffolderTwo(interface.Scaffolder):
       interface.Question('ok', 'a', 'b', str)]
 
 
-class TestScaffolderThree(interface.Scaffolder):
+class TestScaffolderThree(BaseScaffolderTest):
   """Third test scaffolder."""
   NAME = 'Registration'
   DESCRIPTION = (
@@ -70,7 +80,7 @@ class ScaffolderManagerTest(unittest.TestCase):
   def testGetScaffolderNames(self):
     """Testing the scaffolder names."""
     scaffolder_names = list(manager.ScaffolderManager.GetScaffolderNames())
-    self.assertEquals(len(scaffolder_names), 3)
+    self.assertEqual(len(scaffolder_names), 3)
 
     correct_names = set(['awesome', 'average', 'registration'])
     scaffolder_name_set = set(scaffolder_names)
@@ -103,7 +113,7 @@ class ScaffolderManagerTest(unittest.TestCase):
   def testGetScaffolderObjects(self):
     """Testing scaffolder objects."""
     scaffolder_objects = manager.ScaffolderManager.GetScaffolderObjects()
-    self.assertEquals(len(scaffolder_objects), 3)
+    self.assertEqual(len(scaffolder_objects), 3)
 
     attributes = [x.NAME.lower() for x in scaffolder_objects.values()]
     correct = ['awesome', 'average', 'registration']
@@ -130,7 +140,7 @@ class ScaffolderManagerTest(unittest.TestCase):
     reg_questions = manager.ScaffolderManager.GetScaffolderQuestionByName(
         'registration')
 
-    self.assertEquals(len(reg_questions), 4)
+    self.assertEqual(len(reg_questions), 4)
 
     question_attributes = [x.attribute for x in reg_questions]
     self.assertIn('27001', question_attributes)
@@ -139,9 +149,9 @@ class ScaffolderManagerTest(unittest.TestCase):
     """Test getting scaffolders from the manager."""
     scaffolders = dict(list(manager.ScaffolderManager.GetScaffolders()))
 
-    self.assertEquals(len(scaffolders.keys()), 3)
+    self.assertEqual(len(scaffolders.keys()), 3)
     correct = ['awesome', 'average', 'registration']
-    self.assertEquals(set(scaffolders.keys()), set(correct))
+    self.assertEqual(set(scaffolders.keys()), set(correct))
 
   def testRegisterScaffolder(self):
     """Test registering new scaffolders."""

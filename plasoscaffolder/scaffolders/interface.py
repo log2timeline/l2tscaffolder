@@ -24,7 +24,7 @@ class Scaffolder:
   DESCRIPTION = ''
 
   # Define which project this particular scaffolder belongs to.
-  PROJECT = definitions.PROJECT_UNDEFINED
+  PROJECT = definitions.DEFINITION_PLASO
 
   # Questions, a list that contains all the needed questions that the
   # user should be prompted about before the plugin or parser is created.
