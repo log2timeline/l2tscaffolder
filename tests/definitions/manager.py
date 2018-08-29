@@ -101,7 +101,7 @@ class DefinitionManagerTest(unittest.TestCase):
     definitions = list(manager.DefinitionManager.GetDefinitionNames())
 
     self.assertEqual(len(definitions), 2)
-    correct_definitions = ['silver', 'failing']
+    correct_definitions = ['gold', 'failing']
 
     self.assertSetEqual(set(definitions), set(correct_definitions))
 
