@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
 """The format specification classes."""
 
-PROJECT_UNDEFINED = 'undefined'
-PROJECT_PLASO = 'plaso'
+DEFINITION_UNDEFINED = 'undefined'
+DEFINITION_PLASO = 'plaso'
