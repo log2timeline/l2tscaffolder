@@ -31,8 +31,8 @@ class TestScaffolderThree(interface.Scaffolder):
   """Third test scaffolder."""
   NAME = 'Registration'
   DESCRIPTION = (
-      'This scaffolder implements the registration scaffolder, required paperwork for '
-      'many ISO standards of the future.')
+      'This scaffolder implements the registration scaffolder, required '
+      'paperwork for many ISO standards of the future.')
   QUESTIONS = [
       interface.Question('27001', 'a', 'b', str),
       interface.Question('9001', 'a', 'b', str),
@@ -55,7 +55,7 @@ class ScaffolderManagerTest(unittest.TestCase):
         [TestScaffolderOne, TestScaffolderTwo, TestScaffolderThree])
 
   def testDeregisterScaffolder(self):
-    """Testing whether or not we can remove a scaffolder from the registration."""
+    """Testing whether we can remove a scaffolder from the registration."""
     self.assertEqual(len(list(manager.ScaffolderManager.GetScaffolders())), 3)
 
     manager.ScaffolderManager.DeregisterScaffolder(TestScaffolderOne)
@@ -102,10 +102,10 @@ class ScaffolderManagerTest(unittest.TestCase):
 
   def testGetScaffolderObjects(self):
     """Testing scaffolder objects."""
-    scaffolder_objects = manager.ScaffolderManager.GetScaffolderObjects().values()
+    scaffolder_objects = manager.ScaffolderManager.GetScaffolderObjects()
     self.assertEquals(len(scaffolder_objects), 3)
 
-    attributes = [x.NAME.lower() for x in scaffolder_objects]
+    attributes = [x.NAME.lower() for x in scaffolder_objects.values()]
     correct = ['awesome', 'average', 'registration']
 
     self.assertSetEqual(set(attributes), set(correct))
@@ -148,7 +148,8 @@ class ScaffolderManagerTest(unittest.TestCase):
     with self.assertRaises(KeyError):
       manager.ScaffolderManager.RegisterScaffolder(TestScaffolderTwo)
 
-    self.assertEqual(len(list(manager.ScaffolderManager.GetScaffolderNames())), 3)
+    self.assertEqual(
+        len(list(manager.ScaffolderManager.GetScaffolderNames())), 3)
     manager.ScaffolderManager.RegisterScaffolder(TestRegisterScaffolder)
     scaffolder_names = list(manager.ScaffolderManager.GetScaffolderNames())
     self.assertEqual(len(scaffolder_names), 4)
@@ -161,9 +162,11 @@ class ScaffolderManagerTest(unittest.TestCase):
     for scaffolder in scaffolders:
       manager.ScaffolderManager.DeregisterScaffolder(scaffolder)
 
-    self.assertEqual(len(list(manager.ScaffolderManager.GetScaffolderNames())), 0)
+    self.assertEqual(
+        len(list(manager.ScaffolderManager.GetScaffolderNames())), 0)
     manager.ScaffolderManager.RegisterScaffolders(scaffolders)
-    self.assertEqual(len(list(manager.ScaffolderManager.GetScaffolderNames())), 3)
+    self.assertEqual(
+        len(list(manager.ScaffolderManager.GetScaffolderNames())), 3)
 
 
 if __name__ == '__main__':
