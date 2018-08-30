@@ -8,7 +8,6 @@ from typing import Tuple
 from typing import Type
 
 from plasoscaffolder.lib import definitions
-from plasoscaffolder.lib import file_handler
 from plasoscaffolder.lib import mapping_helper
 from plasoscaffolder.scaffolders import interface
 
