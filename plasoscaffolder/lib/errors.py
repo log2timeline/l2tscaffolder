@@ -6,9 +6,12 @@ class Error(Exception):
   """Base error class."""
 
 
-class NoValidProject(Error):
+class NoValidDefinition(Error):
   """Raised when no valid project has been identified."""
 
+
+class EngineNotConfigured(Error):
+  """Raised when the scaffolder engine has not been configured correctly."""
 
 class ScaffolderNotConfigured(Error):
   """Raised when the scaffolder has not been configured correctly."""

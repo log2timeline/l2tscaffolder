@@ -4,28 +4,27 @@
 import os
 import unittest
 
+from plasoscaffolder.definitions import interface as definition_interface
+from plasoscaffolder.definitions import manager as definition_manager
 from plasoscaffolder.lib import engine
 from plasoscaffolder.lib import errors
-from plasoscaffolder.plugins import interface as plugin_interface
-from plasoscaffolder.projects import interface as project_interface
-from plasoscaffolder.projects import manager as project_manager
+from plasoscaffolder.scaffolders import interface as scaffolder_interface
 from tests.test_helper import path_helper
 
 
-class TestPluginOne(plugin_interface.ScaffolderPlugin):
-  """Test plugin."""
-  PROVIDES = 'Awesome'
+class AwesomeScaffolder(scaffolder_interface.Scaffolder):
+  """Awesome test scaffolder."""
+  NAME = 'Awesome'
   DESCRIPTION = 'This is a really awesome thing.'
   QUESTIONS = [
-      plugin_interface.question('test1', 'a', 'b', str),
-      plugin_interface.question('test2', 'a', 'b', str),
-      plugin_interface.question('test3', 'a', 'b', str)]
+      scaffolder_interface.Question('test1', 'a', 'b', str),
+      scaffolder_interface.Question('test2', 'a', 'b', str),
+      scaffolder_interface.Question('test3', 'a', 'b', str)]
 
 
-class TestProject(project_interface.ScaffolderProject):
-  """Plaso project definition."""
-
-  PROJECT_TYPE = 'N/A'
+class NotWrongDefinition(definition_interface.ScaffolderDefinition):
+  """Definition for the not so wrong project."""
+  NAME = 'N/A'
 
   def ValidatePath(self, root_path: str) -> bool:
     """Validate a path to the test project."""
@@ -43,7 +42,7 @@ class ScaffolderEngineTest(unittest.TestCase):
 
   @classmethod
   def setUpClass(cls):
-    project_manager.ProjectManager.RegisterProject(TestProject)
+    definition_manager.DefinitionManager.RegisterDefinition(NotWrongDefinition)
 
   def testSetModuleName(self):
     """Test setting the module name."""
@@ -72,53 +71,54 @@ class ScaffolderEngineTest(unittest.TestCase):
 
     # Test a path that will fail.
     path = os.path.join(os.path.curdir, 'wrong path')
-    with self.assertRaises(errors.NoValidProject):
+    with self.assertRaises(errors.NoValidDefinition):
       eng.SetProjectRootPath(path)
 
     path = 'this is absolutely the correct path'
     eng.SetProjectRootPath(path)
 
-    root_path = getattr(eng, '_project_root_path', '')
-    project = getattr(eng, '_project', '')
+    root_path = getattr(eng, '_definition_root_path', '')
+    project = getattr(eng, '_definition', '')
 
     self.assertEqual(root_path, path)
-    self.assertEqual(project, TestProject.PROJECT_TYPE)
+    self.assertEqual(project, NotWrongDefinition.NAME)
 
-  def testSetPlugin(self):
-    """Test setting the plugin of a scaffolder engine."""
+  def testSetScaffolder(self):
+    """Test setting the scaffolder of a scaffolder engine."""
     eng = engine.ScaffolderEngine()
-    test_plugin = TestPluginOne()
+    test_scaffolder = AwesomeScaffolder()
 
-    eng.SetPlugin(test_plugin)
+    eng.SetScaffolder(test_scaffolder)
 
-    self.assertTrue(hasattr(eng, '_plugin'))
+    self.assertTrue(hasattr(eng, '_scaffolder'))
     self.assertIsInstance(
-        getattr(eng, '_plugin', None), plugin_interface.ScaffolderPlugin)
+        getattr(eng, '_scaffolder', None), scaffolder_interface.Scaffolder)
 
-  def testStorePluginAttribute(self):
-    """Test storing attributes in a plugin."""
+  def testStoreScaffolderAttribute(self):
+    """Test storing attributes in a scaffolder."""
     eng = engine.ScaffolderEngine()
-    test_plugin = TestPluginOne()
-    eng.SetPlugin(test_plugin)
+    test_scaffolder = AwesomeScaffolder()
+    eng.SetScaffolder(test_scaffolder)
 
     test_string1 = 'Test String'
-    test_string2 = 'Part of the plugin'
-    test_string3 = 'I\'m stored in the plugin!'
+    test_string2 = 'Part of the scaffolder'
+    test_string3 = 'I\'m stored in the scaffolder!'
 
-    eng.StorePluginAttribute('test1', test_string1, str)
-    test, _ = test_plugin.IsPluginConfigured()
-    self.assertFalse(test)
-    eng.StorePluginAttribute('test2', test_string2, str)
-    test, _ = test_plugin.IsPluginConfigured()
-    self.assertFalse(test)
-    eng.StorePluginAttribute('test3', test_string3, str)
-    test, _ = test_plugin.IsPluginConfigured()
-    self.assertTrue(test)
+    eng.StoreScaffolderAttribute('test1', test_string1, str)
+    with self.assertRaises(errors.ScaffolderNotConfigured):
+      test_scaffolder.RaiseIfNotReady()
 
-    plugin_attributes = getattr(test_plugin, '_attributes', {})
-    test1_attr = plugin_attributes.get('test1', '')
-    test2_attr = plugin_attributes.get('test2', '')
-    test3_attr = plugin_attributes.get('test3', '')
+    eng.StoreScaffolderAttribute('test2', test_string2, str)
+    with self.assertRaises(errors.ScaffolderNotConfigured):
+      test_scaffolder.RaiseIfNotReady()
+
+    eng.StoreScaffolderAttribute('test3', test_string3, str)
+    self.assertIsNone(test_scaffolder.RaiseIfNotReady())
+
+    scaffolder_attributes = getattr(test_scaffolder, '_attributes', {})
+    test1_attr = scaffolder_attributes.get('test1', '')
+    test2_attr = scaffolder_attributes.get('test2', '')
+    test3_attr = scaffolder_attributes.get('test3', '')
 
     self.assertEqual(test1_attr, test_string1)
     self.assertEqual(test2_attr, test_string2)

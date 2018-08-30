@@ -2,78 +2,74 @@
 """The scaffolder engine."""
 import os
 
-from plasoscaffolder.lib import definitions
-from plasoscaffolder.lib import errors
-from plasoscaffolder.lib import file_handler
-from plasoscaffolder.plugins import interface as plugin_interface
-from plasoscaffolder.projects import manager as project_manager
-
-from typing import Generator
+from typing import Iterator
 from typing import List
 from typing import Type
 from typing import Tuple
 
+from plasoscaffolder.definitions import manager
+from plasoscaffolder.lib import definitions
+from plasoscaffolder.lib import errors
+from plasoscaffolder.lib import file_handler
+from plasoscaffolder.scaffolders import interface as scaffolder_interface
+
 
 class ScaffolderEngine(object):
-  """The engine, responsible for file handling and setting up plugins."""
+  """The engine, responsible for file handling and setting up scaffolders."""
 
   def __init__(self):
     """Initialize the engine."""
     super(ScaffolderEngine, self).__init__()
     self._attributes = {}
+    self._definition = ''
+    self._definition_root_path = ''
     self._file_handler = file_handler.FileHandler()
-    self._module_name = ''
     self._file_name_prefix = ''
-    self._plugin = None
-    self._project = ''
-    self._project_root_path = ''
+    self._module_name = ''
+    self._scaffolder = None
 
-  def _IsReadyToGenerate(self) -> Tuple[bool, str]:
+  def _RaiseIfNotReady(self):
     """Check to see if all attributes are set to start generating files.
 
-    Returns:
-      bool: Boolean indicating whether or not the plugin is fully configured.
-      str: If the plugin is not fully configured the second value is a string
-           that contains the reason why it is not fully configured.
+    Raises:
+      errors.EngineNotConfigured: when the engine is not fully configured.
     """
-    if not self._project_root_path:
-      return False, 'The path to the project root is not properly configured.'
+    if not self._definition_root_path:
+      raise errors.EngineNotConfigured(
+          'The path to the project root is not properly configured.')
 
     if not self._module_name:
-      return False, 'Module name has not been configured.'
+      raise errors.EngineNotConfigured('Module name has not been configured.')
 
-    if not self._plugin:
-      return False, 'Plugin object not yet set.'
+    if not self._scaffolder:
+      raise errors.EngineNotConfigured('Scaffolder object not yet set.')
 
-    return self._plugin.IsPluginConfigured()
+    try:
+      self._scaffolder.RaiseIfNotReady()
+    except errors.ScaffolderNotConfigured as exception:
+      raise errors.EngineNotConfigured(exception)
 
-  def GenerateFiles(self) -> List[str]:
+  def GenerateFiles(self) -> Iterator[str]:
     """Generates the needed files.
 
     Raises:
-      PluginNotConfigured: When not all attributes have been configured.
+      errors.EngineNotConfigured: when not all attributes have been configured.
 
-    Returns:
-      list: a list of all filenames that were generated and written to disk.
+    Yields:
+      str: the full path to a file that was generated and written to disk.
     """
-    is_ready, reason = self._IsReadyToGenerate()
-    if not is_ready:
-      raise errors.PluginNotConfigured(reason)
+    self._RaiseIfNotReady()
 
-    self._plugin.SetOutputName(self._file_name_prefix)
+    self._scaffolder.SetOutputName(self._file_name_prefix)
 
-    written_files = []
-    for file_source, file_destination in self._plugin.GetFilesToCopy():
+    for file_source, file_destination in self._scaffolder.GetFilesToCopy():
       if os.path.isfile(file_source):
-        full_path = os.path.join(self._project_root_path, file_destination)
-        written_files.append(
-            self._file_handler.CopyFile(file_source, full_path))
+        full_path = os.path.join(self._definition_root_path, file_destination)
+        yield self._file_handler.CopyFile(file_source, full_path)
 
-    for file_path, content in self._plugin.GenerateFiles():
-      full_path = os.path.join(self._project_root_path, file_path)
-      written_files.append(self._file_handler.AddContent(full_path, content))
-
-    return written_files
+    for file_path, content in self._scaffolder.GenerateFiles():
+      full_path = os.path.join(self._definition_root_path, file_path)
+      yield self._file_handler.AddContent(full_path, content)
 
   def SetModuleName(self, module_name: str):
     """Sets the module name as chosen by the user."""
@@ -81,27 +77,28 @@ class ScaffolderEngine(object):
     self._module_name = self._file_name_prefix.replace(
         '_', ' ').title().replace(' ', '')
 
-  def SetPlugin(self, plugin: Type[plugin_interface.ScaffolderPlugin]):
-    """Stores the plugin object in the engine."""
-    self._plugin = plugin
-    self._plugin.SetupPlugin()
+  def SetScaffolder(self, scaffolder: Type[scaffolder_interface.Scaffolder]):
+    """Stores the scaffolder object in the engine."""
+    self._scaffolder = scaffolder
+    self._scaffolder.SetupScaffolder()
 
   def SetProjectRootPath(self, root_path: str):
     """Set the path to the root of the project file.
 
     Raises:
-      errors.NoValidProject: when root path is not identified as a valid project
-                             path.
+      errors.NoValidDefinition: when root path is not identified as a valid
+          definition path.
     """
-    for project_object in project_manager.ProjectManager.GetProjectObjects():
-      if project_object.ValidatePath(root_path):
-        self._project = project_object.PROJECT_TYPE
-        self._project_root_path = root_path
+    for definition in manager.DefinitionManager.GetDefinitionObjects():
+      if definition.ValidatePath(root_path):
+        self._definition = definition.NAME
+        self._definition_root_path = root_path
         return
 
-    raise errors.NoValidProject('No valid project has been identified.')
+    raise errors.NoValidDefinition('No valid project has been identified.')
 
-  def StorePluginAttribute(self, name: str, value: object, value_type: object):
+  def StoreScaffolderAttribute(
+      self, name: str, value: object, value_type: object):
     """Store an attribute read from the CLI.
 
     Args:
@@ -111,10 +108,10 @@ class ScaffolderEngine(object):
 
     Raises:
       KeyError: If the attribute name is already defined.
-      PluginNotConfigured: If the plugin has not yet been set.
+      ScaffolderNotConfigured: If the scaffolder has not yet been set.
       ValueError: If the value is not of the correct type.
     """
-    if not self._plugin:
-      raise errors.PluginNotConfigured(u'Plugin has not yet been set.')
+    if not self._scaffolder:
+      raise errors.ScaffolderNotConfigured(u'Scaffolder has not yet been set.')
 
-    self._plugin.SetAttribute(name, value, value_type)
+    self._scaffolder.SetAttribute(name, value, value_type)
