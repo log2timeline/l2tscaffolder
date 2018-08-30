@@ -45,8 +45,7 @@ class DefinitionManager:
       yield definition_name
 
   @classmethod
-  def GetDefinitionObjects(
-      cls) -> Iterator[interface.ScaffolderDefinition]:
+  def GetDefinitionObjects(cls) -> Iterator[interface.ScaffolderDefinition]:
     """Yields instances of each registered definition class.
 
     Yields:
