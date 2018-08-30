@@ -23,11 +23,13 @@ class AwesomeScaffolder(scaffolder_interface.Scaffolder):
   def GenerateFiles(self):
     """Empty file generator."""
     return
+    # pylint: disable=unreachable-code
     yield
 
   def GetFilesToCopy(self):
     """Empty files to copy generator."""
     return
+    # pylint: disable=unreachable-code
     yield
 
 
