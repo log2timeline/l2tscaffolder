@@ -85,6 +85,15 @@ class FileHandler(object):
     return destination
 
   def CreateOrModifyFileWithContent(self, source: str, content: str):
+    """Add content to a file and create the file and path if non existing.
+
+    Args:
+      source (str): The path of the file to edit.
+      content (str): The content to append to the file.
+
+    Returns:
+      str: the path of the edited file.
+    """
     self.CreateFolderForFilePathIfNotExist(source)
     self.AddContent(source, content)
 

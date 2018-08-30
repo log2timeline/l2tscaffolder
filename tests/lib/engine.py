@@ -9,7 +9,6 @@ from plasoscaffolder.definitions import manager as definition_manager
 from plasoscaffolder.lib import engine
 from plasoscaffolder.lib import errors
 from plasoscaffolder.scaffolders import interface as scaffolder_interface
-from tests.test_helper import path_helper
 
 
 class AwesomeScaffolder(scaffolder_interface.Scaffolder):
@@ -20,6 +19,12 @@ class AwesomeScaffolder(scaffolder_interface.Scaffolder):
       scaffolder_interface.Question('test1', 'a', 'b', str),
       scaffolder_interface.Question('test2', 'a', 'b', str),
       scaffolder_interface.Question('test3', 'a', 'b', str)]
+
+  def GenerateFiles(self):
+    """Empty file generator."""
+
+  def GetFilesToCopy(self):
+    """Empty files to copy."""
 
 
 class NotWrongDefinition(definition_interface.ScaffolderDefinition):
@@ -62,8 +67,8 @@ class ScaffolderEngineTest(unittest.TestCase):
     module_name = getattr(eng, '_module_name', 'N/A')
     file_name = getattr(eng, '_file_name_prefix', 'N/A')
 
-    self.assertEquals(expected_module_name, module_name)
-    self.assertEquals(expected_file_name, file_name)
+    self.assertEqual(expected_module_name, module_name)
+    self.assertEqual(expected_file_name, file_name)
 
   def testSetProjectRootPath(self):
     """Test setting the root path to a project."""

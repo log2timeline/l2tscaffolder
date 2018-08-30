@@ -3,12 +3,9 @@
 import os
 
 from typing import Iterator
-from typing import List
 from typing import Type
-from typing import Tuple
 
 from plasoscaffolder.definitions import manager
-from plasoscaffolder.lib import definitions
 from plasoscaffolder.lib import errors
 from plasoscaffolder.lib import file_handler
 from plasoscaffolder.scaffolders import interface as scaffolder_interface
