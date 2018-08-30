@@ -22,9 +22,13 @@ class AwesomeScaffolder(scaffolder_interface.Scaffolder):
 
   def GenerateFiles(self):
     """Empty file generator."""
+    return
+    yield
 
   def GetFilesToCopy(self):
-    """Empty files to copy."""
+    """Empty files to copy generator."""
+    return
+    yield
 
 
 class NotWrongDefinition(definition_interface.ScaffolderDefinition):
@@ -128,6 +132,38 @@ class ScaffolderEngineTest(unittest.TestCase):
     self.assertEqual(test1_attr, test_string1)
     self.assertEqual(test2_attr, test_string2)
     self.assertEqual(test3_attr, test_string3)
+
+  def testEngineNotReady(self):
+    """Test if the engine is not yet fully configured."""
+    eng = engine.ScaffolderEngine()
+    with self.assertRaises(errors.EngineNotConfigured):
+      _ = list(eng.GenerateFiles())
+
+    path = 'this is absolutely the correct path'
+    eng.SetProjectRootPath(path)
+
+    with self.assertRaises(errors.EngineNotConfigured):
+      _ = list(eng.GenerateFiles())
+
+    eng.SetModuleName('TestBarWithFoo')
+    with self.assertRaises(errors.EngineNotConfigured):
+      _ = list(eng.GenerateFiles())
+
+    with self.assertRaises(errors.ScaffolderNotConfigured):
+      eng.StoreScaffolderAttribute('test1', 'foobar', str)
+
+    eng.SetScaffolder(AwesomeScaffolder())
+    with self.assertRaises(errors.EngineNotConfigured):
+      _ = list(eng.GenerateFiles())
+
+    test_string1 = 'Test String'
+    test_string2 = 'Part of the scaffolder'
+    test_string3 = 'I\'m stored in the scaffolder!'
+    eng.StoreScaffolderAttribute('test1', test_string1, str)
+    eng.StoreScaffolderAttribute('test2', test_string2, str)
+    eng.StoreScaffolderAttribute('test3', test_string3, str)
+
+    self.assertListEqual(list(eng.GenerateFiles()), [])
 
 
 if __name__ == '__main__':

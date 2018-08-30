@@ -144,6 +144,7 @@ class ParserMapper(BaseMappingHelper):
     """Set the template path for the parser mapper."""
     self._template_path = template_path
     template_loader = jinja2.FileSystemLoader(self._template_path)
+    # TODO: Check if autoescape can be set to True due to potential XSS issues.
     self._template_environment = jinja2.Environment(
         autoescape=False, loader=template_loader, trim_blocks=False)
 
