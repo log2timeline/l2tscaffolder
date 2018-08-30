@@ -29,6 +29,8 @@ class PlasoSqliteScaffolderTest(unittest.TestCase):
     scaffolder.SetAttribute('queries', queries, dict)
     scaffolder.SetAttribute('required_tables', required_tables, list)
 
+    # TODO: Actually implement a proper test... waiting for common
+    # libraries to be pushed.
     self.assertFalse(True)
 
 

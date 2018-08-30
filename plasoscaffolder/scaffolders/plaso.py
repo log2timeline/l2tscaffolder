@@ -22,7 +22,7 @@ class PlasoScaffolder(interface.Scaffolder):
   DESCRIPTION = 'This is a scaffolder for plaso parsers and/or plugins'
 
   # Plugin type can be either 'parser' or 'plugin'.
-  # If this is a plugin a plugin directory is based off the PROVIDES name.
+  # If this is a plugin a plugin directory is based off the NAME attribute.
   PLUGIN_TYPE = 'parser'
 
   # Define which project this particular scaffolder belongs to.
@@ -38,6 +38,15 @@ class PlasoScaffolder(interface.Scaffolder):
   # user should be prompted about before the plugin or parser is created.
   # Each element in the list should be of the named tuple question.
   QUESTIONS = []
+
+  def __init__(self):
+    """Initializes the plaso scaffolder."""
+    super(PlasoScaffolder, self).__init__()
+    self._formatter_path = ''
+    self._formatter_test_path = ''
+    self._parser_path = ''
+    self._parser_test_path = ''
+    self._mapping_helper = mapping_helper.ParserMapper()
 
   def _GenerateFormatter(self) -> str:
     """Generate the formatter file."""
@@ -62,7 +71,7 @@ class PlasoScaffolder(interface.Scaffolder):
   def GetQuestions(self) -> List[Type[interface.Scaffolder]]:
     """Return back a list of all questions."""
     questions = self.QUESTIONS
-    questions.append(interface.question(
+    questions.append(interface.Question(
         'test_file', 'Path to the test file.',
         'Path to a test file used by the parser or plugin.', str))
     return questions
@@ -124,7 +133,7 @@ class PlasoScaffolder(interface.Scaffolder):
     self._parser_test_path = os.path.join('tests', 'parsers')
 
     if self.PLUGIN_TYPE == 'plugin':
-      plugin_path_name = '{0:s}_plugins'.format(self.PROVIDES)
+      plugin_path_name = '{0:s}_plugins'.format(self.NAME)
       self._parser_path = os.path.join(self._parser_path, plugin_path_name)
       self._parser_test_path = os.path.join(
           self._parser_test_path, plugin_path_name)
@@ -132,5 +141,4 @@ class PlasoScaffolder(interface.Scaffolder):
     self._formatter_path = os.path.join('plaso', 'formatters')
     self._formatter_test_path = os.path.join('tests', 'formatters')
 
-    self._mapping_helper = mapping_helper.ParserMapper()
     self._mapping_helper.SetDefaultPaths()

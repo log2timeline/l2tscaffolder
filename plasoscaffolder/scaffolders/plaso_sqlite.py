@@ -6,8 +6,6 @@ import sqlite3
 from typing import Iterator
 from typing import Tuple
 
-from plasoscaffolder.lib import definitions
-from plasoscaffolder.lib import errors
 from plasoscaffolder.scaffolders import interface
 from plasoscaffolder.scaffolders import plaso
 from plasoscaffolder.scaffolders import manager
@@ -39,11 +37,11 @@ class PlasoSQliteScaffolder(plaso.PlasoScaffolder):
   # user should be prompted about before the plugin or parser is created.
   # Each element in the list should be of the named tuple question.
   QUESTIONS = [
-      interface.question(
+      interface.Question(
           'queries', 'Query name and SQL queries to extract data',
           ('Define the name of the SQL query as well as the actual '
            'SQL queries this plugin will execute'), dict),
-      interface.question(
+      interface.Question(
           'required_tables', 'List of required tables',
           'Define a list of all required tables.', list)]
 
@@ -61,7 +59,7 @@ class PlasoSQliteScaffolder(plaso.PlasoScaffolder):
           table_name: ' '.join(query.split())
           for table_name, query in sql_results}
 
-    except sqlite3.DatabaseError as exception:
+    except sqlite3.DatabaseError:
       database.close()
       raise
 
