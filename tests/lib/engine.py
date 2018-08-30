@@ -53,73 +53,73 @@ class ScaffolderEngineTest(unittest.TestCase):
 
   def testSetModuleName(self):
     """Test setting the module name."""
-    eng = engine.ScaffolderEngine()
+    test_engine = engine.ScaffolderEngine()
     test_name = 'foobar'
 
-    eng.SetModuleName(test_name)
+    test_engine.SetModuleName(test_name)
 
-    module_name = getattr(eng, '_module_name', 'N/A')
+    module_name = getattr(test_engine, '_module_name', 'N/A')
     self.assertEqual(module_name, test_name.title())
 
     test_name = 'some module this is'
     expected_module_name = 'SomeModuleThisIs'
     expected_file_name = 'some_module_this_is'
 
-    eng.SetModuleName(test_name)
-    module_name = getattr(eng, '_module_name', 'N/A')
-    file_name = getattr(eng, '_file_name_prefix', 'N/A')
+    test_engine.SetModuleName(test_name)
+    module_name = getattr(test_engine, '_module_name', 'N/A')
+    file_name = getattr(test_engine, '_file_name_prefix', 'N/A')
 
     self.assertEqual(expected_module_name, module_name)
     self.assertEqual(expected_file_name, file_name)
 
   def testSetProjectRootPath(self):
     """Test setting the root path to a project."""
-    eng = engine.ScaffolderEngine()
+    test_engine = engine.ScaffolderEngine()
 
     # Test a path that will fail.
     path = os.path.join(os.path.curdir, 'wrong path')
     with self.assertRaises(errors.NoValidDefinition):
-      eng.SetProjectRootPath(path)
+      test_engine.SetProjectRootPath(path)
 
     path = 'this is absolutely the correct path'
-    eng.SetProjectRootPath(path)
+    test_engine.SetProjectRootPath(path)
 
-    root_path = getattr(eng, '_definition_root_path', '')
-    project = getattr(eng, '_definition', '')
+    root_path = getattr(test_engine, '_definition_root_path', '')
+    project = getattr(test_engine, '_definition', '')
 
     self.assertEqual(root_path, path)
     self.assertEqual(project, NotWrongDefinition.NAME)
 
   def testSetScaffolder(self):
     """Test setting the scaffolder of a scaffolder engine."""
-    eng = engine.ScaffolderEngine()
+    test_engine = engine.ScaffolderEngine()
     test_scaffolder = AwesomeScaffolder()
 
-    eng.SetScaffolder(test_scaffolder)
+    test_engine.SetScaffolder(test_scaffolder)
 
-    self.assertTrue(hasattr(eng, '_scaffolder'))
+    self.assertTrue(hasattr(test_engine, '_scaffolder'))
     self.assertIsInstance(
-        getattr(eng, '_scaffolder', None), scaffolder_interface.Scaffolder)
+        getattr(test_engine, '_scaffolder', None), scaffolder_interface.Scaffolder)
 
   def testStoreScaffolderAttribute(self):
     """Test storing attributes in a scaffolder."""
-    eng = engine.ScaffolderEngine()
+    test_engine = engine.ScaffolderEngine()
     test_scaffolder = AwesomeScaffolder()
-    eng.SetScaffolder(test_scaffolder)
+    test_engine.SetScaffolder(test_scaffolder)
 
     test_string1 = 'Test String'
     test_string2 = 'Part of the scaffolder'
     test_string3 = 'I\'m stored in the scaffolder!'
 
-    eng.StoreScaffolderAttribute('test1', test_string1, str)
+    test_engine.StoreScaffolderAttribute('test1', test_string1, str)
     with self.assertRaises(errors.ScaffolderNotConfigured):
       test_scaffolder.RaiseIfNotReady()
 
-    eng.StoreScaffolderAttribute('test2', test_string2, str)
+    test_engine.StoreScaffolderAttribute('test2', test_string2, str)
     with self.assertRaises(errors.ScaffolderNotConfigured):
       test_scaffolder.RaiseIfNotReady()
 
-    eng.StoreScaffolderAttribute('test3', test_string3, str)
+    test_engine.StoreScaffolderAttribute('test3', test_string3, str)
     self.assertIsNone(test_scaffolder.RaiseIfNotReady())
 
     scaffolder_attributes = getattr(test_scaffolder, '_attributes', {})
@@ -132,36 +132,36 @@ class ScaffolderEngineTest(unittest.TestCase):
     self.assertEqual(test3_attr, test_string3)
 
   def testEngineNotReady(self):
-    """Test if the engine is not yet fully configured."""
-    eng = engine.ScaffolderEngine()
+    """Test if the engine is fully configured."""
+    test_engine = engine.ScaffolderEngine()
     with self.assertRaises(errors.EngineNotConfigured):
-      _ = list(eng.GenerateFiles())
+      _ = list(test_engine.GenerateFiles())
 
     path = 'this is absolutely the correct path'
-    eng.SetProjectRootPath(path)
+    test_engine.SetProjectRootPath(path)
 
     with self.assertRaises(errors.EngineNotConfigured):
-      _ = list(eng.GenerateFiles())
+      _ = list(test_engine.GenerateFiles())
 
-    eng.SetModuleName('TestBarWithFoo')
+    test_engine.SetModuleName('TestBarWithFoo')
     with self.assertRaises(errors.EngineNotConfigured):
-      _ = list(eng.GenerateFiles())
+      _ = list(test_engine.GenerateFiles())
 
     with self.assertRaises(errors.ScaffolderNotConfigured):
-      eng.StoreScaffolderAttribute('test1', 'foobar', str)
+      test_engine.StoreScaffolderAttribute('test1', 'foobar', str)
 
-    eng.SetScaffolder(AwesomeScaffolder())
+    test_engine.SetScaffolder(AwesomeScaffolder())
     with self.assertRaises(errors.EngineNotConfigured):
-      _ = list(eng.GenerateFiles())
+      _ = list(test_engine.GenerateFiles())
 
     test_string1 = 'Test String'
     test_string2 = 'Part of the scaffolder'
     test_string3 = 'I\'m stored in the scaffolder!'
-    eng.StoreScaffolderAttribute('test1', test_string1, str)
-    eng.StoreScaffolderAttribute('test2', test_string2, str)
-    eng.StoreScaffolderAttribute('test3', test_string3, str)
+    test_engine.StoreScaffolderAttribute('test1', test_string1, str)
+    test_engine.StoreScaffolderAttribute('test2', test_string2, str)
+    test_engine.StoreScaffolderAttribute('test3', test_string3, str)
 
-    self.assertListEqual(list(eng.GenerateFiles()), [])
+    self.assertListEqual(list(test_engine.GenerateFiles()), [])
 
 
 if __name__ == '__main__':

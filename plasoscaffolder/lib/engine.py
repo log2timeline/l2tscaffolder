@@ -11,7 +11,7 @@ from plasoscaffolder.lib import file_handler
 from plasoscaffolder.scaffolders import interface as scaffolder_interface
 
 
-class ScaffolderEngine(object):
+class ScaffolderEngine:
   """The engine, responsible for file handling and setting up scaffolders."""
 
   def __init__(self):
@@ -26,7 +26,7 @@ class ScaffolderEngine(object):
     self._scaffolder = None
 
   def _RaiseIfNotReady(self):
-    """Check to see if all attributes are set to start generating files.
+    """Checks to see if all attributes are set to start generating files.
 
     Raises:
       errors.EngineNotConfigured: when the engine is not fully configured.
@@ -47,7 +47,7 @@ class ScaffolderEngine(object):
       raise errors.EngineNotConfigured(exception)
 
   def GenerateFiles(self) -> Iterator[str]:
-    """Generates the needed files.
+    """Generates needed files.
 
     Raises:
       errors.EngineNotConfigured: when not all attributes have been configured.
@@ -74,7 +74,7 @@ class ScaffolderEngine(object):
     self._module_name = self._file_name_prefix.replace(
         '_', ' ').title().replace(' ', '')
 
-  def SetScaffolder(self, scaffolder: Type[scaffolder_interface.Scaffolder]):
+  def SetScaffolder(self, scaffolder: scaffolder_interface.Scaffolder):
     """Stores the scaffolder object in the engine."""
     self._scaffolder = scaffolder
     self._scaffolder.SetupScaffolder()
@@ -92,23 +92,23 @@ class ScaffolderEngine(object):
         self._definition_root_path = root_path
         return
 
-    raise errors.NoValidDefinition('No valid project has been identified.')
+    raise errors.NoValidDefinition('No valid definition has been identified.')
 
   def StoreScaffolderAttribute(
       self, name: str, value: object, value_type: object):
     """Store an attribute read from the CLI.
 
     Args:
-      name (str): The attribute name.
-      value (value_type): The attribute value.
-      value_type (type): The attribute type.
+      name (str): the attribute name.
+      value (value_type): the attribute value.
+      value_type (type): the attribute type.
 
     Raises:
-      KeyError: If the attribute name is already defined.
-      ScaffolderNotConfigured: If the scaffolder has not yet been set.
-      ValueError: If the value is not of the correct type.
+      KeyError: if the attribute name is already defined.
+      ScaffolderNotConfigured: if the scaffolder has not yet been set.
+      ValueError: if the value is not of the correct type.
     """
     if not self._scaffolder:
-      raise errors.ScaffolderNotConfigured(u'Scaffolder has not yet been set.')
+      raise errors.ScaffolderNotConfigured('Scaffolder has not yet been set.')
 
     self._scaffolder.SetAttribute(name, value, value_type)

@@ -1,16 +1,14 @@
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
-# testing private members is on purpose
-# pylint: disable=protected-access
-"""test class"""
+"""Tests for the mapping helper."""
 import unittest
 
 from plasoscaffolder.lib import mapping_helper
 from tests.test_helper import path_helper
 
-
+# pylint: disable=protected-access
 class MappingHelperTest(unittest.TestCase):
-  """ Class representing a test case for the mapping helper functions. """
+  """Tests for the mapping helper."""
 
   def setUp(self):
     self.template_path = path_helper.TestTemplatePath()
@@ -22,7 +20,7 @@ class MappingHelperTest(unittest.TestCase):
     self.helper.SetFormatterPath(yapf_path)
 
   def testRender(self):
-    """test the render """
+    """Test the render method."""
     context = {'plugin_name': self.plugin_name}
     actual = self.helper.RenderTemplate(self.file, context)
     expected = '# -*- coding: utf-8 -*-\n"""{0}"""\n'.format(
@@ -30,7 +28,7 @@ class MappingHelperTest(unittest.TestCase):
     self.assertEqual(expected, actual)
 
   def testGenerateClassName(self):
-    """Test the generation of the classname from the pluginname"""
+    """Test the generation of the classname from the pluginname."""
     name = 'this_is_a_test'
     expected = 'ThisIsATest'
     actual = self.helper.GenerateClassName(name)
@@ -49,25 +47,25 @@ class MappingHelperTest(unittest.TestCase):
     actual = self.helper._RemoveEscapeError(string_without_error)
     self.assertEqual(string_without_error, actual)
 
-  def testRemoveBlanksAtEndOfLineForTwoBlanks(self):
-    """Tests the removing of blanks at the end of a line"""
+  def testRemovewhitespaceAtEndOfLineForTwowhitespace(self):
+    """Tests the removing of whitespace at the end of a line."""
     string_with_blank = 'somestuff  \n'
     string_without_blank = 'somestuff\n'
-    actual = self.helper._RemoveBlanksAtEndOfLine(string_with_blank)
+    actual = self.helper._RemoveWhitespaceAtEndOfLine(string_with_blank)
     self.assertEqual(string_without_blank, actual)
 
-  def testRemoveBlanksAtEndOfLineForFourBlanks(self):
-    """Tests the removing of blanks at the end of a line"""
+  def testRemovewhitespaceAtEndOfLineForFourwhitespace(self):
+    """Tests the removing of whitespace at the end of a line."""
     string_with_blank = '    \n'
     string_without_blank = '\n'
-    actual = self.helper._RemoveBlanksAtEndOfLine(string_with_blank)
+    actual = self.helper._RemoveWhitespaceAtEndOfLine(string_with_blank)
     self.assertEqual(string_without_blank, actual)
 
-  def testRemoveBlanksAtEndOfLineFor12Blanks(self):
-    """Tests the removing of blanks at the end of a line"""
+  def testRemovewhitespaceAtEndOfLineFor12whitespace(self):
+    """Tests the removing of whitespace at the end of a line"""
     string_with_blank = 'somestuff            \n'
     string_without_blank = 'somestuff\n'
-    actual = self.helper._RemoveBlanksAtEndOfLine(string_with_blank)
+    actual = self.helper._RemoveWhitespaceAtEndOfLine(string_with_blank)
     self.assertEqual(string_without_blank, actual)
 
   def testRemoveYapfCommentOnlyTheEnable(self):

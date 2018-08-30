@@ -7,7 +7,7 @@ import jinja2
 from plasoscaffolder.lib import code_formatter
 
 
-class BaseMappingHelper(object):
+class BaseMappingHelper:
   """Base Mapping Helper base class."""
   __metaclass__ = abc.ABCMeta
 
@@ -36,7 +36,7 @@ class BaseMappingHelper(object):
 
 
 class ParserMapper(BaseMappingHelper):
-  """Mapping Helper class for parsers."""
+  """Mapping Helper class for Plaso parsers."""
 
   def __init__(self):
     """Initializing the mapping helper class."""
@@ -45,16 +45,16 @@ class ParserMapper(BaseMappingHelper):
     self._template_environment = None
     self.formatter = None
 
-  def _RemoveBlanksAtEndOfLine(self, template: str) -> str:
+  def _RemoveWhitespaceAtEndOfLine(self, template: str) -> str:
     """Removes blanks at the end of lines.
 
     This is for those parts that are ignored with yapf.
 
     Args:
-      template (str): the template to remove the blanks at the end of lines
+      template (str): template to remove end-of-line whitespace from.
 
     Returns:
-      str: the template without blanks on the line endings
+      str: template without end-of-line whitespace.
     """
     while template.find('  \n') != -1:
       template = template.replace('  \n', '\n')
@@ -86,14 +86,14 @@ class ParserMapper(BaseMappingHelper):
   def _RemoveYapfComment(self, template: str) -> str:
     """Remove the yapf comment line.
 
-    The Line as well as the new line will be removed.
-    The yapf Comment has to be at the end of the line. Or on its own line.
+    The line as well as the new line will be removed.
+    The yapf comment has to be at the end of the line, or on its own line.
 
     Args:
-      template (str): the resulting template as a python file string
+      template (str): template to remove yapf comments from.
 
     Returns:
-      str: the template without yapf comment lines
+      str: template with yapf comments removed.
     """
     return template.replace('# yapf: disable\n', '').replace(
         '# yapf: enable\n', '')
@@ -102,10 +102,10 @@ class ParserMapper(BaseMappingHelper):
     """Generates the class name from the plugin name.
 
     Args:
-      plugin_name (str): the name of the plugin
+      plugin_name (str): name of the plugin
 
     Returns:
-      str: the name of the class
+      str: name of the class
     """
     return plugin_name.replace('_', ' ').title().replace(' ', '')
 
@@ -125,7 +125,7 @@ class ParserMapper(BaseMappingHelper):
 
     formatted = self.formatter.Format(template)[0]
     formatted = self._RemoveYapfComment(formatted)
-    formatted = self._RemoveBlanksAtEndOfLine(formatted)
+    formatted = self._RemoveWhitespaceAtEndOfLine(formatted)
 
     return formatted
 

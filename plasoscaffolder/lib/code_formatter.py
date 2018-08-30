@@ -12,7 +12,7 @@ class CodeFormatter(base_code_formatter.BaseCodeFormatter):
     """Initializing the code formatter.
 
     Args:
-      yapf_path (str): the path to the yapf style file
+      yapf_path (str): path to the yapf style file.
     """
     super().__init__()
     self.yapf_path = yapf_path
@@ -21,7 +21,7 @@ class CodeFormatter(base_code_formatter.BaseCodeFormatter):
     """Formats the code.
 
     Args:
-      code (str): the code to format
+      code (str): code to format
 
     Returns:
       str: the formatted code
