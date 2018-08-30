@@ -3,6 +3,7 @@
 import abc
 import collections
 
+from typing import Iterator
 from typing import List
 from typing import Tuple
 
@@ -43,7 +44,7 @@ class Scaffolder:
     return self.QUESTIONS
 
   @abc.abstractmethod
-  def GenerateFiles(self) -> Tuple[str, str]:
+  def GenerateFiles(self) -> Iterator[Tuple[str, str]]:
     """Generate all the files this scaffolder provides.
 
     Yields:
@@ -51,7 +52,7 @@ class Scaffolder:
     """
 
   @abc.abstractmethod
-  def GetFilesToCopy(self) -> Tuple[str, str]:
+  def GetFilesToCopy(self) -> Iterator[Tuple[str, str]]:
     """Return a list of files that need to be copied.
 
     Yields:

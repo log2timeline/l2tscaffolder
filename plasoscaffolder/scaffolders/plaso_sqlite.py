@@ -3,6 +3,7 @@
 import os
 import sqlite3
 
+from typing import Iterator
 from typing import Tuple
 
 from plasoscaffolder.lib import definitions
@@ -12,12 +13,12 @@ from plasoscaffolder.scaffolders import plaso
 from plasoscaffolder.scaffolders import manager
 
 
-class SQliteGenerator(plaso.PlasoScaffolder):
+class PlasoSQliteScaffolder(plaso.PlasoScaffolder):
   """The SQLite scaffolder interface."""
 
   # The name of the plugin or parser this scaffolder provides.
   NAME = 'sqlite'
-  DESCRIPTION = 'Provides a scaffolder to generate SQLite plugins.'
+  DESCRIPTION = 'Provides a scaffolder to generate a plaso SQLite plugin.'
 
   # This scaffolder either defines a plaso parser or a plugin.
   PLUGIN_TYPE = 'plugin'
@@ -66,11 +67,11 @@ class SQliteGenerator(plaso.PlasoScaffolder):
 
     return schema
 
-  def GenerateFiles(self) -> Tuple[str, str]:
+  def GenerateFiles(self) -> Iterator[Tuple[str, str]]:
     """Generate all the files required for a plaso parser or a plugin.
 
     Yields:
-      list: file name and content of the file to be written to disk.
+      tuple (str, str): file name and content of the file to be written to disk.
     """
     _, _, db_name = self._attributes.get('test_file').rpartition(os.sep)
     self._attributes['db_name'] = db_name
@@ -100,7 +101,7 @@ class SQliteGenerator(plaso.PlasoScaffolder):
     self._attributes['db_schema'] = self._GetSchema(
         self._attributes.get('test_file'))
 
-    return super(SQliteGenerator, self).GenerateFiles()
+    return super(PlasoSQliteScaffolder, self).GenerateFiles()
 
 
-manager.ScaffolderManager.RegisterScaffolder(SQliteGenerator)
+manager.ScaffolderManager.RegisterScaffolder(PlasoSQliteScaffolder)

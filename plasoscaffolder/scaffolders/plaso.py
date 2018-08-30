@@ -2,24 +2,25 @@
 """Plaso scaffolder that generates plaso parser and plugins."""
 import os
 
+from typing import Iterator
 from typing import List
 from typing import Tuple
 from typing import Type
 
-from plasoscaffolder.scaffolders import interface
 from plasoscaffolder.lib import definitions
 from plasoscaffolder.lib import file_handler
 from plasoscaffolder.lib import mapping_helper
+from plasoscaffolder.scaffolders import interface
 
 
 class PlasoScaffolder(interface.Scaffolder):
   """The plaso scaffolder interface."""
 
   # The name of the plugin or parser this scaffolder plugin provides.
-  NAME = 'base'
+  NAME = 'plaso_base'
 
   # One liner describing what the scaffolder provides.
-  DESCRIPTION = ''
+  DESCRIPTION = 'This is a scaffolder for plaso parsers and/or plugins'
 
   # Plugin type can be either 'parser' or 'plugin'.
   # If this is a plugin a plugin directory is based off the PROVIDES name.
@@ -39,16 +40,6 @@ class PlasoScaffolder(interface.Scaffolder):
   # Each element in the list should be of the named tuple question.
   QUESTIONS = []
 
-  def _GenerateParser(self) -> str:
-    """Generate the parser file."""
-    return self._mapping_helper.RenderTemplate(
-        self.TEMPLATE_PARSER_FILE, self._attributes)
-
-  def _GenerateParserTest(self) -> str:
-    """Generate the parser test file."""
-    return self._mapping_helper.RenderTemplate(
-        self.TEMPLATE_PARSER_TEST, self._attributes)
-
   def _GenerateFormatter(self) -> str:
     """Generate the formatter file."""
     return self._mapping_helper.RenderTemplate(
@@ -59,6 +50,16 @@ class PlasoScaffolder(interface.Scaffolder):
     return self._mapping_helper.RenderTemplate(
         self.TEMPLATE_FORMATTER_TEST, self._attributes)
 
+  def _GenerateParser(self) -> str:
+    """Generate the parser file."""
+    return self._mapping_helper.RenderTemplate(
+        self.TEMPLATE_PARSER_FILE, self._attributes)
+
+  def _GenerateParserTest(self) -> str:
+    """Generate the parser test file."""
+    return self._mapping_helper.RenderTemplate(
+        self.TEMPLATE_PARSER_TEST, self._attributes)
+
   def GetQuestions(self) -> List[Type[interface.Scaffolder]]:
     """Return back a list of all questions."""
     questions = self.QUESTIONS
@@ -67,7 +68,7 @@ class PlasoScaffolder(interface.Scaffolder):
         'Path to a test file used by the parser or plugin.', str))
     return questions
 
-  def GenerateFiles(self) -> Tuple[str, str]:
+  def GenerateFiles(self) -> Iterator[Tuple[str, str]]:
     """Generate all the files required for a plaso parser or a plugin.
 
     Yields:
@@ -104,7 +105,7 @@ class PlasoScaffolder(interface.Scaffolder):
             self._parser_path.replace(os.sep, '.'), self._output_name)
     yield os.path.join(self._parser_path, '__init__.py'), parser_string
 
-  def GetFilesToCopy(self) -> Tuple[str, str]:
+  def GetFilesToCopy(self) -> Iterator[Tuple[str, str]]:
     """Return a list of files that need to be copied.
 
     Yields:
@@ -120,7 +121,7 @@ class PlasoScaffolder(interface.Scaffolder):
   def SetupScaffolder(self):
     """Sets up the scaffolder."""
     super(PlasoScaffolder, self).SetupScaffolder()
-    self._parser_path= os.path.join('plaso', 'parsers')
+    self._parser_path = os.path.join('plaso', 'parsers')
     self._parser_test_path = os.path.join('tests', 'parsers')
 
     if self.PLUGIN_TYPE == 'plugin':
