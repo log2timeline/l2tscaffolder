@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
-"""To Format the code """
+"""Formatter for generated code."""
 
-from plasoscaffolder.common import base_code_formatter
 from yapf.yapflib import yapf_api
 
 
-class CodeFormatter(base_code_formatter.BaseCodeFormatter):
-  """Class handles the code formation of files."""
+class CodeFormatter:
+  """Class to handle the code formation of files."""
 
   def __init__(self, yapf_path: str):
     """Initializing the code formatter.

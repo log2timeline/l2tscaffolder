@@ -58,7 +58,8 @@ class ScaffolderEngineTest(unittest.TestCase):
 
     test_engine.SetModuleName(test_name)
 
-    module_name = getattr(test_engine, '_module_name', 'N/A')
+    # pylint: disable=protected-access
+    module_name = test_engine._module_name
     self.assertEqual(module_name, test_name.title())
 
     test_name = 'some module this is'
@@ -66,8 +67,9 @@ class ScaffolderEngineTest(unittest.TestCase):
     expected_file_name = 'some_module_this_is'
 
     test_engine.SetModuleName(test_name)
-    module_name = getattr(test_engine, '_module_name', 'N/A')
-    file_name = getattr(test_engine, '_file_name_prefix', 'N/A')
+    # pylint: disable=protected-access
+    module_name = test_engine._module_name
+    file_name = test_engine._file_name_prefix
 
     self.assertEqual(expected_module_name, module_name)
     self.assertEqual(expected_file_name, file_name)
@@ -84,8 +86,9 @@ class ScaffolderEngineTest(unittest.TestCase):
     path = 'this is absolutely the correct path'
     test_engine.SetProjectRootPath(path)
 
-    root_path = getattr(test_engine, '_definition_root_path', '')
-    project = getattr(test_engine, '_definition', '')
+    # pylint: disable=protected-access
+    root_path = test_engine._definition_root_path
+    project = test_engine._definition
 
     self.assertEqual(root_path, path)
     self.assertEqual(project, NotWrongDefinition.NAME)
@@ -98,8 +101,9 @@ class ScaffolderEngineTest(unittest.TestCase):
     test_engine.SetScaffolder(test_scaffolder)
 
     self.assertTrue(hasattr(test_engine, '_scaffolder'))
+    # pylint: disable=protected-access
     self.assertIsInstance(
-        getattr(test_engine, '_scaffolder', None), scaffolder_interface.Scaffolder)
+        test_engine._scaffolder, scaffolder_interface.Scaffolder)
 
   def testStoreScaffolderAttribute(self):
     """Test storing attributes in a scaffolder."""
@@ -122,7 +126,8 @@ class ScaffolderEngineTest(unittest.TestCase):
     test_engine.StoreScaffolderAttribute('test3', test_string3, str)
     self.assertIsNone(test_scaffolder.RaiseIfNotReady())
 
-    scaffolder_attributes = getattr(test_scaffolder, '_attributes', {})
+    # pylint: disable=protected-access
+    scaffolder_attributes = test_scaffolder._attributes
     test1_attr = scaffolder_attributes.get('test1', '')
     test2_attr = scaffolder_attributes.get('test2', '')
     test3_attr = scaffolder_attributes.get('test3', '')

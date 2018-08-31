@@ -1,42 +1,13 @@
 # -*- coding: utf-8 -*-
 """Helper methods for mapping."""
-import abc
 import os
 import jinja2
 
 from plasoscaffolder.lib import code_formatter
 
 
-class BaseMappingHelper:
-  """Base Mapping Helper base class."""
-  __metaclass__ = abc.ABCMeta
-
-  @abc.abstractmethod
-  def RenderTemplate(self, template_filename: str, context: dict) -> str:
-    """Renders the template with the context to return a string.
-
-    Args:
-      template_filename (str): the name of the template
-      context (dict): the context of the template as a dictionary
-
-    Returns:
-      str: the rendered template as a string
-    """
-
-  @abc.abstractmethod
-  def GenerateClassName(self, plugin_name: str) -> str:
-    """Generates the class name from the plugin name.
-
-    Args:
-      plugin_name (str): the name of the plugin
-
-    Returns:
-      str: the name of the class
-    """
-
-
-class ParserMapper(BaseMappingHelper):
-  """Mapping Helper class for Plaso parsers."""
+class ParserMapper:
+  """Mapping Helper class for scaffolders."""
 
   def __init__(self):
     """Initializing the mapping helper class."""
@@ -64,7 +35,7 @@ class ParserMapper(BaseMappingHelper):
     """Remove the escape error.
 
     Because jinja template variable is first escaped and then word wrapped,
-    the escaped backslash can be split and can result in an eol.
+    the escaped backslash can be split and can result in an EOL.
     The escaped backslash will be placed on the next line.
     This is a workaround and can be removed if yapf supports unicode string
     formatting and it is also changed in the jinja2 template, and only works
@@ -76,12 +47,10 @@ class ParserMapper(BaseMappingHelper):
     Returns:
       str: the template without escape (eol) errors
     """
-
     to_be_replaced = '\\\'\n        u\'\\'
     to_be_replaced_with = '\'\n        u\'\\\\'
 
-    template = template.replace(to_be_replaced, to_be_replaced_with)
-    return template
+    return template.replace(to_be_replaced, to_be_replaced_with)
 
   def _RemoveYapfComment(self, template: str) -> str:
     """Remove the yapf comment line.
@@ -98,16 +67,16 @@ class ParserMapper(BaseMappingHelper):
     return template.replace('# yapf: disable\n', '').replace(
         '# yapf: enable\n', '')
 
-  def GenerateClassName(self, plugin_name: str) -> str:
-    """Generates the class name from the plugin name.
+  def GenerateClassName(self, scaffolder_name: str) -> str:
+    """Generates a class name from the scaffolder name for file generation.
 
     Args:
-      plugin_name (str): name of the plugin
+      scaffolder_name (str): name of the scaffolder
 
     Returns:
       str: name of the class
     """
-    return plugin_name.replace('_', ' ').title().replace(' ', '')
+    return scaffolder_name.replace('_', ' ').title().replace(' ', '')
 
   def RenderTemplate(self, template_filename: str, context: dict) -> str:
     """Renders the template with the context to return a string.
@@ -141,7 +110,11 @@ class ParserMapper(BaseMappingHelper):
     self.SetFormatterPath(formatter_path)
 
   def SetTemplatePath(self, template_path: str):
-    """Set the template path for the parser mapper."""
+    """Set the template path for the parser mapper.
+
+    Args:
+      template_path (str): file path to the template.
+    """
     self._template_path = template_path
     template_loader = jinja2.FileSystemLoader(self._template_path)
     # TODO: Check if autoescape can be set to True due to potential XSS issues.
@@ -149,5 +122,9 @@ class ParserMapper(BaseMappingHelper):
         autoescape=False, loader=template_loader, trim_blocks=False)
 
   def SetFormatterPath(self, formatter_path: str):
-    """Set the path to the formatter."""
+    """Set up code formatter object from a path to the formatter.
+
+    Args:
+      formatter_path (str): the path to the formatter.
+    """
     self.formatter = code_formatter.CodeFormatter(formatter_path)

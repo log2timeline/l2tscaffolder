@@ -9,18 +9,18 @@ class FileHandler:
   """Handles the creation of files."""
 
   @classmethod
-  def CreateFilePath(cls, path: str, name: str, suffix: str) -> str:
+  def CreateFilePath(cls, path: str, name: str, extension: str) -> str:
     """Creates the file path from the directory path, filename and suffix.
 
     Args:
       path (str): path to the file directory.
       name (str): filename.
-      suffix (str): suffix.
+      extension (str): file extension.
 
     Returns:
       str: the path to the file.
     """
-    file_name = '{0:s}.{1:s}'.format(name, suffix)
+    file_name = '{0:s}.{1:s}'.format(name, extension)
     return os.path.join(path, file_name)
 
   @classmethod
@@ -36,24 +36,24 @@ class FileHandler:
     os.makedirs(directory_path)
 
   def CreateFile(
-      self, directory_path: str, file_name: str, filename_suffix: str):
+      self, directory_path: str, file_name: str, filename_extension: str):
     """Creates a empty file.
 
     Args:
       directory_path (str): path to the directory the file should be created in.
       file_name (str): name of the new file.
-      filename_suffix (str): suffix of the new file.
+      filename_extension (str): extension of the new file.
 
     Returns:
       str: path of the created file
     """
     file_path = self.CreateFilePath(
-        directory_path, file_name, filename_suffix)
+        directory_path, file_name, filename_extension)
 
     if not os.path.exists(directory_path):
       self._CreateFolder(directory_path)
 
-    pathlib.Path(file_path).touch()
+    _ = pathlib.Path(file_path).touch()
     return file_path
 
   def CreateFileFromPath(self, file_path: str) -> str:
@@ -66,7 +66,7 @@ class FileHandler:
       str: the path of the created file
     """
     self.CreateFolderForFilePathIfNotExist(file_path)
-    pathlib.Path(file_path).touch()
+    _ = pathlib.Path(file_path).touch()
     return file_path
 
   def CopyFile(self, source: str, destination: str) -> str:
