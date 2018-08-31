@@ -4,6 +4,8 @@ import os
 import pathlib
 import shutil
 
+from plasoscaffolder.lib import errors
+
 
 class FileHandler:
   """Handles the creation of files."""
@@ -36,7 +38,8 @@ class FileHandler:
     os.makedirs(directory_path)
 
   def CreateFile(
-      self, directory_path: str, file_name: str, filename_extension: str):
+      self, directory_path: str, file_name: str,
+      filename_extension: str) -> str:
     """Creates a empty file.
 
     Args:
@@ -65,22 +68,31 @@ class FileHandler:
     Returns:
       str: the path of the created file
     """
-    self.CreateFolderForFilePathIfNotExist(file_path)
+    _ = self.CreateFolderForFilePathIfNotExist(file_path)
     _ = pathlib.Path(file_path).touch()
     return file_path
 
   def CopyFile(self, source: str, destination: str) -> str:
     """Copies a file.
 
-      Args:
-        source (str): path of the file to copy
-        destination (str): path to copy the file to.
+    Args:
+      source (str): path of the file to copy
+      destination (str): path to copy the file to.
 
-      Returns:
-        str: the path of the copied file
-      """
-    self.CreateFolderForFilePathIfNotExist(destination)
-    shutil.copyfile(source, destination)
+    Returns:
+      str: the path of the copied file
+    """
+    _ = self.CreateFolderForFilePathIfNotExist(destination)
+    try:
+      shutil.copyfile(source, destination)
+    except shutil.SameFileError as exception:
+      raise errors.FileHandlingError((
+          'Unable to copy file source and dest are the same files. '
+          'Original error message: {0:s}').format(exception))
+    except OSError as exception:
+      raise errors.FileHandlingError(
+          'Unable to copy file, error message: {0:s}'.format(exception))
+
     return destination
 
   def CreateOrModifyFileWithContent(self, source: str, content: str):
@@ -93,8 +105,8 @@ class FileHandler:
     Returns:
       str: path of the edited file.
     """
-    self.CreateFolderForFilePathIfNotExist(source)
-    self.AddContent(source, content)
+    _ = self.CreateFolderForFilePathIfNotExist(source)
+    return self.AddContent(source, content)
 
   def AddContent(self, source: str, content: str) -> str:
     """Add content to a file and create file if non existing.
@@ -106,7 +118,7 @@ class FileHandler:
     Returns:
       str: path of the edited file.
     """
-    self.CreateFolderForFilePathIfNotExist(source)
+    _ = self.CreateFolderForFilePathIfNotExist(source)
     with open(source, 'a') as file_object:
       file_object.write(str(content))
 

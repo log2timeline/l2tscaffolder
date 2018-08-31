@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """The scaffolder engine."""
+import logging
 import os
 
 from typing import Iterator
@@ -61,7 +62,13 @@ class ScaffolderEngine:
     for file_source, file_destination in self._scaffolder.GetFilesToCopy():
       if os.path.isfile(file_source):
         full_path = os.path.join(self._definition_root_path, file_destination)
-        yield self._file_handler.CopyFile(file_source, full_path)
+        try:
+          written_file = self._file_handler.CopyFile(file_source, full_path)
+          yield written_file
+        except errors.FileHandlingError as exception:
+          logging.error(
+              'Unable to copy file: {0:s} to {1:s} with error: {2:s}'.format(
+                  file_source, full_path, exception))
 
     for file_path, content in self._scaffolder.GenerateFiles():
       full_path = os.path.join(self._definition_root_path, file_path)
