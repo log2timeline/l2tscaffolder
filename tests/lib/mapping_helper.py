@@ -20,7 +20,7 @@ class MappingHelperTest(unittest.TestCase):
     self.helper.SetFormatterPath(yapf_path)
 
   def testRender(self):
-    """Test the render method."""
+    """Tests the render method."""
     context = {'plugin_name': self.plugin_name}
     actual = self.helper.RenderTemplate(self.file, context)
     expected = '# -*- coding: utf-8 -*-\n"""{0}"""\n'.format(
@@ -28,7 +28,7 @@ class MappingHelperTest(unittest.TestCase):
     self.assertEqual(expected, actual)
 
   def testGenerateClassName(self):
-    """Test the generation of the classname from the pluginname."""
+    """Tests the generation of the class name."""
     name = 'this_is_a_test'
     expected = 'ThisIsATest'
     actual = self.helper.GenerateClassName(name)
@@ -54,14 +54,14 @@ class MappingHelperTest(unittest.TestCase):
     actual = self.helper._RemoveWhitespaceAtEndOfLine(string_with_blank)
     self.assertEqual(string_without_blank, actual)
 
-  def testRemovewhitespaceAtEndOfLineForFourwhitespace(self):
+  def testRemoveWhitespaceAtEndOfLineForFourWhitespace(self):
     """Tests the removing of whitespace at the end of a line."""
     string_with_blank = '    \n'
     string_without_blank = '\n'
     actual = self.helper._RemoveWhitespaceAtEndOfLine(string_with_blank)
     self.assertEqual(string_without_blank, actual)
 
-  def testRemovewhitespaceAtEndOfLineFor12whitespace(self):
+  def testRemoveWhitespaceAtEndOfLineFor12Whitespace(self):
     """Tests the removing of whitespace at the end of a line"""
     string_with_blank = 'somestuff            \n'
     string_without_blank = 'somestuff\n'

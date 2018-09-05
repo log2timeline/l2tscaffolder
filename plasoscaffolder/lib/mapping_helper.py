@@ -7,10 +7,10 @@ from plasoscaffolder.lib import code_formatter
 
 
 class ParserMapper:
-  """Mapping Helper class for scaffolders."""
+  """Mapping helper for scaffolders."""
 
   def __init__(self):
-    """Initializing the mapping helper class."""
+    """Initializes the mapping helper class."""
     super(ParserMapper, self).__init__()
     self._template_path = ''
     self._template_environment = None
@@ -32,7 +32,7 @@ class ParserMapper:
     return template
 
   def _RemoveEscapeError(self, template: str) -> str:
-    """Remove the escape error.
+    """Removes the escape error.
 
     Because jinja template variable is first escaped and then word wrapped,
     the escaped backslash can be split and can result in an EOL.
@@ -53,7 +53,7 @@ class ParserMapper:
     return template.replace(to_be_replaced, to_be_replaced_with)
 
   def _RemoveYapfComment(self, template: str) -> str:
-    """Remove the yapf comment line.
+    """Removes the yapf comment line.
 
     The line as well as the new line will be removed.
     The yapf comment has to be at the end of the line, or on its own line.
@@ -110,7 +110,7 @@ class ParserMapper:
     self.SetFormatterPath(formatter_path)
 
   def SetTemplatePath(self, template_path: str):
-    """Set the template path for the parser mapper.
+    """Sets the template path for the parser mapper.
 
     Args:
       template_path (str): file path to the template.
@@ -122,7 +122,7 @@ class ParserMapper:
         autoescape=False, loader=template_loader, trim_blocks=False)
 
   def SetFormatterPath(self, formatter_path: str):
-    """Set up code formatter object from a path to the formatter.
+    """Sets up a code formatter object from a path to the formatter.
 
     Args:
       formatter_path (str): the path to the formatter.

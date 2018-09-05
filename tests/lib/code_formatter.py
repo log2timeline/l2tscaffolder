@@ -1,6 +1,6 @@
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
-"""Test class for the code formatter."""
+"""Tests for the code formatter."""
 import unittest
 
 from plasoscaffolder.lib import code_formatter
@@ -11,7 +11,7 @@ class CodeFormatterTest(unittest.TestCase):
   """Test case for the code formatter functions. """
 
   def testCodeFormatter(self):
-    """Test the code formatter.."""
+    """Tests the code formatter.."""
     yapf_path = path_helper.YapfStyleFilePath()
     formatter = code_formatter.CodeFormatter(yapf_path)
 

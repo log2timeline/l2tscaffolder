@@ -1,6 +1,6 @@
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
-"""Test class for the scaffolder engine"""
+"""Tests class for the scaffolder engine"""
 import os
 import unittest
 
@@ -52,7 +52,7 @@ class ScaffolderEngineTest(unittest.TestCase):
     definition_manager.DefinitionManager.RegisterDefinition(NotWrongDefinition)
 
   def testSetModuleName(self):
-    """Test setting the module name."""
+    """Tests setting the module name."""
     test_engine = engine.ScaffolderEngine()
     test_name = 'foobar'
 
@@ -75,7 +75,7 @@ class ScaffolderEngineTest(unittest.TestCase):
     self.assertEqual(expected_file_name, file_name)
 
   def testSetProjectRootPath(self):
-    """Test setting the root path to a project."""
+    """Tests setting the root path to a project."""
     test_engine = engine.ScaffolderEngine()
 
     # Test a path that will fail.
@@ -94,7 +94,7 @@ class ScaffolderEngineTest(unittest.TestCase):
     self.assertEqual(project, NotWrongDefinition.NAME)
 
   def testSetScaffolder(self):
-    """Test setting the scaffolder of a scaffolder engine."""
+    """Tests setting the scaffolder of a scaffolder engine."""
     test_engine = engine.ScaffolderEngine()
     test_scaffolder = AwesomeScaffolder()
 
@@ -106,7 +106,7 @@ class ScaffolderEngineTest(unittest.TestCase):
         test_engine._scaffolder, scaffolder_interface.Scaffolder)
 
   def testStoreScaffolderAttribute(self):
-    """Test storing attributes in a scaffolder."""
+    """Tests storing attributes in a scaffolder."""
     test_engine = engine.ScaffolderEngine()
     test_scaffolder = AwesomeScaffolder()
     test_engine.SetScaffolder(test_scaffolder)
@@ -137,7 +137,7 @@ class ScaffolderEngineTest(unittest.TestCase):
     self.assertEqual(test3_attr, test_string3)
 
   def testEngineNotReady(self):
-    """Test if the engine is fully configured."""
+    """Tests if the engine is fully configured."""
     test_engine = engine.ScaffolderEngine()
     with self.assertRaises(errors.EngineNotConfigured):
       _ = list(test_engine.GenerateFiles())

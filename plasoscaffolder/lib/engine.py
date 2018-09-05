@@ -4,6 +4,7 @@ import logging
 import os
 
 from typing import Iterator
+from typing import Type
 
 from plasoscaffolder.definitions import manager
 from plasoscaffolder.lib import errors
@@ -15,7 +16,7 @@ class ScaffolderEngine:
   """The engine, responsible for file handling and setting up scaffolders."""
 
   def __init__(self):
-    """Initialize the engine."""
+    """Initializes the engine."""
     super(ScaffolderEngine, self).__init__()
     self._attributes = {}
     self._definition = ''
@@ -67,7 +68,7 @@ class ScaffolderEngine:
           yield written_file
         except errors.FileHandlingError as exception:
           logging.error(
-              'Unable to copy file: {0:s} to {1:s} with error: {2:s}'.format(
+              'Unable to copy file: {0:s} to {1:s} with error: {2!s}'.format(
                   file_source, full_path, exception))
 
     for file_path, content in self._scaffolder.GenerateFiles():
@@ -95,7 +96,7 @@ class ScaffolderEngine:
     self._scaffolder.SetupScaffolder()
 
   def SetProjectRootPath(self, root_path: str):
-    """Set the path to the root of the project file.
+    """Sets the path to the root of the project tree.
 
     Raises:
       errors.NoValidDefinition: when root path is not identified as a valid
@@ -110,12 +111,12 @@ class ScaffolderEngine:
     raise errors.NoValidDefinition('No valid definition has been identified.')
 
   def StoreScaffolderAttribute(
-      self, name: str, value: object, value_type: object):
-    """Store an attribute read from the CLI.
+      self, name: str, value: object, value_type: Type):
+    """Stores an attribute read from the CLI.
 
     Args:
       name (str): the attribute name.
-      value (value_type): the attribute value.
+      value (object): the attribute value.
       value_type (type): the attribute type.
 
     Raises:

@@ -26,11 +26,11 @@ class FileHandler:
     return os.path.join(path, file_name)
 
   @classmethod
-  def _CreateFolder(cls, directory_path):
+  def _CreateFolder(cls, directory_path: str):
     """Creates a folder.
 
      This function should only to be called if the target folder does not yet
-     exists or there will be an exception.
+     exist or there will be an exception.
 
      Args:
        directory_path (str): path to the directory to create.
@@ -56,7 +56,7 @@ class FileHandler:
     if not os.path.exists(directory_path):
       self._CreateFolder(directory_path)
 
-    _ = pathlib.Path(file_path).touch()
+    pathlib.Path(file_path).touch()
     return file_path
 
   def CreateFileFromPath(self, file_path: str) -> str:
@@ -69,7 +69,7 @@ class FileHandler:
       str: the path of the created file
     """
     _ = self.CreateFolderForFilePathIfNotExist(file_path)
-    _ = pathlib.Path(file_path).touch()
+    pathlib.Path(file_path).touch()
     return file_path
 
   def CopyFile(self, source: str, destination: str) -> str:
@@ -96,7 +96,7 @@ class FileHandler:
     return destination
 
   def CreateOrModifyFileWithContent(self, source: str, content: str):
-    """Add content to a file and create the file and path if non existing.
+    """Adds content to a file and create the file and path if non existing.
 
     Args:
       source (str): path of the file to edit.
@@ -109,7 +109,7 @@ class FileHandler:
     return self.AddContent(source, content)
 
   def AddContent(self, source: str, content: str) -> str:
-    """Add content to a file and create file if non existing.
+    """Adds content to a file and create file if non existing.
 
     Args:
       source (str): path of the file to edit.
@@ -124,7 +124,7 @@ class FileHandler:
 
     return source
 
-  def CreateFolderForFilePathIfNotExist(self, file_path: str):
+  def CreateFolderForFilePathIfNotExist(self, file_path: str) -> str:
     """Creates folders for the given file if it does not exist.
 
     Args:

@@ -44,8 +44,7 @@ class FileHandlerTest(unittest.TestCase):
       self.assertTrue(os.path.exists(file_path))
 
   def testCreateFileIfPathNotExisting(self):
-    """Tests if the creation of a file, none existing beforehand and folder
-    not existing, works."""
+    """Tests creation of non-existing file."""
     with tempfile.TemporaryDirectory() as directory:
       new_path = os.path.join(directory, "temp")
       handler = file_handler.FileHandler()
@@ -118,8 +117,7 @@ class FileHandlerTest(unittest.TestCase):
     self.assertEqual(expected, actual)
 
   def testCreateOrModifyFileWithContentIfFileExists(self):
-    """Tests if the method create or modify file with content works, if the
-    file exists"""
+    """Tests creation or modification of existing file with content."""
     content = "this is test content. "
     expected = content + content
 
@@ -139,8 +137,7 @@ class FileHandlerTest(unittest.TestCase):
     self.assertEqual(expected, actual)
 
   def testAddContentIfFileAndFolderDoesNotExist(self):
-    """Tests if the method create or modify file with content works, if the
-    file and Folder does not exist"""
+    """Tests creation or modification of non-existing file with content."""
     content = "this is test content. "
     expected = content
 

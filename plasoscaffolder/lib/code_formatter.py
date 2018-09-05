@@ -5,10 +5,10 @@ from yapf.yapflib import yapf_api
 
 
 class CodeFormatter:
-  """Class to handle the code formation of files."""
+  """Formats code in files."""
 
   def __init__(self, yapf_path: str):
-    """Initializing the code formatter.
+    """Initializes the code formatter.
 
     Args:
       yapf_path (str): path to the yapf style file.
