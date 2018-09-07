@@ -28,11 +28,12 @@ class PlasoSqliteScaffolderTest(unittest.TestCase):
     required_tables = ['foobar_one', 'foobar_two', 'strange_table']
     scaffolder.SetAttribute('queries', queries, dict)
     scaffolder.SetAttribute('required_tables', required_tables, list)
+    scaffolder.SetAttribute('test_file', 'test_data/test_sqlite.db', str)
 
-    # TODO: Actually implement a proper test... waiting for common
-    # libraries to be pushed.
-    self.assertFalse(True)
+    files_to_copy = list(scaffolder.GetFilesToCopy())
+    files_generated = list(scaffolder.GenerateFiles())
 
+    self.assertEqual(files_to_copy, [])
 
 
 if __name__ == '__main__':

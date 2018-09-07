@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Plaso scaffolder that generates plaso parser and plugins."""
 import os
+import logging
 
 from typing import Iterator
 from typing import List
@@ -92,16 +93,36 @@ class PlasoScaffolder(interface.Scaffolder):
     else:
       self._attributes['plugin_name'] = self._output_name
 
-    yield os.path.join(self._parser_path, parser_name), self._GenerateParser()
+    try:
+      yield os.path.join(self._parser_path, parser_name), self._GenerateParser()
+    except SyntaxError as exception:
+      logging.error((
+          u'Syntax error while attempting to generate parser, error '
+          'message: {0:s}').format(exception))
 
-    yield os.path.join(
-        self._parser_test_path, parser_name), self._GenerateParserTest()
+    try:
+      yield os.path.join(
+          self._parser_test_path, parser_name), self._GenerateParserTest()
+    except SyntaxError as exception:
+      logging.error((
+          u'Syntax error while attempting to generate parser test, error '
+          'message: {0:s}').format(exception))
 
-    yield os.path.join(
-        self._formatter_path, parser_name), self._GenerateFormatter()
+    try:
+      yield os.path.join(
+          self._formatter_path, parser_name), self._GenerateFormatter()
+    except SyntaxError as exception:
+      logging.error((
+          u'Syntax error while attempting to generate formatter, error '
+          'message: {0:s}').format(exception))
 
-    yield os.path.join(
-        self._formatter_test_path, parser_name), self._GenerateFormatterTest()
+    try:
+      yield os.path.join(
+          self._formatter_test_path, parser_name), self._GenerateFormatterTest()
+    except SyntaxError as exception:
+      logging.error((
+          u'Syntax error while attempting to generate formatter test, error '
+          'message: {0:s}').format(exception))
 
     formatter_string = (
         '# TODO: put in alpha order.\nfrom plaso.formatters import'
