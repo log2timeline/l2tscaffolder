@@ -2,9 +2,9 @@
 PlasoScaffolder is a SQLite Plugin Scaffolder for Plaso.
 
 ### Project status
-[Travis-CI](https://travis-ci.org/) | [AppVeyor](https://ci.appveyor.com) | [Codecov](https://codecov.io/)
+[Travis-CI](https://travis-ci.org/) | [Codecov](https://codecov.io/)
 --- | --- | ---
-[![Build Status](https://travis-ci.org/log2timeline/PlasoScaffolder.svg?branch=master)](https://travis-ci.org/log2timeline/PlasoScaffolder) | [![Build status](https://ci.appveyor.com/api/projects/status/bdd2caw07twol353?svg=true)](https://ci.appveyor.com/project/joachimmetz/plasoscaffolder) | [![codecov](https://codecov.io/gh/log2timeline/PlasoScaffolder/branch/master/graph/badge.svg)](https://codecov.io/gh/log2timeline/PlasoScaffolder)
+[![Build Status](https://travis-ci.org/log2timeline/PlasoScaffolder.svg?branch=master)](https://travis-ci.org/log2timeline/PlasoScaffolder) | [![codecov](https://codecov.io/gh/log2timeline/PlasoScaffolder/branch/master/graph/badge.svg)](https://codecov.io/gh/log2timeline/PlasoScaffolder)
 
 ### Documentation
 https://claudiasaxer.github.io/PlasoScaffolder <br>
