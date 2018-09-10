@@ -82,8 +82,8 @@ class PlasoSQliteScaffolder(plaso.PlasoScaffolder):
       query_attribute_string, _, _ = query_string.partition('from')
       query_attributes = query_attribute_string.split(',')
       for index, attr in enumerate(query_attributes):
-        if ' AS ' in attr:
-          _, _, attr = attr.partition('AS')
+        if ' as ' in attr.lower():
+          _, _, attr = attr.lower().partition(' as ')
         elif '.' in attr:
           attr = attr.split('.')[-1]
 

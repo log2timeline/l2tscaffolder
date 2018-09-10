@@ -98,7 +98,7 @@ class PlasoScaffolder(interface.Scaffolder):
     except SyntaxError as exception:
       logging.error((
           u'Syntax error while attempting to generate parser, error '
-          'message: {0:s}').format(exception))
+          'message: {0!s}').format(exception))
 
     try:
       yield os.path.join(
@@ -106,7 +106,7 @@ class PlasoScaffolder(interface.Scaffolder):
     except SyntaxError as exception:
       logging.error((
           u'Syntax error while attempting to generate parser test, error '
-          'message: {0:s}').format(exception))
+          'message: {0!s}').format(exception))
 
     try:
       yield os.path.join(
@@ -114,7 +114,7 @@ class PlasoScaffolder(interface.Scaffolder):
     except SyntaxError as exception:
       logging.error((
           u'Syntax error while attempting to generate formatter, error '
-          'message: {0:s}').format(exception))
+          'message: {0!s}').format(exception))
 
     try:
       yield os.path.join(
@@ -122,7 +122,7 @@ class PlasoScaffolder(interface.Scaffolder):
     except SyntaxError as exception:
       logging.error((
           u'Syntax error while attempting to generate formatter test, error '
-          'message: {0:s}').format(exception))
+          'message: {0!s}').format(exception))
 
     formatter_string = (
         '# TODO: put in alpha order.\nfrom plaso.formatters import'
@@ -145,7 +145,7 @@ class PlasoScaffolder(interface.Scaffolder):
     test_file_path = os.path.join('test_data', test_file_name)
 
     self._attributes['test_file_path'] = test_file_path
-    yield test_file, test_file_path
+    yield test_file_name, test_file_path
 
   def SetupScaffolder(self):
     """Sets up the scaffolder."""
