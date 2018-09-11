@@ -11,7 +11,7 @@ from plaso.containers import time_events
 from plaso.lib import eventdata
 from plaso.parsers import sqlite
 from plaso.parsers.sqlite_plugins import interface
-{% for query_name, query in queries.items() %}
+{% for query_name, query in queries.items()|sort(false) %}
 class {{ class_name }}{{ query_name|capitalize}}EventData(events.EventData):
   """{{ plugin_name|replace('_',' ')}} {{query_name|lower}} event data.
 
@@ -25,7 +25,7 @@ class {{ class_name }}{{ query_name|capitalize}}EventData(events.EventData):
   def __init__(self):
     """Initializes event data."""
     super({{ class_name }}{{ query_name|capitalize }}EventData, self).__init__(data_type=self.DATA_TYPE)
-    {% for attr in query_columns[query_name]|sort %}self.{{ attr }} = None
+    {% for attr in query_columns[query_name]|sort(false) %}self.{{ attr }} = None
     {% endfor %}{% endfor %}
 
 class {{ class_name }}Plugin(interface.SQLitePlugin):
@@ -34,7 +34,7 @@ class {{ class_name }}Plugin(interface.SQLitePlugin):
   NAME = u'{{ plugin_name }}'
   DESCRIPTION = u'Parser for {{ class_name }}'
 
-  QUERIES = [ {% for query_name, query in queries.items() %}
+  QUERIES = [ {% for query_name, query in queries.items()|sort(false) %}
     ((u'{{ query|wordwrap(width=64,wrapstring="'\n      u'")}})'),
      u'Parse{{ query_name|capitalize }}Row'){% if not loop.last %},{% endif %}{% endfor %}]
 
@@ -42,11 +42,11 @@ class {{ class_name }}Plugin(interface.SQLitePlugin):
       {% for table in required_tables %}u'{{ table }}'{% if not loop.last %},
       {% endif %}{% endfor %}])
 
-  SCHEMAS = [{  {% for table, schema in db_schema.items() %}
+  SCHEMAS = [{  {% for table, schema in db_schema.items()|sort(false) %}
       '{{table}}': (
           '{{schema|wordwrap(width=64,wrapstring="'\n          '")}}'){% if not loop.last %},{% endif %}{% endfor%}}]
 
-{% for query_name, query in queries.items() %}
+{% for query_name, query in queries.items()|sort(false) %}
   def Parse{{ query_name|capitalize }}Row(self, parser_mediator, query, row, **unused_kwargs):
     """Parses a row from the database.
 
@@ -60,9 +60,9 @@ class {{ class_name }}Plugin(interface.SQLitePlugin):
     # will raise "IndexError: Index must be int or string".
 
     event_data = {{ class_name }}{{ query_name|capitalize }}EventData()
-    {% for column in query_columns[query_name]|sort %}event_data.{{ column }} = row['{{ column}}']
+    {% for column in query_columns[query_name]|sort(false) %}event_data.{{ column }} = row['{{ column}}']
     {% endfor %}
-    {% for column in timestamp_columns[query_name]|sort %}
+    {% for column in timestamp_columns[query_name]|sort(false) %}
     timestamp_string = row['{{ column }}']
     if timestamp_string:
       # Convert the floating point value to an integer.

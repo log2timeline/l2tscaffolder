@@ -13,6 +13,24 @@ from plaso.parsers import sqlite
 from plaso.parsers.sqlite_plugins import interface
 
 
+class TestingFoobarEventData(events.EventData):
+  """testing foobar event data.
+
+  Attributes:
+    foo: <ADD DESCRIPTION HERE>
+    bar: <ADD DESCRIPTION HERE>
+
+  """
+
+  DATA_TYPE = u'testing:foobar'
+
+  def __init__(self):
+    """Initializes event data."""
+    super(TestingFoobarEventData, self).__init__(data_type=self.DATA_TYPE)
+    self.bar = None
+    self.foo = None
+
+
 class TestingStrangeEventData(events.EventData):
   """testing strange event data.
 
@@ -33,35 +51,16 @@ class TestingStrangeEventData(events.EventData):
     self.ssn = None
 
 
-class TestingFoobarEventData(events.EventData):
-  """testing foobar event data.
-
-  Attributes:
-    foo: <ADD DESCRIPTION HERE>
-    bar: <ADD DESCRIPTION HERE>
-
-  """
-
-  DATA_TYPE = u'testing:foobar'
-
-  def __init__(self):
-    """Initializes event data."""
-    super(TestingFoobarEventData, self).__init__(data_type=self.DATA_TYPE)
-    self.bar = None
-    self.foo = None
-
-
 class TestingPlugin(interface.SQLitePlugin):
   """Parser for Testing"""
 
   NAME = u'testing'
   DESCRIPTION = u'Parser for Testing'
 
-  QUERIES = [
-      ((u'SELECT name, address, ssn FROM strange)'), u'ParseStrangeRow'), ((
-          u'SELECT f1.foo, f2.bar AS Bar FROM foobar_one AS f1, foobar_two'
-          u'as f2 WHERE f1.id = f2.id)'), u'ParseFoobarRow')
-  ]
+  QUERIES = [((
+      u'SELECT f1.foo, f2.bar AS Bar FROM foobar_one AS f1, foobar_two'
+      u'as f2 WHERE f1.id = f2.id)'), u'ParseFoobarRow'), ((
+          u'SELECT name, address, ssn FROM strange)'), u'ParseStrangeRow')]
 
   REQUIRED_TABLES = frozenset([u'foobar_one', u'foobar_two', u'strange_table'])
 
@@ -72,6 +71,22 @@ class TestingPlugin(interface.SQLitePlugin):
           'CREATE TABLE strange_table(id INT, id2 INT, id3 INT, secret INT,'
           'name VARCHAR, address VARCHAR, ssn INT)')
   }]
+
+  def ParseFoobarRow(self, parser_mediator, query, row, **unused_kwargs):
+    """Parses a row from the database.
+
+    Args:
+      parser_mediator (ParserMediator): mediates interactions between parsers
+          and other components, such as storage and dfvfs.
+      query (str): query that created the row.
+      row (sqlite3.Row): row resulting from query.
+    """
+    # Note that pysqlite does not accept a Unicode string in row['string'] and
+    # will raise "IndexError: Index must be int or string".
+
+    event_data = TestingFoobarEventData()
+    event_data.bar = row['bar']
+    event_data.foo = row['foo']
 
   def ParseStrangeRow(self, parser_mediator, query, row, **unused_kwargs):
     """Parses a row from the database.
@@ -89,22 +104,6 @@ class TestingPlugin(interface.SQLitePlugin):
     event_data.address = row['address']
     event_data.name = row['name']
     event_data.ssn = row['ssn']
-
-  def ParseFoobarRow(self, parser_mediator, query, row, **unused_kwargs):
-    """Parses a row from the database.
-
-    Args:
-      parser_mediator (ParserMediator): mediates interactions between parsers
-          and other components, such as storage and dfvfs.
-      query (str): query that created the row.
-      row (sqlite3.Row): row resulting from query.
-    """
-    # Note that pysqlite does not accept a Unicode string in row['string'] and
-    # will raise "IndexError: Index must be int or string".
-
-    event_data = TestingFoobarEventData()
-    event_data.bar = row['bar']
-    event_data.foo = row['foo']
 
 
 sqlite.SQLiteParser.RegisterPlugin(TestingPlugin)
