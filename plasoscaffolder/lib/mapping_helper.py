@@ -92,7 +92,14 @@ class ParserMapper:
         template_filename).render(context)
     template = self._RemoveEscapeError(template)
 
+    fn = '/tmp/foobar_{0:s}.py'.format(template_filename.replace('.jinja2', ''))
+    with open(fn, 'w') as fh:
+      fh.write(template)
+
     formatted = self.formatter.Format(template)[0]
+    fn2 = '/tmp/foobar2_{0:s}.py'.format(template_filename.replace('.jinja2', ''))
+    with open(fn2, 'w') as fh:
+      fh.write(formatted)
     formatted = self._RemoveYapfComment(formatted)
     formatted = self._RemoveWhitespaceAtEndOfLine(formatted)
 
@@ -120,7 +127,6 @@ class ParserMapper:
     # TODO: Check if autoescape can be set to True due to potential XSS issues.
     self._template_environment = jinja2.Environment(
         autoescape=False, loader=template_loader, trim_blocks=False)
-    #, lstrip_blocks=True)
 
   def SetFormatterPath(self, formatter_path: str):
     """Sets up a code formatter object from a path to the formatter.

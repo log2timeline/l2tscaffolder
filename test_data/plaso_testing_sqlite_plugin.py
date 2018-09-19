@@ -62,7 +62,7 @@ class TestingPlugin(interface.SQLitePlugin):
   QUERIES = [((
       'SELECT f1.foo, f2.bar AS Bar FROM foobar_one AS f1, foobar_two as f2'
       'WHERE f1.id = f2.id'), 'ParseFoobarRow'),
-      (('SELECT name, address, ssn FROM strange'), 'ParseStrangeRow')]
+             (('SELECT name, address, ssn FROM strange'), 'ParseStrangeRow')]
 
   REQUIRED_TABLES = frozenset(['foobar_one', 'foobar_two', 'strange_table'])
 

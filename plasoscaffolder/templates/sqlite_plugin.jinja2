@@ -40,7 +40,7 @@ class {{ class_name }}Plugin(interface.SQLitePlugin):
   {% for query_name, query in queries.items()|sort(false) %}
       ((
           '{{ query|wordwrap(width=69,break_long_words=False,wrapstring="'\n          '") }}'),
-      'Parse{{ query_name|capitalize }}Row'){% if not loop.last %},{% endif %}{% endfor %}]
+       'Parse{{ query_name|capitalize }}Row'){% if not loop.last %},{% endif %}{% endfor %}]
 
   REQUIRED_TABLES = frozenset([
       {% for table in required_tables %}'{{ table }}'{% if not loop.last %},
