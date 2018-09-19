@@ -92,14 +92,7 @@ class ParserMapper:
         template_filename).render(context)
     template = self._RemoveEscapeError(template)
 
-    fn = '/tmp/foobar_{0:s}.py'.format(template_filename.replace('.jinja2', ''))
-    with open(fn, 'w') as fh:
-      fh.write(template)
-
     formatted = self.formatter.Format(template)[0]
-    fn2 = '/tmp/foobar2_{0:s}.py'.format(template_filename.replace('.jinja2', ''))
-    with open(fn2, 'w') as fh:
-      fh.write(formatted)
     formatted = self._RemoveYapfComment(formatted)
     formatted = self._RemoveWhitespaceAtEndOfLine(formatted)
 
