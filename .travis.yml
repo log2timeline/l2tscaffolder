@@ -7,12 +7,9 @@ matrix:
     sudo: required
     group: edge
     python: 3.6
-  - env: [TARGET="macos-python27", PYTHONPATH="/Library/Python/2.7/site-packages/"]
-    os: osx
-    osx_image: xcode9.2
+  - os: osx
     language: generic
-  allow_failures:
-  - env: [TARGET="macos-python27", PYTHONPATH="/Library/Python/2.7/site-packages/"]
+    python: 3.6
 cache: pip
 install:
 - pip install -r requirements.txt
