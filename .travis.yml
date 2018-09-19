@@ -7,7 +7,7 @@ matrix:
     sudo: required
     group: edge
     python: 3.6
-  - env: TARGET="macosx=python36"
+  - env: TARGET="macosx-python36"
     os: osx
     language: generic
     python: 3.6
