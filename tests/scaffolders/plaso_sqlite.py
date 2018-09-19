@@ -7,16 +7,15 @@ from plasoscaffolder.lib import errors
 from plasoscaffolder.scaffolders import plaso_sqlite
 
 
-class PlasoSqliteScaffolderTest(unittest.TestCase):
+class PlasoSQLiteScaffolderTest(unittest.TestCase):
   """Test class for the plaso sqlite scaffolder."""
 
   maxDiff = None
 
-  def testPlasoSqliteScaffolder(self):
-    """Test the plaso sqlite scaffolder."""
-    scaffolder = plaso_sqlite.PlasoSQliteScaffolder()
+  def testPlasoSQLiteScaffolder(self):
+    """Test the plaso SQLite scaffolder."""
+    scaffolder = plaso_sqlite.PlasoSQLiteScaffolder()
 
-    scaffolder.SetupScaffolder()
     scaffolder.SetOutputName('testing')
 
     with self.assertRaises(errors.ScaffolderNotConfigured):
@@ -32,23 +31,21 @@ class PlasoSqliteScaffolderTest(unittest.TestCase):
     scaffolder.SetAttribute('required_tables', required_tables, list)
     scaffolder.SetAttribute('test_file', 'test_data/test_sqlite.db', str)
 
-    files_to_copy = [x for _, x in scaffolder.GetFilesToCopy()]
-    self.assertEqual(files_to_copy, ['test_data/test_sqlite.db'])
+    file_copy_paths = [x for _, x in scaffolder.GetFilesToCopy()]
+    self.assertEqual(file_copy_paths, ['test_data/test_sqlite.db'])
 
-    files_generated = {}
-    for file_name, file_content in scaffolder.GenerateFiles():
-      files_generated[file_name] = file_content
+    files_generated = dict(scaffolder.GenerateFiles())
 
-    expected_files = [
+    expected_files = frozenset([
         'plaso/formatters/testing.py', 'tests/formatters/testing.py',
         'plaso/parsers/sqlite_plugins/testing.py',
         'tests/parsers/sqlite_plugins/testing.py',
         'plaso/formatters/__init__.py',
-        'plaso/parsers/sqlite_plugins/__init__.py']
-    self.assertSetEqual(set(files_generated.keys()), set(expected_files))
+        'plaso/parsers/sqlite_plugins/__init__.py'])
+    self.assertEqual(set(files_generated.keys()), expected_files)
 
     expected_parser_init_addition = (
-        '# TODO: put in alpha order.\nfrom '
+        '# TODO: put in alphabetical order.\nfrom '
         'plaso.parsers.sqlite_plugins import testing')
     self.assertEqual(
         expected_parser_init_addition, 

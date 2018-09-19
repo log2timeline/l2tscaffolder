@@ -39,6 +39,9 @@ class Scaffolder:
     self._defined_attributes = set()
     self._output_name = ''
 
+    for question in self.GetQuestions():
+      self._defined_attributes.add(question.attribute)
+
   def GetQuestions(self) -> List[Question]:
     """Returns all scaffolder questions."""
     return self.QUESTIONS
@@ -106,8 +109,3 @@ class Scaffolder:
           type(value), value_type))
 
     self._attributes[name] = value
-
-  def SetupScaffolder(self):
-    """Sets up the scaffolder."""
-    for question in self.GetQuestions():
-      self._defined_attributes.add(question.attribute)

@@ -13,12 +13,12 @@ from tests.parsers.sqlite_plugins import test_lib
 class {{ class_name }}Test(test_lib.SQLitePluginTestCase):
   """Tests for {{ plugin_name|replace('_',' ')}} database plugin."""
 
-  @shared_test_lib.skipUnlessHasTestFile([u'{{ db_name }}'])
+  @shared_test_lib.skipUnlessHasTestFile(['{{ database_name }}'])
   def testProcess(self):
     """Test the Process function on a {{ plugin_name|replace('_',' ')|title}} file."""
     plugin_object = {{ plugin_name }}.{{ class_name }}Plugin()
     storage_writer = self._ParseDatabaseFileWithPlugin(
-        [u'{{ db_name }}'], plugin_object)
+        ['{{ database_name }}'], plugin_object)
 
     # We should have <NR> events in total.
     {% for query_name in queries %}{% for column in timestamp_columns[query_name]|sort %}#  - [{{ query_name }}] {{ column }} <NR OF EVENTS> events.{% endfor %}
@@ -32,7 +32,7 @@ class {{ class_name }}Test(test_lib.SQLitePluginTestCase):
     test_event = storage_writer.events[position]
 
     # TODO add expected formatted timestamp for timestamp in database:{{ timestampcolumn }}
-    expected_timestamp = timelib.Timestamp.CopyFromString(u'TODO')
+    expected_timestamp = timelib.Timestamp.CopyFromString('TODO')
     self.assertEqual(test_event.timestamp, expected_timestamp)
 
     self.assertEqual(

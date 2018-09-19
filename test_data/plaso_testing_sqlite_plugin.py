@@ -5,6 +5,8 @@ SQLite database path: test_data/test_sqlite.db
 SQLite database Name: test_sqlite.db
 """
 
+from __future__ import unicode_literals
+
 from dfdatetime import posix_time as dfdatetime_posix_time
 
 from plaso.containers import time_events
@@ -22,7 +24,7 @@ class TestingFoobarEventData(events.EventData):
 
   """
 
-  DATA_TYPE = u'testing:foobar'
+  DATA_TYPE = 'testing:foobar'
 
   def __init__(self):
     """Initializes event data."""
@@ -41,7 +43,7 @@ class TestingStrangeEventData(events.EventData):
 
   """
 
-  DATA_TYPE = u'testing:strange'
+  DATA_TYPE = 'testing:strange'
 
   def __init__(self):
     """Initializes event data."""
@@ -54,15 +56,15 @@ class TestingStrangeEventData(events.EventData):
 class TestingPlugin(interface.SQLitePlugin):
   """Parser for Testing"""
 
-  NAME = u'testing'
-  DESCRIPTION = u'Parser for Testing'
+  NAME = 'testing'
+  DESCRIPTION = 'Parser for Testing'
 
   QUERIES = [((
-      u'SELECT f1.foo, f2.bar AS Bar FROM foobar_one AS f1, foobar_two'
-      u'as f2 WHERE f1.id = f2.id)'), u'ParseFoobarRow'), ((
-          u'SELECT name, address, ssn FROM strange)'), u'ParseStrangeRow')]
+      'SELECT f1.foo, f2.bar AS Bar FROM foobar_one AS f1, foobar_two as f2'
+      'WHERE f1.id = f2.id'), 'ParseFoobarRow'),
+      (('SELECT name, address, ssn FROM strange'), 'ParseStrangeRow')]
 
-  REQUIRED_TABLES = frozenset([u'foobar_one', u'foobar_two', u'strange_table'])
+  REQUIRED_TABLES = frozenset(['foobar_one', 'foobar_two', 'strange_table'])
 
   SCHEMAS = [{
       'foobar_one': ('CREATE TABLE foobar_one(id INT, foo VARCHAR)'),

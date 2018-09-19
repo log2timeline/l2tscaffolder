@@ -20,7 +20,7 @@ class {{ class_name }}{{ query_name|capitalize }}FormatterTest(test_lib.EventFor
     event_formatter = {{ plugin_name }}.{{ class_name }}{{ query_name|capitalize }}Formatter()
 
     expected_attribute_names = [
-        {% for column in query_columns[query_name]|sort %}u'{{ column }}'{% if not loop.last %},{% endif %}
+        {% for column in query_columns[query_name]|sort %}'{{ column }}'{% if not loop.last %},{% endif %}
         {% endfor %}]
 
     self._TestGetFormatStringAttributeNames(

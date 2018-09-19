@@ -9,20 +9,20 @@ from plaso.lib import errors{% for query_name in queries %}
 class {{ class_name }}{{ query_name|capitalize }}Formatter(interface.ConditionalEventFormatter):
   """{{ plugin_name|replace('_',' ')}} {{ query_name|lower }} event formatter."""
 
-  DATA_TYPE = u'{{ plugin_name|lower|replace('_',':')}}:{{ query_name|lower }}'
+  DATA_TYPE = '{{ data_types[query_name] }}'
 
   """Correct Format String Pieces where needed"""
 # yapf: disable
 
   FORMAT_STRING_PIECES = [
-    {% for column in query_columns[query_name] %}u'{{ column }}{{ ':{' }}{{ column }}{{ '}' }}'{% if not loop.last %},
+    {% for column in query_columns[query_name] %}'{{ column }}{{ ':{' }}{{ column }}{{ '}' }}'{% if not loop.last %},
     {% endif %}{% endfor %}]
 
 # yapf: enable
 
   # TODO: Change the default string formatter.
-  SOURCE_LONG = u'{{ plugin_name|replace('_',' ')|title }} {{ query_name|title }}'
-  SOURCE_SHORT = u'{{ plugin_name|replace('_',' ')|title }}'
+  SOURCE_LONG = '{{ plugin_name|replace('_',' ')|title }} {{ query_name|title }}'
+  SOURCE_SHORT = '{{ plugin_name|replace('_',' ')|title }}'
 {% endfor %}
 
 

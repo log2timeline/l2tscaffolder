@@ -2,8 +2,10 @@
 """Parser for {{ plugin_name|lower|replace('_',' ')}} database.
 
 SQLite database path: {{ test_file_path }}
-SQLite database Name: {{ db_name }}
+SQLite database Name: {{ database_name }}
 """
+
+from __future__ import unicode_literals
 
 from dfdatetime import posix_time as dfdatetime_posix_time
 
@@ -20,7 +22,7 @@ class {{ class_name }}{{ query_name|capitalize}}EventData(events.EventData):
     {% endfor %}
   """
 
-  DATA_TYPE = u'{{ plugin_name|lower|replace('_',':')}}:{{query_name|lower}}'
+  DATA_TYPE = '{{ data_types[query_name] }}'
 
   def __init__(self):
     """Initializes event data."""
@@ -31,18 +33,20 @@ class {{ class_name }}{{ query_name|capitalize}}EventData(events.EventData):
 class {{ class_name }}Plugin(interface.SQLitePlugin):
   """Parser for {{ class_name }}"""
 
-  NAME = u'{{ plugin_name }}'
-  DESCRIPTION = u'Parser for {{ class_name }}'
+  NAME = '{{ plugin_name }}'
+  DESCRIPTION = 'Parser for {{ class_name }}'
 
-  QUERIES = [ {% for query_name, query in queries.items()|sort(false) %}
-    ((u'{{ query|wordwrap(width=64,wrapstring="'\n      u'")}})'),
-     u'Parse{{ query_name|capitalize }}Row'){% if not loop.last %},{% endif %}{% endfor %}]
+  QUERIES = [
+  {% for query_name, query in queries.items()|sort(false) %}
+      ((
+          '{{ query|wordwrap(width=69,break_long_words=False,wrapstring="'\n          '") }}'),
+      'Parse{{ query_name|capitalize }}Row'){% if not loop.last %},{% endif %}{% endfor %}]
 
   REQUIRED_TABLES = frozenset([
-      {% for table in required_tables %}u'{{ table }}'{% if not loop.last %},
+      {% for table in required_tables %}'{{ table }}'{% if not loop.last %},
       {% endif %}{% endfor %}])
 
-  SCHEMAS = [{  {% for table, schema in db_schema.items()|sort(false) %}
+  SCHEMAS = [{  {% for table, schema in database_schema.items()|sort(false) %}
       '{{table}}': (
           '{{schema|wordwrap(width=64,wrapstring="'\n          '")}}'){% if not loop.last %},{% endif %}{% endfor%}}]
 

@@ -93,7 +93,6 @@ class ScaffolderEngine:
           that the engine will use to generate files.
     """
     self._scaffolder = scaffolder
-    self._scaffolder.SetupScaffolder()
 
   def SetProjectRootPath(self, root_path: str):
     """Sets the path to the root of the project tree.
