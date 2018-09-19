@@ -7,9 +7,12 @@ matrix:
     sudo: required
     group: edge
     python: 3.6
-  - os: osx
+  - env: TARGET="macosx=python36"
+    os: osx
     language: generic
     python: 3.6
+  allow_failures:
+  - env: TARGET="macosx-36"
 cache: pip
 install:
 - pip install -r requirements.txt
