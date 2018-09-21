@@ -3,6 +3,7 @@
 import abc
 import collections
 
+from typing import Dict
 from typing import Iterator
 from typing import List
 from typing import Tuple
@@ -35,12 +36,11 @@ class Scaffolder:
   def __init__(self):
     """Initializes the scaffolder."""
     super(Scaffolder, self).__init__()
-    self._attributes = {}
-    self._defined_attributes = set()
     self._output_name = ''
 
-    for question in self.GetQuestions():
-      self._defined_attributes.add(question.attribute)
+  def GetJinjaContext(self) -> Dict[str, object]:
+    """Returns a dict that can be used as a context for Jinja2 templates."""
+    return {}
 
   def GetQuestions(self) -> List[Question]:
     """Returns all scaffolder questions."""
@@ -65,16 +65,25 @@ class Scaffolder:
   def RaiseIfNotReady(self):
     """Checks to see if all attributes are set to start generating files.
 
+    By default this function only checks to see if all attributes defined
+    in questions and Jinja2 context have values and are not empty.
+
     Raises:
       ScaffolderNotConfigured: if the scaffolder is not fully configured.
     """
-    configured_attributes = set(self._attributes.keys())
-    if configured_attributes != self._defined_attributes:
-      mismatch = self._defined_attributes.difference(self._attributes)
-      mismatch = ','.join(str(attribute) for attribute in mismatch)
-      raise errors.ScaffolderNotConfigured((
-          'Not all required attributes have been defined, the following '
-          'attributes are missing: {0:s}').format(mismatch))
+    for question in self.GetQuestions():
+      attribute = getattr(self, question.attribute, None)
+
+      if not attribute:
+        raise errors.ScaffolderNotConfigured(
+            'Attribute [{0:s}] has not yet been set.'.format(
+                question.attribute))
+
+    for jinja_context_attribute in self.GetJinjaContext():
+      if not jinja_context_attribute:
+        raise errors.ScaffolderNotConfigured((
+            'The required attribute for jinja2 template: [{0:s}] has not '
+            'yet been set.').format(jinja_context_attribute))
 
   def SetOutputName(self, output_name: str):
     """Sets the name of the output module.
@@ -99,13 +108,14 @@ class Scaffolder:
 
     Raises:
       ValueError: if the value is not of the correct type.
-      KeyError: If the attribute name is already defined.
+      KeyError: If the attribute is not configured for this scaffolder.
     """
-    if name in self._attributes:
-      raise KeyError('Attribute {} already exists.'.format(name))
+    if not hasattr(self, name):
+      raise KeyError(
+          'Attribute {0:s} is not configured for this scaffolder.'.format(name))
 
     if not isinstance(value, value_type):
       raise ValueError('Value is of type {0:s}, not {1:s}'.format(
           type(value), value_type))
 
-    self._attributes[name] = value
+    setattr(self, name, value)

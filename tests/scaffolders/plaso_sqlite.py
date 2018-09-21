@@ -12,6 +12,31 @@ class PlasoSQLiteScaffolderTest(unittest.TestCase):
 
   maxDiff = None
 
+  def _run_query_tests(self, scaffolder, test_string, expected_columns):
+    """Test query columns function."""
+    # pylint: disable=protected-access
+    columns = set(list(scaffolder._GetQueryColumns(test_string)))
+    self.assertEqual(columns, expected_columns)
+
+  def testQueryColumns(self):
+    """Test query columns function."""
+    scaffolder = plaso_sqlite.PlasoSQLiteScaffolder()
+    test_string = (
+        'SELECT foobar as Foo, foobar.dot, random, reallylong AS long FROM '
+        'foobarengine WHERE foobar = 1')
+    expected_columns = set(['foo', 'dot', 'random', 'long'])
+    self._run_query_tests(scaffolder, test_string, expected_columns)
+
+    test_string = (
+        'select one, two as three, four as five, f.eight as EIGHTE FROM '
+        'foobar f, scode s WHERE f.id = s.id ORDER BY one')
+    expected_columns = set(['one', 'three', 'five', 'eighte'])
+    self._run_query_tests(scaffolder, test_string, expected_columns)
+
+    test_string = (
+        'this should not produce anything...')
+    self._run_query_tests(scaffolder, test_string, set())
+
   def testPlasoSQLiteScaffolder(self):
     """Test the plaso SQLite scaffolder."""
     scaffolder = plaso_sqlite.PlasoSQLiteScaffolder()

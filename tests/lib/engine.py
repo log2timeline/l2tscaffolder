@@ -20,6 +20,20 @@ class AwesomeScaffolder(scaffolder_interface.Scaffolder):
       scaffolder_interface.Question('test2', 'a', 'b', str),
       scaffolder_interface.Question('test3', 'a', 'b', str)]
 
+  def __init__(self):
+    super(AwesomeScaffolder, self).__init__()
+    self.test1 = ''
+    self.test2 = ''
+    self.test3 = ''
+
+  def GetJinjaContext(self):
+    """Returns a dict that can be used as a context for Jinja2 templates."""
+    context = super(AwesomeScaffolder, self).GetJinjaContext()
+    context['test1'] = self.test1
+    context['test2'] = self.test2
+    context['test3'] = self.test3
+    return context
+
   def GenerateFiles(self):
     """Empty file generator."""
     return iter(())
@@ -126,8 +140,7 @@ class ScaffolderEngineTest(unittest.TestCase):
     test_engine.StoreScaffolderAttribute('test3', test_string3, str)
     self.assertIsNone(test_scaffolder.RaiseIfNotReady())
 
-    # pylint: disable=protected-access
-    scaffolder_attributes = test_scaffolder._attributes
+    scaffolder_attributes = test_scaffolder.GetJinjaContext()
     test1_attr = scaffolder_attributes.get('test1', '')
     test2_attr = scaffolder_attributes.get('test2', '')
     test3_attr = scaffolder_attributes.get('test3', '')

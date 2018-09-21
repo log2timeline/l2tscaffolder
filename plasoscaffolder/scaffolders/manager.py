@@ -36,6 +36,12 @@ class ScaffolderManager:
     del cls._scaffolder_classes[scaffolder_name]
 
   @classmethod
+  def GetScaffolderClasses(cls) -> Iterator[Type[interface.Scaffolder]]:
+    """Generates a list of all registered scaffolder classes."""
+    for scaffolder_class in cls._scaffolder_classes.values():
+      yield scaffolder_class
+
+  @classmethod
   def GetScaffolderNames(cls) -> Iterator[str]:
     """Retrieves the scaffolder names.
 

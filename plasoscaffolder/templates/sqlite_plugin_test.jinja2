@@ -20,11 +20,11 @@ class {{ class_name }}Test(test_lib.SQLitePluginTestCase):
     storage_writer = self._ParseDatabaseFileWithPlugin(
         ['{{ database_name }}'], plugin_object)
 
-    # We should have <NR> events in total.
     {% for query_name in queries %}{% for column in timestamp_columns[query_name]|sort %}#  - [{{ query_name }}] {{ column }} <NR OF EVENTS> events.{% endfor %}
     {% endfor %}
     # TODO: Replace zero with an actual number.
-    self.assertEqual(0, len(storage_writer.events))
+    self.assertEqual(storage_writer.number_of_events, 0)
+    self.assertEqual(storage_writer.number_of_errors, 0)
 {% for query_name in queries %}{% for timestampcolumn in timestamp_columns[query_name] %}
     # Test the first "{{ query_name|lower }}" {{ timestampcolumn }} event.
     # TODO: Replace zero with another value if needed.

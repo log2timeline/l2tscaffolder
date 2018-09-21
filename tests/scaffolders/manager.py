@@ -61,7 +61,7 @@ class ScaffolderManagerTest(unittest.TestCase):
   @classmethod
   def setUpClass(cls):
     """Setup tests by registering three scaffolders and removing all others."""
-    scaffolders = [x for _, x in manager.ScaffolderManager.GetScaffolders()]
+    scaffolders = list(manager.ScaffolderManager.GetScaffolderClasses())
     for scaffolder in scaffolders:
       manager.ScaffolderManager.DeregisterScaffolder(scaffolder)
 
