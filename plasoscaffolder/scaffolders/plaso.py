@@ -7,7 +7,6 @@ from typing import Dict
 from typing import Iterator
 from typing import List
 from typing import Tuple
-from typing import Type
 
 from plasoscaffolder.lib import definitions
 from plasoscaffolder.lib import errors
@@ -73,7 +72,13 @@ class PlasoBaseScaffolder(interface.Scaffolder):
         self.TEMPLATE_PARSER_TEST, self.GetJinjaContext())
 
   def GetJinjaContext(self) -> Dict[str, object]:
-    """Returns a dict that can be used as a context for Jinja2 templates."""
+    """Returns a dict that can be used as a context for Jinja2 templates.
+
+    Returns:
+      dict: containing:
+        str: name of Jinja argument.
+        object: Jinja argument value.
+    """
     context = super(PlasoBaseScaffolder, self).GetJinjaContext()
 
     context['class_name'] = self.class_name
@@ -82,8 +87,12 @@ class PlasoBaseScaffolder(interface.Scaffolder):
 
     return context
 
-  def GetQuestions(self) -> List[Type[interface.Scaffolder]]:
-    """Returns scaffolder questions as well as adding plaso related ones."""
+  def GetQuestions(self) -> List[interface.Question]:
+    """Returns scaffolder questions as well as adding plaso related ones.
+
+    Returns:
+      list[interface.Question]: questions to prompt the user with.
+    """
     questions = self.QUESTIONS
     questions.append(interface.Question(
         'test_file',
@@ -95,7 +104,9 @@ class PlasoBaseScaffolder(interface.Scaffolder):
     """Generates all the files required for a plaso parser or a plugin.
 
     Yields:
-      list: file name and content of the file to be written to disk.
+      list[tuple]: containing:
+       str: file name.
+       str: file content.
     """
     parser_name = '{0:s}.py'.format(self._output_name)
 
@@ -111,8 +122,8 @@ class PlasoBaseScaffolder(interface.Scaffolder):
           'Syntax error while attempting to generate parser, error '
           'message: {0!s}').format(exception))
 
+    test_path = os.path.join(self._parser_test_path, parser_name)
     try:
-      test_path = os.path.join(self._parser_test_path, parser_name)
       test_content = self._GenerateParserTest()
       yield test_path, test_content
     except SyntaxError as exception:
@@ -120,8 +131,8 @@ class PlasoBaseScaffolder(interface.Scaffolder):
           'Syntax error while attempting to generate parser test, error '
           'message: {0!s}').format(exception))
 
+    formatter_path = os.path.join(self._formatter_path, parser_name)
     try:
-      formatter_path = os.path.join(self._formatter_path, parser_name)
       formatter_content = self._GenerateFormatter()
       yield formatter_path, formatter_content
     except SyntaxError as exception:
@@ -129,8 +140,8 @@ class PlasoBaseScaffolder(interface.Scaffolder):
           'Syntax error while attempting to generate formatter, error '
           'message: {0!s}').format(exception))
 
+    formatter_test_path = os.path.join(self._formatter_test_path, parser_name)
     try:
-      formatter_test_path = os.path.join(self._formatter_test_path, parser_name)
       formatter_test_content = self._GenerateFormatterTest()
       yield formatter_test_path, formatter_test_content
     except SyntaxError as exception:
@@ -157,7 +168,9 @@ class PlasoBaseScaffolder(interface.Scaffolder):
       IOError: when the test file does not exist.
 
     Yields:
-      tuple (str, str): file name of source and destination.
+      tuple: containing:
+        str: file name of source.
+        str: file name of destination.
     """
     if not self.test_file:
       raise IOError('A plaso parser cannot be generated without a test file.')
@@ -196,14 +209,24 @@ class PlasoPluginScaffolder(PlasoBaseScaffolder):
     self.plugin_name = ''
 
   def GetJinjaContext(self) -> Dict[str, object]:
-    """Returns a dict that can be used as a context for Jinja2 templates."""
+    """Returns a dict that can be used as a context for Jinja2 templates.
+
+    Returns:
+      dict: containing:
+        str: name of Jinja argument.
+        object: Jinja argument value.
+    """
     context = super(PlasoPluginScaffolder, self).GetJinjaContext()
     context['plugin_name'] = self._output_name
     return context
 
 
 class PlasoParserScaffolder(PlasoBaseScaffolder):
-  """Scaffolder for generating plaso parsers."""
+  """Scaffolder for generating plaso parsers.
+
+  Attributes:
+    parser_name(str): name of the parser to be generated.
+  """
 
   def __init__(self):
     """Initializes the plaso plugin scaffolder."""
@@ -211,7 +234,13 @@ class PlasoParserScaffolder(PlasoBaseScaffolder):
     self.parser_name = ''
 
   def GetJinjaContext(self) -> Dict[str, object]:
-    """Returns a dict that can be used as a context for Jinja2 templates."""
+    """Returns a dict that can be used as a context for Jinja2 templates.
+
+    Returns:
+      dict: containing:
+        str: name of Jinja argument.
+        object: Jinja argument value.
+    """
     context = super(PlasoBaseScaffolder, self).GetJinjaContext()
     context['parser_name'] = self._output_name
     return context

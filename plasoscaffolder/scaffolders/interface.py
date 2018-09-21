@@ -39,16 +39,26 @@ class Scaffolder:
     self._output_name = ''
 
   def GetJinjaContext(self) -> Dict[str, object]:
-    """Returns a dict that can be used as a context for Jinja2 templates."""
+    """Returns a dict that can be used as a context for Jinja2 templates.
+
+    Returns:
+      dict: containing:
+        str: name of Jinja argument.
+        object: Jinja argument value.
+    """
     return {}
 
   def GetQuestions(self) -> List[Question]:
-    """Returns all scaffolder questions."""
+    """Returns scaffolder questions.
+
+    Returns:
+      list[Question]: questions to prompt the user with.
+    """
     return self.QUESTIONS
 
   @abc.abstractmethod
   def GenerateFiles(self) -> Iterator[Tuple[str, str]]:
-    """Generate all the files this scaffolder provides.
+    """Generates files this scaffolder provides.
 
     Yields:
       list: file name and content of the file to be written to disk.
@@ -76,14 +86,14 @@ class Scaffolder:
 
       if not attribute:
         raise errors.ScaffolderNotConfigured(
-            'Attribute [{0:s}] has not yet been set.'.format(
+            'Attribute [{0:s}] is not set.'.format(
                 question.attribute))
 
     for jinja_context_attribute in self.GetJinjaContext():
       if not jinja_context_attribute:
         raise errors.ScaffolderNotConfigured((
-            'The required attribute for jinja2 template: [{0:s}] has not '
-            'yet been set.').format(jinja_context_attribute))
+            'The required attribute for jinja2 template: [{0:s}] is not '
+            'set.').format(jinja_context_attribute))
 
   def SetOutputName(self, output_name: str):
     """Sets the name of the output module.
@@ -99,7 +109,7 @@ class Scaffolder:
     self._output_name = output_name
 
   def SetAttribute(self, name: str, value: object, value_type: type):
-    """Store an attribute read from the CLI.
+    """Stores an attribute read from the CLI.
 
     Args:
       name (str): the attribute name.

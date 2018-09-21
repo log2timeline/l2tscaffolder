@@ -85,9 +85,9 @@ class PlasoSQLiteScaffolder(plaso.PlasoPluginScaffolder):
       database_path (str): full path to the SQLite database.
 
     Returns:
-      dict: where keys are the name of each defined table in the
-          database and the value is the SQL command that was used to
-          create the table.
+      dict: containing:
+        str: name of a table in the
+        str:  SQL command that was used to create the table.
 
     Raises:
       sqlite3.DatabaseError: if the database cannot be read.
