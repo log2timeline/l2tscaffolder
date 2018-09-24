@@ -15,7 +15,13 @@ from plasoscaffolder.scaffolders import interface
 
 
 class PlasoBaseScaffolder(interface.Scaffolder):
-  """The plaso base scaffolder interface."""
+  """The plaso base scaffolder interface.
+
+  Attributes:
+    class_name (str): class name of the plaso parser or plugin to be generated.
+    test_file (str): name of the file used for testing the parser or plugin.
+    test_file_path (str): path to the test file.
+  """
 
   # The name of the plugin or parser this scaffolder plugin provides.
   NAME = 'plaso_base'

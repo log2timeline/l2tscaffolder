@@ -14,7 +14,27 @@ from plasoscaffolder.scaffolders import manager
 
 
 class PlasoSQLiteScaffolder(plaso.PlasoPluginScaffolder):
-  """The plaso SQLite plugin scaffolder."""
+  """The plaso SQLite plugin scaffolder.
+
+  Attributes:
+    database_name (str): name of the test SQLite database for the plugin.
+    database_schema (dict): a dict containing all table names (keys) and the SQL
+        statement used to create the table (value), derived from the test
+        database.
+    data_types (dict): a dict containing all the data types generated for the
+        parser, the key is the name for each SQL statement run against the
+        database and the value is the data type used for each generated event
+        resulting from that SQL statement.
+    queries (dict): a dict containing query name and SQL statments or queries
+        run against the database.
+    query_columns (dict): for each SQL statement run against the database, with
+        the key being query name and value being a list of all SQL column names
+        that are returned for each query.
+    required_tables (list): a list of all required tables needed for the plugin
+        to parse this particular database.
+    timestamp_columns (dict): a dict containing a list of all columns with
+        timestamp values, with query names as the key.
+  """
 
   # The name of the plugin or parser this scaffolder provides.
   NAME = 'sqlite'
@@ -56,7 +76,7 @@ class PlasoSQLiteScaffolder(plaso.PlasoPluginScaffolder):
     self.timestamp_columns = {}
 
   def _GetQueryColumns(self, query: str) -> Iterator[str]:
-    """Generates extracted column names from a SQL statement.
+    """Generates column names from a SQL statement.
 
     Args:
       query (str): a SQL query.
