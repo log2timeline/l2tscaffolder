@@ -145,7 +145,7 @@ class PlasoSQLiteScaffolder(plaso.PlasoPluginScaffolder):
     """Generates all the files required for the SQLite plugin.
 
     Yields:
-      tuple (str, str): file name and content of the file to be written to disk.
+      tuple: file name and content of the file to be written to disk.
     """
     _, _, database_name = self.test_file.rpartition(os.sep)
     self.database_name = database_name
@@ -170,7 +170,8 @@ class PlasoSQLiteScaffolder(plaso.PlasoPluginScaffolder):
 
     self.database_schema = self._GetSchema(self.test_file)
 
-    return super(PlasoSQLiteScaffolder, self).GenerateFiles()
+    for name, content in super(PlasoSQLiteScaffolder, self).GenerateFiles():
+      yield name, content
 
 
 manager.ScaffolderManager.RegisterScaffolder(PlasoSQLiteScaffolder)

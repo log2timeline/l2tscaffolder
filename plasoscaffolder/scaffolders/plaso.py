@@ -167,6 +167,9 @@ class PlasoBaseScaffolder(interface.Scaffolder):
     parser_init_path = os.path.join(self._parser_path, '__init__.py')
     yield parser_init_path, parser_string
 
+  # pylint raises issues with OSError being raised and not documented, but it is
+  # not raised.
+  # pylint: disable=missing-raises-doc
   def GetFilesToCopy(self) -> Iterator[Tuple[str, str]]:
     """Return a list of files that need to be copied.
 
@@ -247,6 +250,6 @@ class PlasoParserScaffolder(PlasoBaseScaffolder):
         str: name of Jinja argument.
         object: Jinja argument value.
     """
-    context = super(PlasoBaseScaffolder, self).GetJinjaContext()
+    context = super(PlasoParserScaffolder, self).GetJinjaContext()
     context['parser_name'] = self._output_name
     return context

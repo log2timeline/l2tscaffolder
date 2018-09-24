@@ -73,7 +73,7 @@ class PlasoSQLiteScaffolderTest(unittest.TestCase):
         '# TODO: put in alphabetical order.\nfrom '
         'plaso.parsers.sqlite_plugins import testing')
     self.assertEqual(
-        expected_parser_init_addition, 
+        expected_parser_init_addition,
         files_generated['plaso/parsers/sqlite_plugins/__init__.py'])
 
     with open('test_data/plaso_testing_sqlite_plugin.py', 'r') as fh:
