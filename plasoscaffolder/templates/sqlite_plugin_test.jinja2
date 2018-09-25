@@ -1,0 +1,52 @@
+# -*- coding: utf-8 -*-
+"""Tests for {{ plugin_name|replace('_',' ')}} plugin."""
+import unittest
+
+from plaso.lib import eventdata
+from plaso.lib import timelib
+from plaso.parsers.sqlite_plugins import {{ plugin_name }}
+
+from tests import test_lib as shared_test_lib
+from tests.parsers.sqlite_plugins import test_lib
+
+
+class {{ class_name }}Test(test_lib.SQLitePluginTestCase):
+  """Tests for {{ plugin_name|replace('_',' ')}} database plugin."""
+
+  @shared_test_lib.skipUnlessHasTestFile(['{{ database_name }}'])
+  def testProcess(self):
+    """Test the Process function on a {{ plugin_name|replace('_',' ')|title}} file."""
+    plugin_object = {{ plugin_name }}.{{ class_name }}Plugin()
+    storage_writer = self._ParseDatabaseFileWithPlugin(
+        ['{{ database_name }}'], plugin_object)
+
+    {% for query_name in queries %}{% for column in timestamp_columns[query_name]|sort %}#  - [{{ query_name }}] {{ column }} <NR OF EVENTS> events.{% endfor %}
+    {% endfor %}
+    # TODO: Replace zero with an actual number.
+    self.assertEqual(storage_writer.number_of_events, 0)
+    self.assertEqual(storage_writer.number_of_errors, 0)
+{% for query_name in queries %}{% for timestampcolumn in timestamp_columns[query_name] %}
+    # Test the first "{{ query_name|lower }}" {{ timestampcolumn }} event.
+    # TODO: Replace zero with another value if needed.
+    position = 0
+    test_event = storage_writer.events[position]
+
+    # TODO add expected formatted timestamp for timestamp in database:{{ timestampcolumn }}
+    expected_timestamp = timelib.Timestamp.CopyFromString('TODO')
+    self.assertEqual(test_event.timestamp, expected_timestamp)
+
+    self.assertEqual(
+      test_event.timestamp_desc, eventdata.EventTimestamp.CREATION_TIME)
+
+    # TODO: Add some tests to test values.
+    {% for column in query_columns[query_name] %}self.assertEqual(test_event.{{ column }}, 'TODO')
+    {% endfor %}
+    # TODO: Add the expected message string.
+    expected_message = 'TODO'
+    expected_message_short = 'TODO'
+
+    self._TestGetMessageStrings(
+        test_event, expected_message, expected_message_short)
+{% endfor %}{% endfor %}
+if __name__ == '__main__':
+  unittest.main()

@@ -60,7 +60,11 @@ class ScaffolderManagerTest(unittest.TestCase):
 
   @classmethod
   def setUpClass(cls):
-    """Setup the tests by registering three scaffolders."""
+    """Setup tests by registering three scaffolders and removing all others."""
+    scaffolders = list(manager.ScaffolderManager.GetScaffolderClasses())
+    for scaffolder in scaffolders:
+      manager.ScaffolderManager.DeregisterScaffolder(scaffolder)
+
     manager.ScaffolderManager.RegisterScaffolders(
         [AwesomeTestScaffolder, AverageTestScaffolder,
          RegistrationTestScaffolder])

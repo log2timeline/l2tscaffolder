@@ -1,0 +1,32 @@
+# -*- coding: utf-8 -*-
+"""{{ plugin_name|replace('_',' ')}} formatter."""
+
+from plaso.formatters import interface
+from plaso.formatters import manager
+from plaso.lib import errors{% for query_name in queries %}
+
+
+class {{ class_name }}{{ query_name|capitalize }}Formatter(interface.ConditionalEventFormatter):
+  """{{ plugin_name|replace('_',' ')}} {{ query_name|lower }} event formatter."""
+
+  DATA_TYPE = '{{ data_types[query_name] }}'
+
+  """Correct Format String Pieces where needed"""
+# yapf: disable
+
+  FORMAT_STRING_PIECES = [
+    {% for column in query_columns[query_name] %}'{{ column }}{{ ':{' }}{{ column }}{{ '}' }}'{% if not loop.last %},
+    {% endif %}{% endfor %}]
+
+# yapf: enable
+
+  # TODO: Change the default string formatter.
+  SOURCE_LONG = '{{ plugin_name|replace('_',' ')|title }} {{ query_name|title }}'
+  SOURCE_SHORT = '{{ plugin_name|replace('_',' ')|title }}'
+{% endfor %}
+
+
+manager.FormattersManager.RegisterFormatter([
+  {% for query_name in queries %}{{ class_name }}{{ query_name|capitalize }}Formatter{% if not loop.last %},
+  {% endif %}{% endfor %}
+])

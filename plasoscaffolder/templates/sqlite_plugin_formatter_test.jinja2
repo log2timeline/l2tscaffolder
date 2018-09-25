@@ -1,0 +1,32 @@
+# !/usr/bin/python
+# -*- coding: utf-8 -*-
+"""Tests for {{ plugin_name|replace('_',' ')|title}} event formatter."""
+
+import unittest
+
+from plaso.formatters import {{ plugin_name }}
+from tests.formatters import test_lib
+{% for query_name in queries %}
+class {{ class_name }}{{ query_name|capitalize }}FormatterTest(test_lib.EventFormatterTestCase):
+  """Tests the {{ plugin_name|replace('_',' ')|title}} {{ query_name|lower }} event formatter."""
+
+  def testInitialization(self):
+    """Tests the initialization."""
+    event_formatter = {{ plugin_name }}.{{ class_name }}{{ query_name|capitalize }}Formatter()
+    self.assertIsNotNone(event_formatter)
+
+  def testGetFormatStringAttributeNames(self):
+    """Tests the GetFormatStringAttributeNames function."""
+    event_formatter = {{ plugin_name }}.{{ class_name }}{{ query_name|capitalize }}Formatter()
+
+    expected_attribute_names = [
+        {% for column in query_columns[query_name]|sort %}'{{ column }}'{% if not loop.last %},{% endif %}
+        {% endfor %}]
+
+    self._TestGetFormatStringAttributeNames(
+        event_formatter, expected_attribute_names)
+{% endfor %}
+
+
+if __name__ == '__main__':
+  unittest.main()

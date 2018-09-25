@@ -81,6 +81,9 @@ class FileHandler:
 
     Returns:
       str: the path of the copied file
+
+    Raises:
+      errors.FileHandlingError: when file copy operation fails.
     """
     _ = self.CreateFolderForFilePathIfNotExist(destination)
     try:
