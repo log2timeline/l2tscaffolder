@@ -25,7 +25,7 @@ class PlasoSQLiteScaffolder(plaso.PlasoPluginScaffolder):
         parser, the key is the name for each SQL statement run against the
         database and the value is the data type used for each generated event
         resulting from that SQL statement.
-    queries (dict): a dict containing query name and SQL statments or queries
+    queries (dict): a dict containing query name and SQL statements or queries
         run against the database.
     query_columns (dict): for each SQL statement run against the database, with
         the key being query name and value being a list of all SQL column names
@@ -130,7 +130,13 @@ class PlasoSQLiteScaffolder(plaso.PlasoPluginScaffolder):
     return schema
 
   def GetJinjaContext(self) -> Dict[str, object]:
-    """Returns a dict that can be used as a context for Jinja2 templates."""
+    """Returns a dict that can be used as a context for Jinja2 templates.
+
+    Returns:
+      dict: containing:
+        str: name of Jinja argument.
+        object: Jinja argument value.
+    """
     context = super(PlasoSQLiteScaffolder, self).GetJinjaContext()
     context['database_name'] = self.database_name
     context['database_schema'] = self.database_schema
@@ -142,7 +148,7 @@ class PlasoSQLiteScaffolder(plaso.PlasoPluginScaffolder):
     return context
 
   def GenerateFiles(self) -> Iterator[Tuple[str, str]]:
-    """Generates all the files required for the SQLite plugin.
+    """Generates files required for the SQLite plugin.
 
     Yields:
       tuple: file name and content of the file to be written to disk.
