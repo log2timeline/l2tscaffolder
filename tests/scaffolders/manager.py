@@ -22,9 +22,9 @@ class AwesomeTestScaffolder(BaseScaffolderTest):
   NAME = 'Awesome'
   DESCRIPTION = 'This is a really awesome thing.'
   QUESTIONS = [
-      interface.Question('test1', 'a', 'b', str),
-      interface.Question('test2', 'a', 'b', str),
-      interface.Question('test3', 'a', 'b', str)]
+      interface.StringQuestion('test1', 'enter the test'),
+      interface.StringQuestion('test2', 'enter the test'),
+      interface.StringQuestion('test3', 'enter the test')]
 
 
 class AverageTestScaffolder(BaseScaffolderTest):
@@ -32,9 +32,9 @@ class AverageTestScaffolder(BaseScaffolderTest):
   NAME = 'Average'
   DESCRIPTION = 'This scaffolder implements the average parser.'
   QUESTIONS = [
-      interface.Question('mediocre', 'a', 'b', str),
-      interface.Question('lala', 'a', 'b', str),
-      interface.Question('ok', 'a', 'b', str)]
+      interface.StringQuestion('mediocre', 'a'),
+      interface.StringQuestion('lala', 'a'),
+      interface.StringQuestion('ok', 'enter')]
 
 
 class RegistrationTestScaffolder(BaseScaffolderTest):
@@ -44,10 +44,11 @@ class RegistrationTestScaffolder(BaseScaffolderTest):
       'This scaffolder implements the registration scaffolder, required '
       'paperwork for many ISO standards of the future.')
   QUESTIONS = [
-      interface.Question('27001', 'a', 'b', str),
-      interface.Question('9001', 'a', 'b', str),
-      interface.Question('3120512', 'a', 'b', str),
-      interface.Question('12362323', 'a', 'b', str)]
+      interface.StringQuestion('27001', 'a'),
+      interface.StringQuestion('9001', 'a'),
+      interface.StringQuestion('3120512', 'a'),
+      interface.ListQuestion('9001-2', 'enter the list here'),
+      interface.StringQuestion('12362323', 'a')]
 
 
 class NotAwesomeTestScaffolder(AwesomeTestScaffolder):
@@ -150,7 +151,7 @@ class ScaffolderManagerTest(unittest.TestCase):
     questions = manager.ScaffolderManager.GetScaffolderQuestionByName(
         'registration')
 
-    self.assertEqual(len(questions), 4)
+    self.assertEqual(len(questions), 5)
 
     question_attributes = [question.attribute for question in questions]
     self.assertIn('27001', question_attributes)

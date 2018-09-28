@@ -93,17 +93,18 @@ class ScaffolderManager:
     return scaffolder_objects
 
   @classmethod
-  def GetScaffolderQuestions(cls) -> List[Type[interface.Question]]:
+  def GetScaffolderQuestions(cls) -> List[Type[interface.BaseQuestion]]:
     """Retrieves all the questions asked by scaffolders."""
     questions = []
     for scaffolder_class in cls._scaffolder_classes.values():
-      questions.extend(scaffolder_class.QUESTIONS)
+      scaffolder_object = scaffolder_class()
+      questions.extend(scaffolder_object.GetQuestions())
 
     return questions
 
   @classmethod
   def GetScaffolderQuestionByName(
-      cls, scaffolder_name: str) -> List[interface.Question]:
+      cls, scaffolder_name: str) -> List[interface.BaseQuestion]:
     """Retrieve a list of questions asked by a scaffolder based on name.
 
     Args:
@@ -119,7 +120,8 @@ class ScaffolderManager:
     if not scaffolder_class:
       return list()
 
-    return scaffolder_class.QUESTIONS
+    scaffolder_object = scaffolder_class()
+    return scaffolder_object.GetQuestions()
 
   @classmethod
   def GetScaffolders(cls) -> Iterator[Tuple[str, Type[interface.Scaffolder]]]:

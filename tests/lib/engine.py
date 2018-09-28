@@ -16,9 +16,9 @@ class AwesomeScaffolder(scaffolder_interface.Scaffolder):
   NAME = 'Awesome'
   DESCRIPTION = 'This is a really awesome thing.'
   QUESTIONS = [
-      scaffolder_interface.Question('test1', 'a', 'b', str),
-      scaffolder_interface.Question('test2', 'a', 'b', str),
-      scaffolder_interface.Question('test3', 'a', 'b', str)]
+      scaffolder_interface.StringQuestion('test1', 'a'),
+      scaffolder_interface.StringQuestion('test2', 'a'),
+      scaffolder_interface.StringQuestion('test3', 'a')]
 
   def __init__(self):
     super(AwesomeScaffolder, self).__init__()

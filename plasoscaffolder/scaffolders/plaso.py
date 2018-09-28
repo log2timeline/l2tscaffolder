@@ -14,6 +14,25 @@ from plasoscaffolder.lib import mapping_helper
 from plasoscaffolder.scaffolders import interface
 
 
+class TestFileQuestion(interface.BaseQuestion):
+  """Test file question."""
+
+  def ValidateAnswer(self, answer: str):
+    """Validate an answer to a question.
+
+    Args:
+      answer (object): the answer to the question asked.
+
+    Raises:
+      errors.UnableToConfigure: if the answer is invalid.
+    """
+    super(TestFileQuestion, self).ValidateAnswer(answer)
+
+    if not os.path.isfile(answer):
+      raise errors.UnableToConfigure(
+          'The test file {0:s} does not exist.'.format(answer))
+
+
 class PlasoBaseScaffolder(interface.Scaffolder):
   """The plaso base scaffolder interface.
 
@@ -93,17 +112,16 @@ class PlasoBaseScaffolder(interface.Scaffolder):
 
     return context
 
-  def GetQuestions(self) -> List[interface.Question]:
+  def GetQuestions(self) -> List[interface.BaseQuestion]:
     """Returns scaffolder questions as well as adding plaso related ones.
 
     Returns:
-      list[interface.Question]: questions to prompt the user with.
+      list[interface.BaseQuestion]: questions to prompt the user with.
     """
     questions = self.QUESTIONS
-    questions.append(interface.Question(
+    questions.append(TestFileQuestion(
         'test_file',
-        'Absolute or relative path to the file that will be used for tests.',
-        'Path to a test file used by the parser or plugin.', str))
+        'Absolute or relative path to the file that will be used for tests.'))
     return questions
 
   def GenerateFiles(self) -> Iterator[Tuple[str, str]]:

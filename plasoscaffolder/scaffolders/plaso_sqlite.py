@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 """The scaffolder interface classes."""
 import os
 import sqlite3
@@ -8,9 +7,45 @@ from typing import Dict
 from typing import Iterator
 from typing import Tuple
 
+from plasoscaffolder.lib import errors
 from plasoscaffolder.scaffolders import interface
 from plasoscaffolder.scaffolders import plaso
 from plasoscaffolder.scaffolders import manager
+
+
+class SQLQuestion(interface.DictQuestion):
+  """SQL Query question."""
+
+  def ValidateAnswer(self, answer: dict):
+    """Validate an answer to a question.
+
+    The answer should be a dict that has query names as key values
+    and valid SQLite commands as values. This function attempts
+    to verify that the SQL commands do not have syntax errors in them
+    by attempting to run it against an empty SQLite database stored
+    in memory.
+
+    Args:
+      answer (dict): the answer to the question asked.
+
+    Raises:
+      errors.UnableToConfigure: if the answer is invalid.
+    """
+    super(SQLQuestion, self).ValidateAnswer(answer)
+
+    temp_db = sqlite3.connect(':memory:')
+    for query_name, query in answer.items():
+      try:
+        temp_db.execute(query)
+      except ValueError as exception:
+        raise errors.UnableToConfigure(
+            'Unable to run query [{0:s}] with error: {1:s}'.format(
+                query_name, repr(exception)))
+      except (sqlite3.DatabaseError, sqlite3.OperationalError) as exception:
+        if str(exception).endswith('syntax error'):
+          raise errors.UnableToConfigure(
+              'Unable to run query [{0:s}] with error: {1:s}'.format(
+                  query_name, repr(exception)))
 
 
 class PlasoSQLiteScaffolder(plaso.PlasoPluginScaffolder):
@@ -56,13 +91,13 @@ class PlasoSQLiteScaffolder(plaso.PlasoPluginScaffolder):
   # user should be prompted about before the plugin or parser is created.
   # Each element in the list should be of the named tuple question.
   QUESTIONS = [
-      interface.Question(
-          'queries', 'Query name and SQL queries to extract data',
-          ('Define the name of the SQL query as well as the actual '
-           'SQL queries this plugin will execute'), dict),
-      interface.Question(
-          'required_tables', 'List of required tables',
-          'Define a list of all required tables.', list)]
+      SQLQuestion(
+          'queries', (
+              'Define the name of the SQL query (key) as well as the actual '
+              'SQL queries (value) this plugin will execute'), 'Query Name',
+          'SQL Statement'),
+      interface.ListQuestion(
+          'required_tables', 'List of required tables')]
 
   def __init__(self):
     """Initializes the plaso SQLite plugin scaffolder."""

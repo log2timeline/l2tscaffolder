@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """The scaffolder interface classes."""
 import abc
-import collections
 
 from typing import Dict
 from typing import Iterator
@@ -12,8 +11,84 @@ from plasoscaffolder.lib import definitions
 from plasoscaffolder.lib import errors
 
 
-Question = collections.namedtuple(
-    'Question', ['attribute', 'prompt', 'help', 'type'])
+class BaseQuestion:
+  """Scaffolder question.
+
+  Attributes:
+    attribute (str): the name of attribute.
+    prompt (str): help string that is displayed before the question is asked.
+  """
+
+  # The type defines the variable type this question expects
+  # as an answer.
+  TYPE = None
+
+  def __init__(self, attribute: str, prompt: str):
+    """Initialize the question."""
+    self.attribute = attribute
+    self.prompt = prompt
+
+  def _ValidateType(self, answer: object):
+    """Validate the answer against the claimed type.
+
+    Args:
+      answer (object): the answer to the question asked.
+
+    Raises:
+      errors.UnableToConfigure: if the answer is not of the
+          correct type.
+    """
+    if not isinstance(answer, self.TYPE):
+      raise errors.UnableToConfigure((
+          'Answer is not of the correct type. It is {0:s} '
+          'instead of being {1:s}').format(
+              str(type(answer)), str(type(self.TYPE))))
+
+  def ValidateAnswer(self, answer: object):
+    """Validate an answer to a question.
+
+    Args:
+      answer (object): the answer to the question asked.
+
+    Raises:
+      errors.UnableToConfigure: if the answer is invalid.
+    """
+    self._ValidateType(answer)
+
+
+class DictQuestion(BaseQuestion):
+  """Scaffolder dict question.
+
+  Attributes:
+    attribute (str): the name of attribute.
+    prompt (str): help string that is displayed before the question is asked.
+    key_prompt (str): the help string that is displayed before asking for each
+        key value.
+    value_prompt (str): the help string that is displayed before asking for each
+        value in the dict.
+  """
+  TYPE = dict
+
+  def __init__(self, attribute, prompt, key_prompt, value_prompt):
+    """Initialize the question."""
+    super(DictQuestion, self).__init__(attribute, prompt)
+    self.key_prompt = key_prompt
+    self.value_prompt = value_prompt
+
+
+class IntQuestion(BaseQuestion):
+  """Scaffolder integer question."""
+  TYPE = int
+
+
+class ListQuestion(BaseQuestion):
+  """Scaffolder list question."""
+  TYPE = list
+
+
+class StringQuestion(BaseQuestion):
+  """Scaffolder string question."""
+  TYPE = str
 
 
 class Scaffolder:
@@ -30,7 +105,7 @@ class Scaffolder:
 
   # Questions, a list that contains all the needed questions that the
   # user should be prompted about before the plugin or parser is created.
-  # Each element in the list should be of the named tuple question.
+  # Each element in the list should be an instance of BaseQuestion.
   QUESTIONS = []
 
   def __init__(self):
@@ -48,11 +123,11 @@ class Scaffolder:
     """
     return {}
 
-  def GetQuestions(self) -> List[Question]:
+  def GetQuestions(self) -> List[BaseQuestion]:
     """Returns scaffolder questions.
 
     Returns:
-      list[Question]: questions to prompt the user with.
+      list[BaseQuestion]: questions to prompt the user with.
     """
     return self.QUESTIONS
 
