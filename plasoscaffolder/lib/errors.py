@@ -20,3 +20,11 @@ class NoValidDefinition(Error):
 
 class ScaffolderNotConfigured(Error):
   """Raised when the scaffolder has not been configured correctly."""
+
+
+class UnableToConfigure(Error):
+  """Raised when the scaffolder tool has issues with configuration."""
+
+
+class WrongCliInput(Error):
+  """Raised when wrong input is entered into the CLI."""
