@@ -1,25 +1,38 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 """This is the setup file for the project."""
+import os
+import glob
+
 from setuptools import find_packages
 from setuptools import setup
 
-setup(name='plasoscaffolder',
-      version='0.1',
-      packages=find_packages(),
-      include_package_data=True,
-      package_data={'plasoscaffolder.bll.templates': ['*.jinja2'],'':['.style.yapf']},
-      install_requires=['Click>=6.7',
-                        'setuptools>=35.0.2',
-                        'jinja2>=2.9.6',
-                        'colorama>=0.3.7',
-                        'yapf==0.16.1',
-                        'pexpect>=4.2.1'],
-      entry_points={'console_scripts': [
-          'plasoscaffolder=plasoscaffolder.frontend.main:entry_point']},
-      
-    # metadata for upload to PyPI
-    author="Claudia Saxer",
-    description="This is a scaffolder for sqlite plugins for plaso.",
-    keywords="plaso scaffolder",
-    url="http://plasoscaffolder.readthedocs.io")
+import plasoscaffolder
+
+setup(
+    name='l2tscaffolder',
+    version=plasoscaffolder.__version__,
+    description=(
+        'Scaffolder project for l2t, helping to bootstrap l2t development.'),
+    license='Apache License, Version 2.0',
+    url='https://github.com/log2timeline/PlasoScaffolder',
+    maintainer='Log2Timeline maintainers',
+    maintainer_email='log2timeline-maintainers@googlegroups.com',
+    classifiers=[
+        'Development Status :: 4 - Beta',
+        'Environment :: Console',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+    ],
+    packages=find_packages(),
+    include_package_data=True,
+    package_data={'plasoscaffolder.templates': ['*.jinja2'],'':['.style.yapf']},
+    install_requires=['Click>=6.7',
+                      'setuptools>=35.0.2',
+                      'jinja2>=2.9.6',
+                      'colorama>=0.3.7',
+                      'yapf==0.22',
+                      'pexpect>=4.2.1'],
+    scripts=glob.glob(os.path.join('tools', '[a-z]*.py')),
+    keywords="plaso l2t scaffolder log2timeline turbinia timesketch",
+)
