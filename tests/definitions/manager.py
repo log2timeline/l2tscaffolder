@@ -80,6 +80,18 @@ class DefinitionManagerTest(unittest.TestCase):
     manager.DefinitionManager.RegisterDefinition(GoldTestProject)
     manager.DefinitionManager.RegisterDefinition(FailingTestProject)
 
+  def testGetDefinitionByName(self):
+    """Test getting definitions by name."""
+    test_definition = manager.DefinitionManager.GetDefinitionByName(
+        GoldTestProject.NAME)
+
+    self.assertEqual(test_definition.NAME, GoldTestProject.NAME)
+
+    test_definition = manager.DefinitionManager.GetDefinitionByName(
+        'DoesNotExist')
+
+    self.assertEqual(test_definition, None)
+
   def testRegisteringAndDeregistering(self):
     """Test registering and deregistering definitions."""
     definitions = list(manager.DefinitionManager.GetDefinitionNames())
