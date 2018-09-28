@@ -40,7 +40,10 @@ class GitHelper(cli.CLIHelper):
     exit_code, output, error = self.RunCommand(command)
 
     if exit_code != 0:
-      raise errors.UnableToConfigure((
+      # TODO: remove the pylint disable as soon as soon as :
+      # https://github.com/log2timeline/PlasoScaffolder/pull/34
+      # gets submitted.
+      raise errors.UnableToConfigure(( # pylint: disable=no-member
           'Unable to get the active git branch, with error message '
           '{0:s}').format(error))
 
@@ -93,6 +96,9 @@ class GitHelper(cli.CLIHelper):
     exit_code, _, error = self.RunCommand(command)
 
     if exit_code != 0:
-      raise errors.UnableToConfigure((
+      # TODO: remove the pylint disable as soon as soon as :
+      # https://github.com/log2timeline/PlasoScaffolder/pull/34
+      # gets submitted.
+      raise errors.UnableToConfigure(( # pylint: disable=no-member
           'Unable to create the feature branch, with error message '
           '{0:s}').format(error))
