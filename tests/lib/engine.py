@@ -81,6 +81,7 @@ class ScaffolderEngineTest(unittest.TestCase):
 
     test_engine.SetModuleName(test_name)
     module_name = test_engine.module_name
+    # pylint: disable=protected-access
     file_name = test_engine._file_name_prefix
 
     self.assertEqual(expected_module_name, module_name)
