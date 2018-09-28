@@ -72,8 +72,7 @@ class ScaffolderEngineTest(unittest.TestCase):
 
     test_engine.SetModuleName(test_name)
 
-    # pylint: disable=protected-access
-    module_name = test_engine._module_name
+    module_name = test_engine.module_name
     self.assertEqual(module_name, test_name.title())
 
     test_name = 'some module this is'
@@ -81,8 +80,7 @@ class ScaffolderEngineTest(unittest.TestCase):
     expected_file_name = 'some_module_this_is'
 
     test_engine.SetModuleName(test_name)
-    # pylint: disable=protected-access
-    module_name = test_engine._module_name
+    module_name = test_engine.module_name
     file_name = test_engine._file_name_prefix
 
     self.assertEqual(expected_module_name, module_name)
