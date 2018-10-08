@@ -3,8 +3,7 @@
 # This is the same class as: https://github.com/log2timeline/l2tdevtools/ \
 # blob/master/l2tdevtools/review_helpers/cli.py
 # TODO: Import the review helper directly instead of copy here once projects
-# merge.
-
+# are merged.
 import codecs
 import locale
 import logging

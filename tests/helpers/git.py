@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 """Tests for the git helper."""
 
-from __future__ import unicode_literals
-
 import unittest
 
 from plasoscaffolder.helpers import git
@@ -15,7 +13,7 @@ class GitHelperTest(unittest.TestCase):
   def testInitialize(self):
     """Tests that the helper can be initialized."""
     helper = git.GitHelper(
-        u'https://github.com/log2timeline/l2tdevtools.git')
+        'https://github.com/log2timeline/l2tdevtools.git')
     self.assertIsNotNone(helper)
 
 

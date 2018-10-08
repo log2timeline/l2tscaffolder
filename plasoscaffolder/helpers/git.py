@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Git helper for the scaffolder project.
 
 This file provides a class to assist with git operations.
@@ -17,7 +18,7 @@ class GitHelper(cli.CLIHelper):
   """
 
   def __init__(self, project_path: str):
-    """Initialize the git helper.
+    """Initializes the git helper.
 
     Arguments:
       project_path (str): the path to the git project folder.
@@ -27,7 +28,7 @@ class GitHelper(cli.CLIHelper):
     self._cwd = os.getcwd()
 
   def GetActiveBranch(self) -> str:
-    """Return back the active branch of the git project.
+    """Determines the active branch of the git project.
 
     Returns:
       str: the active branch of the git project.
@@ -40,10 +41,7 @@ class GitHelper(cli.CLIHelper):
     exit_code, output, error = self.RunCommand(command)
 
     if exit_code != 0:
-      # TODO: remove the pylint disable as soon as soon as :
-      # https://github.com/log2timeline/PlasoScaffolder/pull/34
-      # gets submitted.
-      raise errors.UnableToConfigure(( # pylint: disable=no-member
+      raise errors.UnableToConfigure((
           'Unable to get the active git branch, with error message '
           '{0:s}').format(error))
 
@@ -51,7 +49,7 @@ class GitHelper(cli.CLIHelper):
       if line.startswith('*'):
         _, _, line_string = line.partition('*')
         return line_string.strip()
-    return ''
+    raise errors.UnableToConfigure('Unable to determine the active git branch')
 
   def RunCommand(self, command: str) -> Tuple[int, str, str]:
     """Runs a command.
@@ -69,7 +67,7 @@ class GitHelper(cli.CLIHelper):
     return exit_code, output, error
 
   def SwitchToBranch(self, branch: str) -> int:
-    """Switch the git branch and return the exit code of the command.
+    """Switches the git branch and returns the exit code of the command.
 
     Arguments:
       branch (str): the name of the git branch.
@@ -83,7 +81,7 @@ class GitHelper(cli.CLIHelper):
     return exit_code
 
   def CreateFeatureBranch(self, branch: str):
-    """Create a feature branch in the git project.
+    """Creates a feature branch in the git project.
 
     Arguments:
       branch (str): the name of the git branch.
@@ -96,9 +94,6 @@ class GitHelper(cli.CLIHelper):
     exit_code, _, error = self.RunCommand(command)
 
     if exit_code != 0:
-      # TODO: remove the pylint disable as soon as soon as :
-      # https://github.com/log2timeline/PlasoScaffolder/pull/34
-      # gets submitted.
-      raise errors.UnableToConfigure(( # pylint: disable=no-member
+      raise errors.UnableToConfigure((
           'Unable to create the feature branch, with error message '
           '{0:s}').format(error))
