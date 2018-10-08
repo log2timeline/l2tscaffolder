@@ -43,7 +43,7 @@ class DefinitionManager:
       name (str): name of the definition.
 
     Returns:
-      interface.ScaffolderDefinition: definition class or none
+      interface.ScaffolderDefinition: definition class or None
           if name is not registered.
     """
     return cls._definition_classes.get(name, None)

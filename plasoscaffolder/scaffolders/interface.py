@@ -15,7 +15,7 @@ class BaseQuestion:
   """Scaffolder question.
 
   Attributes:
-    attribute (str): the name of attribute.
+    attribute (str): the name of the attribute the question prompts for.
     prompt (str): help string that is displayed before the question is asked.
   """
 
@@ -24,25 +24,28 @@ class BaseQuestion:
   TYPE = None
 
   def __init__(self, attribute: str, prompt: str):
-    """Initialize the question."""
+    """Initializes the question.
+
+    Args:
+      attribute (str): the name of the attribute the question prompts for.
+      prompt (str): help string that is displayed before the question is asked.
+    """
     self.attribute = attribute
     self.prompt = prompt
 
   def _ValidateType(self, answer: object):
-    """Validate the answer against the claimed type.
+    """Validates the answer against the expected type.
 
     Args:
       answer (object): the answer to the question asked.
 
     Raises:
-      errors.UnableToConfigure: if the answer is not of the
-          correct type.
+      errors.UnableToConfigure: if the answer is not the correct type.
     """
     if not isinstance(answer, self.TYPE):
       raise errors.UnableToConfigure((
-          'Answer is not of the correct type. It is {0:s} '
-          'instead of being {1:s}').format(
-              str(type(answer)), str(type(self.TYPE))))
+          'Answer is not of the correct type. It is {0!s} '
+          'instead of being {1!s}').format(type(answer)), type(self.TYPE))
 
   def ValidateAnswer(self, answer: object):
     """Validate an answer to a question.
@@ -60,10 +63,10 @@ class DictQuestion(BaseQuestion):
   """Scaffolder dict question.
 
   Attributes:
-    attribute (str): the name of attribute.
+    attribute (str): the name of the attribute the question prompts for.
     prompt (str): help string that is displayed before the question is asked.
     key_prompt (str): the help string that is displayed before asking for each
-        key value.
+        key.
     value_prompt (str): the help string that is displayed before asking for each
         value in the dict.
   """

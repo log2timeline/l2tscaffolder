@@ -73,9 +73,11 @@ class DefinitionManagerTest(unittest.TestCase):
     # Need to make sure there are no registered projects, and can't iterate
     # directly over projects since changing the dict in the middle of an iter
     # causes errors.
-    existing_definition = list(manager.DefinitionManager.GetDefinitionObjects())
-    for definition_class in existing_definition:
-      manager.DefinitionManager.DeregisterDefinition(definition_class)
+    registered_definitions = list(
+        manager.DefinitionManager.GetDefinitionObjects())
+    for definition_object in registered_definitions:
+      registered_class = type(definition_object)
+      manager.DefinitionManager.DeregisterDefinition(registered_class)
 
     manager.DefinitionManager.RegisterDefinition(GoldTestProject)
     manager.DefinitionManager.RegisterDefinition(FailingTestProject)

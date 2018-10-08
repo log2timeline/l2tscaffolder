@@ -18,10 +18,10 @@ class TestFileQuestion(interface.BaseQuestion):
   """Test file question."""
 
   def ValidateAnswer(self, answer: str):
-    """Validate an answer to a question.
+    """Validates the answer to the test file question.
 
     Args:
-      answer (object): the answer to the question asked.
+      answer (str): path to a test file.
 
     Raises:
       errors.UnableToConfigure: if the answer is invalid.
@@ -118,10 +118,11 @@ class PlasoBaseScaffolder(interface.Scaffolder):
     Returns:
       list[interface.BaseQuestion]: questions to prompt the user with.
     """
-    questions = self.QUESTIONS
-    questions.append(TestFileQuestion(
+    test_file_question = TestFileQuestion(
         'test_file',
-        'Absolute or relative path to the file that will be used for tests.'))
+        'Absolute or relative path to the file that will be used for tests.')
+    questions = self.QUESTIONS
+    questions.append(test_file_question)
     return questions
 
   def GenerateFiles(self) -> Iterator[Tuple[str, str]]:

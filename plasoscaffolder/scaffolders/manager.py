@@ -79,7 +79,7 @@ class ScaffolderManager:
     return None
 
   @classmethod
-  def GetScaffolderObjects(cls) -> Dict[str, Type[interface.Scaffolder]]:
+  def GetScaffolderObjects(cls) -> Dict[str, interface.Scaffolder]:
     """Retrieves the scaffolder objects.
 
     Returns:
@@ -93,8 +93,12 @@ class ScaffolderManager:
     return scaffolder_objects
 
   @classmethod
-  def GetScaffolderQuestions(cls) -> List[Type[interface.BaseQuestion]]:
-    """Retrieves all the questions asked by scaffolders."""
+  def GetScaffolderQuestions(cls) -> List[interface.BaseQuestion]:
+    """Retrieves all the questions asked by scaffolders.
+
+    Returns:
+      list[interface.BaseQuestion]: questions asked by all scaffolders.
+    """
     questions = []
     for scaffolder_class in cls._scaffolder_classes.values():
       scaffolder_object = scaffolder_class()
@@ -111,9 +115,8 @@ class ScaffolderManager:
       scaffolder_name (str): name of the scaffolder.
 
     Returns:
-      list: a list with all the questions (namedtuple) needed to setup the
-          scaffolder. If scaffolder_name is not registered an empty list will
-          be returned.
+      list: a list with all the questions needed to setup the  scaffolder.
+          If scaffolder_name is not registered an empty list will be returned.
     """
     scaffolder_class = cls._scaffolder_classes.get(
         scaffolder_name.lower(), None)

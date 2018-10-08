@@ -17,7 +17,7 @@ class SQLQuestion(interface.DictQuestion):
   """SQL Query question."""
 
   def ValidateAnswer(self, answer: dict):
-    """Validate an answer to a question.
+    """Validates the answer to the SQL query question.
 
     The answer should be a dict that has query names as key values
     and valid SQLite commands as values. This function attempts
@@ -39,13 +39,13 @@ class SQLQuestion(interface.DictQuestion):
         temp_db.execute(query)
       except ValueError as exception:
         raise errors.UnableToConfigure(
-            'Unable to run query [{0:s}] with error: {1:s}'.format(
-                query_name, repr(exception)))
+            'Unable to run query [{0:s}] with error: {1!s}'.format(
+                query_name, exception))
       except (sqlite3.DatabaseError, sqlite3.OperationalError) as exception:
         if str(exception).endswith('syntax error'):
           raise errors.UnableToConfigure(
-              'Unable to run query [{0:s}] with error: {1:s}'.format(
-                  query_name, repr(exception)))
+              'Unable to run query [{0:s}] with error: {1!s}'.format(
+                  query_name, exception))
 
 
 class PlasoSQLiteScaffolder(plaso.PlasoPluginScaffolder):
@@ -89,15 +89,15 @@ class PlasoSQLiteScaffolder(plaso.PlasoPluginScaffolder):
 
   # Questions, a list that contains all the needed questions that the
   # user should be prompted about before the plugin or parser is created.
-  # Each element in the list should be of the named tuple question.
+  # Each element in the list needs to be an instance of BaseQuestion.
   QUESTIONS = [
       SQLQuestion(
-          'queries', (
-              'Define the name of the SQL query (key) as well as the actual '
-              'SQL queries (value) this plugin will execute'), 'Query Name',
-          'SQL Statement'),
+          attribute='queries', prompt=(
+            'Define the name of the SQL query (key) as well as the actual SQL '
+            'queries (value) this plugin will execute'),
+          key_prompt='Query Name', value_prompt='SQL Statement'),
       interface.ListQuestion(
-          'required_tables', 'List of required tables')]
+          attribute='required_tables', prompt='List of required tables')]
 
   def __init__(self):
     """Initializes the plaso SQLite plugin scaffolder."""
