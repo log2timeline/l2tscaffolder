@@ -16,9 +16,9 @@ class AwesomeScaffolder(scaffolder_interface.Scaffolder):
   NAME = 'Awesome'
   DESCRIPTION = 'This is a really awesome thing.'
   QUESTIONS = [
-      scaffolder_interface.Question('test1', 'a', 'b', str),
-      scaffolder_interface.Question('test2', 'a', 'b', str),
-      scaffolder_interface.Question('test3', 'a', 'b', str)]
+      scaffolder_interface.StringQuestion('test1', 'a'),
+      scaffolder_interface.StringQuestion('test2', 'a'),
+      scaffolder_interface.StringQuestion('test3', 'a')]
 
   def __init__(self):
     super(AwesomeScaffolder, self).__init__()
@@ -72,8 +72,7 @@ class ScaffolderEngineTest(unittest.TestCase):
 
     test_engine.SetModuleName(test_name)
 
-    # pylint: disable=protected-access
-    module_name = test_engine._module_name
+    module_name = test_engine.module_name
     self.assertEqual(module_name, test_name.title())
 
     test_name = 'some module this is'
@@ -81,8 +80,8 @@ class ScaffolderEngineTest(unittest.TestCase):
     expected_file_name = 'some_module_this_is'
 
     test_engine.SetModuleName(test_name)
+    module_name = test_engine.module_name
     # pylint: disable=protected-access
-    module_name = test_engine._module_name
     file_name = test_engine._file_name_prefix
 
     self.assertEqual(expected_module_name, module_name)

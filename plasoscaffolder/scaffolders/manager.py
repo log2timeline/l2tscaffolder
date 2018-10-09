@@ -79,7 +79,7 @@ class ScaffolderManager:
     return None
 
   @classmethod
-  def GetScaffolderObjects(cls) -> Dict[str, Type[interface.Scaffolder]]:
+  def GetScaffolderObjects(cls) -> Dict[str, interface.Scaffolder]:
     """Retrieves the scaffolder objects.
 
     Returns:
@@ -93,33 +93,38 @@ class ScaffolderManager:
     return scaffolder_objects
 
   @classmethod
-  def GetScaffolderQuestions(cls) -> List[Type[interface.Question]]:
-    """Retrieves all the questions asked by scaffolders."""
+  def GetScaffolderQuestions(cls) -> List[interface.BaseQuestion]:
+    """Retrieves all the questions asked by scaffolders.
+
+    Returns:
+      list[interface.BaseQuestion]: questions asked by all scaffolders.
+    """
     questions = []
     for scaffolder_class in cls._scaffolder_classes.values():
-      questions.extend(scaffolder_class.QUESTIONS)
+      scaffolder_object = scaffolder_class()
+      questions.extend(scaffolder_object.GetQuestions())
 
     return questions
 
   @classmethod
   def GetScaffolderQuestionByName(
-      cls, scaffolder_name: str) -> List[interface.Question]:
+      cls, scaffolder_name: str) -> List[interface.BaseQuestion]:
     """Retrieve a list of questions asked by a scaffolder based on name.
 
     Args:
       scaffolder_name (str): name of the scaffolder.
 
     Returns:
-      list: a list with all the questions (namedtuple) needed to setup the
-          scaffolder. If scaffolder_name is not registered an empty list will
-          be returned.
+      list: a list with all the questions needed to setup the  scaffolder.
+          If scaffolder_name is not registered an empty list will be returned.
     """
     scaffolder_class = cls._scaffolder_classes.get(
         scaffolder_name.lower(), None)
     if not scaffolder_class:
       return list()
 
-    return scaffolder_class.QUESTIONS
+    scaffolder_object = scaffolder_class()
+    return scaffolder_object.GetQuestions()
 
   @classmethod
   def GetScaffolders(cls) -> Iterator[Tuple[str, Type[interface.Scaffolder]]]:

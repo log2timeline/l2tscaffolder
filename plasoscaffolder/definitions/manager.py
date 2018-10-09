@@ -35,6 +35,20 @@ class DefinitionManager:
     del cls._definition_classes[definition_name]
 
   @classmethod
+  def GetDefinitionByName(
+      cls, name: str) -> Type[interface.ScaffolderDefinition]:
+    """Returns a definition class based on registered name.
+
+    Args:
+      name (str): name of the definition.
+
+    Returns:
+      interface.ScaffolderDefinition: definition class or None
+          if name is not registered.
+    """
+    return cls._definition_classes.get(name, None)
+
+  @classmethod
   def GetDefinitionNames(cls) -> Iterator[str]:
     """Yields all names of registered definition classes.
 
