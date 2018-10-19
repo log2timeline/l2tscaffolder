@@ -15,7 +15,7 @@ class MainTest(unittest.TestCase):
     """testing the help of the main"""
     runner = CliRunner()
     result = runner.invoke(main.entry_point, ['--help'])
-    expected_output = ('Usage: entry_point [OPTIONS] COMMAND [ARGS]...\n'
+    expected_output = ('Usage: entry-point [OPTIONS] COMMAND [ARGS]...\n'
                        '\n'
                        'Options:\n'
                        '  --help  Show this message and exit.\n'
@@ -30,7 +30,7 @@ class MainTest(unittest.TestCase):
     """testing the main of the sqlite"""
     runner = CliRunner()
     result = runner.invoke(main.entry_point, ['sqlite', '--help'])
-    expected_output = ('Usage: entry_point sqlite [OPTIONS]\n'
+    expected_output = ('Usage: entry-point sqlite [OPTIONS]\n'
                        '\n'
                        'Options:\n'
                        '  --path TEXT       The path to plaso\n'
