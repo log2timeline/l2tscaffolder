@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
-"""The output file handler."""
+"""The output file handler for click"""
+import click
+
+from plasoscaffolder.frontend import output_handler
 
 
-class BaseOutputHandler:
+class OutputHandlerClick(output_handler.BaseOutputHandler):
   """Class representing the output handler for click."""
 
   def Confirm(self, text: str, default=True, abort=True):
@@ -19,6 +22,7 @@ class BaseOutputHandler:
      Returns:
         bool: False if the user entered no, True if the user entered yes
      """
+    return click.confirm(text, abort=abort, default=default)
 
   def PrintError(self, text: str):
     """A echo for errors with click.
@@ -26,6 +30,7 @@ class BaseOutputHandler:
     Args:
       text (str): the text to print
     """
+    click.secho(text, fg='red', bold=True)
 
   def PrintInfo(self, text: str):
     """A echo for information with click.
@@ -33,9 +38,11 @@ class BaseOutputHandler:
     Args:
       text (str): the text to print
     """
+    click.secho(text, fg='cyan')
 
   def PrintNewLine(self):
     """A new line added to output."""
+    click.echo('')
 
   def PrintOutput(self, text: str):
     """A echo for information with click.
@@ -43,6 +50,7 @@ class BaseOutputHandler:
     Args:
       text (str): the text to print.
     """
+    click.secho(text, fg='yellow', bold=True)
 
   def PromptError(self, text: str) -> str:
     """A prompt for errors with click.
@@ -53,6 +61,7 @@ class BaseOutputHandler:
     Returns:
       str: the user input
     """
+    return click.prompt(click.style(text, fg='red'), type=str)
 
   def PromptInfo(self, text: str) -> str:
     """A prompt for information with click.
@@ -63,6 +72,7 @@ class BaseOutputHandler:
     Returns:
       str: the user input
     """
+    return click.prompt(text, type=str)
 
   def PromptInfoWithDefault(self, text: str, text_type: object,
                             default: object) -> str:
@@ -76,3 +86,4 @@ class BaseOutputHandler:
     Returns:
       str: the user input
     """
+    return click.prompt(text, type=text_type, default=default)
