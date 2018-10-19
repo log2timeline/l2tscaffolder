@@ -15,12 +15,7 @@ class FrontendCLITest(unittest.TestCase):
     # Need to make sure there are no registered projects, and can't iterate
     # directly over projects since changing the dict in the middle of an iter
     # causes errors.
-    existing_definition = list(manager.DefinitionManager.GetDefinitionObjects())
-    for definition_class in existing_definition:
-      manager.DefinitionManager.DeregisterDefinition(definition_class)
-
-    manager.DefinitionManager.RegisterDefinition(GoldTestProject)
-    manager.DefinitionManager.RegisterDefinition(FailingTestProject)
+    pass
 
   def testGetDefinitionNames(self):
     """Test getting definition names."""
