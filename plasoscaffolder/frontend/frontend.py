@@ -329,7 +329,7 @@ class ScaffolderFrontend:
     cls.OUTPUT_HANDLER.PrintInfo('Gathering all required information.')
     scaffolder_engine = engine.ScaffolderEngine()
 
-    definition = cls.GetDefinition(value)
+    definition = cls.GetDefinition(definition_value)
 
     project_path = cls.GetProjectPath(definition)
     scaffolder_engine.SetProjectRootPath(project_path)
