@@ -12,12 +12,13 @@ class ScaffolderCli(frontend.ScaffolderFrontend):
   """A CLI implementation for the scaffolder project.
 
   Attributes:
-    OUTPUT_HANDLER (cli_output_handler.OutputHandlerClick: output handler
+    OUTPUT_HANDLER (cli_output_handler.OutputHandlerClick): output handler
         that is used to request and read input from end user.
   """
 
   OUTPUT_HANDLER = cli_output_handler.OutputHandlerClick()
 
+  # pylint: disable=arguments-differ
   @classmethod
   def Start(
       cls, unused_ctx: click.core.Context, unused_param: click.core.Option,

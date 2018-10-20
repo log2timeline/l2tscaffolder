@@ -182,20 +182,21 @@ class ScaffolderFrontendTest(unittest.TestCase):
     files are generated.
     """
     string_buffer = io.StringIO()
-    output_handler = TestFrontend.OUTPUT_HANDLER
-    output_handler.SetOutput(string_buffer)
+    test_output_handler = TestFrontend.OUTPUT_HANDLER
+    test_output_handler.SetOutput(string_buffer)
 
-    output_handler.FeedLine(self.root_directory.name)
-    output_handler.FeedLine('foobar test')
-    output_handler.FeedLine('1')
-    output_handler.FeedLine('FooQuery')
-    output_handler.FeedLine('SELECT foo FROM bar;')
-    output_handler.FeedLine('n')
-    output_handler.FeedLine('bar')
-    output_handler.FeedLine('n')
+    test_output_handler.FeedLine(self.root_directory.name)
+    test_output_handler.FeedLine('foobar test')
+    test_output_handler.FeedLine('1')
+    test_output_handler.FeedLine('FooQuery')
+    test_output_handler.FeedLine('SELECT foo FROM bar;')
+    test_output_handler.FeedLine('n')
+    test_output_handler.FeedLine('bar')
+    test_output_handler.FeedLine('n')
     cwd = os.getcwd()
-    output_handler.FeedLine(os.path.join(cwd, 'test_data', 'test_sqlite.db'))
-    output_handler.FeedLine('Y')
+    test_output_handler.FeedLine(
+        os.path.join(cwd, 'test_data', 'test_sqlite.db'))
+    test_output_handler.FeedLine('Y')
 
     TestFrontend.Start('plaso')
 
@@ -205,22 +206,22 @@ class ScaffolderFrontendTest(unittest.TestCase):
 
     expected_string = (
         '== Starting the scaffolder ==Gathering all required information.')
-    self.assertEquals(first_line.strip(), expected_string)
+    self.assertEqual(first_line.strip(), expected_string)
 
     expected_string = 'written to disk.'
     last_line = lines[-1]
     last_part = last_line[-len(expected_string):]
-    self.assertEquals(last_part, expected_string)
+    self.assertEqual(last_part, expected_string)
 
     self.assertTrue(os.path.isfile(os.path.join(
-      self.root_directory.name, 'plaso', 'parsers', 'sqlite_plugins',
-      'foobar_test.py')))
+        self.root_directory.name, 'plaso', 'parsers', 'sqlite_plugins',
+        'foobar_test.py')))
     self.assertTrue(os.path.isfile(os.path.join(
-      self.root_directory.name, 'tests', 'parsers', 'sqlite_plugins',
-      'foobar_test.py')))
+        self.root_directory.name, 'tests', 'parsers', 'sqlite_plugins',
+        'foobar_test.py')))
 
     self.assertTrue(os.path.isfile(os.path.join(
-      self.root_directory.name, 'test_data', 'test_sqlite.db')))
+        self.root_directory.name, 'test_data', 'test_sqlite.db')))
 
 
 if __name__ == '__main__':

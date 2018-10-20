@@ -1,7 +1,6 @@
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
 """The scaffolder frontend."""
-import collections
 import re
 
 from typing import Dict
@@ -45,6 +44,7 @@ class ScaffolderFrontend:
     more_entries = True
     entry_index = 1
     while more_entries:
+      # pylint: disable=assignment-from-no-return
       key = cls.OUTPUT_HANDLER.PromptInfo(
           '{0:s} [#{1:d}]'.format(question.key_prompt, entry_index))
       if key in return_dict:
@@ -78,6 +78,7 @@ class ScaffolderFrontend:
     more_entries = True
     entry_index = 1
     while more_entries:
+      # pylint: disable=assignment-from-no-return
       value = cls.OUTPUT_HANDLER.PromptInfo(
           'Value to add [#{0:d}]'.format(entry_index))
       if not value:
@@ -132,6 +133,7 @@ class ScaffolderFrontend:
     Returns:
       str: the answer as supplied by the user.
     """
+    # pylint: disable=assignment-from-no-return
     value = cls.OUTPUT_HANDLER.PromptInfo('Value')
     question.ValidateAnswer(value)
     return value
@@ -151,6 +153,7 @@ class ScaffolderFrontend:
       cls.OUTPUT_HANDLER.PrintInfo(
           '  [{0:d}] {1:s}'.format(item_count + 1, item))
 
+    # pylint: disable=assignment-from-no-return
     result = cls.OUTPUT_HANDLER.PromptInfo('{0:s} choice'.format(item_text))
     try:
       result_int = int(result, 10)
@@ -197,6 +200,10 @@ class ScaffolderFrontend:
           stores all required questions and stores all results as well.
       scaffolder_engine (scaffolder_engine.ScaffolderEngine): the scaffolder
           engine object, needed to store answers from questions asked.
+
+    Raises:
+      UnableToConfigure: if the answer causes the scaffolder not
+          to be configured properly.
     """
     for question in scaffolder.GetQuestions():
       gather_answer = True
@@ -207,6 +214,7 @@ class ScaffolderFrontend:
           value = cls._AskQuestion(question)
           break
         except errors.UnableToConfigure as exception:
+          # pylint: disable=assignment-from-no-return
           cls.OUTPUT_HANDLER.PrintError(
               'Unable to configure, with error: {0:s}'.format(repr(exception)))
           gather_answer = cls.OUTPUT_HANDLER.Confirm('Want to try again?')
@@ -271,12 +279,14 @@ class ScaffolderFrontend:
       errors.WrongCliInput: when no valid project path has been provided.
     """
     cls.OUTPUT_HANDLER.PrintNewLine()
+    # pylint: disable=assignment-from-no-return
     project_path = cls.OUTPUT_HANDLER.PromptInfo('Path to the project root')
     if definition.ValidatePath(project_path):
       cls.OUTPUT_HANDLER.PrintOutput(
           'Path [{0:s}] set as the project path.'.format(project_path))
       return project_path
 
+    # pylint: disable=assignment-from-no-return
     check = cls.OUTPUT_HANDLER.Confirm((
         'Path [{0:s}] does not lead to a valid project for {1:s}. '
         'Do you want to try again?').format(project_path, definition.NAME))
@@ -350,10 +360,12 @@ class ScaffolderFrontend:
     try:
       cls.GatherScaffolderAnswers(scaffolder, scaffolder_engine)
     except errors.UnableToConfigure as exception:
+      # pylint: disable=assignment-from-no-return
       cls.OUTPUT_HANDLER.PrintError(
           'Unabl to properly confgure scaffolder, aborting.')
       return
 
+    # pylint: disable=assignment-from-no-return
     ready = cls.OUTPUT_HANDLER.Confirm('Ready to generate files?')
     if ready:
       for file_path in scaffolder_engine.GenerateFiles():
