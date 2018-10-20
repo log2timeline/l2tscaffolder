@@ -14,7 +14,7 @@ from plasoscaffolder.lib import mapping_helper
 from plasoscaffolder.scaffolders import interface
 
 
-class TestFileQuestion(interface.BaseQuestion):
+class TestFileQuestion(interface.StringQuestion):
   """Test file question."""
 
   def ValidateAnswer(self, answer: str):
@@ -209,7 +209,7 @@ class PlasoBaseScaffolder(interface.Scaffolder):
     test_file_name = os.path.basename(self.test_file)
     self.test_file_path = os.path.join('test_data', test_file_name)
 
-    yield test_file_name, self.test_file_path
+    yield self.test_file, self.test_file_path
 
   def RaiseIfNotReady(self):
     """Checks to see if all attributes are set to start generating files.

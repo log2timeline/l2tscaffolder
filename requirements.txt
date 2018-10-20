@@ -4,3 +4,4 @@ jinja2>=2.9.6
 colorama>=0.3.7
 yapf==0.22.0
 pexpect>=4.2.1
+timeout-decorator>=0.4.0
