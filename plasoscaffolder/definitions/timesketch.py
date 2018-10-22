@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""The timesketch definition class."""
+"""The Timesketch definition class."""
 
 import os
 
@@ -19,7 +19,7 @@ class TimesketchProject(interface.ScaffolderDefinition):
       root_path (str): the path to the root of the project directory.
 
     Returns:
-      bool: whether the given path is the correct root path to a Plaso
+      bool: whether the given path is the correct root path to a Timesketch
           development tree.
     """
     if not os.path.isdir(root_path):
