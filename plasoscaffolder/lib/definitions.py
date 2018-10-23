@@ -3,3 +3,4 @@
 
 DEFINITION_UNDEFINED = 'undefined'
 DEFINITION_PLASO = 'plaso'
+DEFINITION_TIMESKETCH = 'timesketch'
