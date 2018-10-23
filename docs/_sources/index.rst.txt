@@ -1,9 +1,9 @@
-.. Plaso Sqlite Plugin Scaffolder documentation master file, created by
-   sphinx-quickstart on Tue Feb 28 14:07:57 2017.
+.. L2t Scaffolder documentation master file, created by
+   sphinx-quickstart on Tue Oct 23 15:07:57 2018.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Plaso Sqlite Plugin Scaffolder's documentation!
+Welcome to L2t Scaffolder's documentation!
 ==========================================================
 
 .. toctree::

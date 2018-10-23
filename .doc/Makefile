@@ -3,10 +3,10 @@
 
 # You can set these variables from the command line.
 SPHINXOPTS    =
-SPHINXBUILD   = sphinx-build
-SPHINXPROJ    = PlasoSqlitePluginScaffolder
+SPHINXBUILD   = python -msphinx
+SPHINXPROJ    = L2tScaffolder
 SOURCEDIR     = .
-BUILDDIR      = .build
+BUILDDIR      = build
 
 # Put it first so that "make" without argument is like "make help".
 help:

@@ -1,5 +1,5 @@
-tests\.test\_database package
-=============================
+tests.test\_database package
+============================
 
 Module contents
 ---------------

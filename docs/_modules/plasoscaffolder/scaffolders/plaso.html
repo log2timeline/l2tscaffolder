@@ -1,0 +1,367 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>plasoscaffolder.scaffolders.plaso &#8212; L2t Scaffolder 2.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for plasoscaffolder.scaffolders.plaso</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Plaso scaffolder that generates plaso parser and plugins.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Iterator</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Tuple</span>
+
+<span class="kn">from</span> <span class="nn">plasoscaffolder.lib</span> <span class="k">import</span> <span class="n">definitions</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.lib</span> <span class="k">import</span> <span class="n">errors</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.lib</span> <span class="k">import</span> <span class="n">mapping_helper</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.scaffolders</span> <span class="k">import</span> <span class="n">interface</span>
+
+
+<div class="viewcode-block" id="TestFileQuestion"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.plaso.TestFileQuestion">[docs]</a><span class="k">class</span> <span class="nc">TestFileQuestion</span><span class="p">(</span><span class="n">interface</span><span class="o">.</span><span class="n">BaseQuestion</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Test file question.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="TestFileQuestion.ValidateAnswer"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.plaso.TestFileQuestion.ValidateAnswer">[docs]</a>  <span class="k">def</span> <span class="nf">ValidateAnswer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">answer</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Validates the answer to the test file question.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      answer (str): path to a test file.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">      errors.UnableToConfigure: if the answer is invalid.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">TestFileQuestion</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">ValidateAnswer</span><span class="p">(</span><span class="n">answer</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">answer</span><span class="p">):</span>
+      <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">UnableToConfigure</span><span class="p">(</span>
+          <span class="s1">&#39;The test file </span><span class="si">{0:s}</span><span class="s1"> does not exist.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">answer</span><span class="p">))</span></div></div>
+
+
+<div class="viewcode-block" id="PlasoBaseScaffolder"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.plaso.PlasoBaseScaffolder">[docs]</a><span class="k">class</span> <span class="nc">PlasoBaseScaffolder</span><span class="p">(</span><span class="n">interface</span><span class="o">.</span><span class="n">Scaffolder</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;The plaso base scaffolder interface.</span>
+
+<span class="sd">  Attributes:</span>
+<span class="sd">    class_name (str): class name of the plaso parser or plugin to be generated.</span>
+<span class="sd">    test_file (str): name of the file used for testing the parser or plugin.</span>
+<span class="sd">    test_file_path (str): path to the test file.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="c1"># The name of the plugin or parser this scaffolder plugin provides.</span>
+  <span class="n">NAME</span> <span class="o">=</span> <span class="s1">&#39;plaso_base&#39;</span>
+
+  <span class="c1"># One liner describing what the scaffolder provides.</span>
+  <span class="n">DESCRIPTION</span> <span class="o">=</span> <span class="s1">&#39;This is a scaffolder for plaso parsers and/or plugins&#39;</span>
+
+  <span class="c1"># Define which project this particular scaffolder belongs to.</span>
+  <span class="n">PROJECT</span> <span class="o">=</span> <span class="n">definitions</span><span class="o">.</span><span class="n">DEFINITION_PLASO</span>
+
+  <span class="c1"># Filename of templates.</span>
+  <span class="n">TEMPLATE_PARSER_FILE</span> <span class="o">=</span> <span class="s1">&#39;generic_plaso_parser.jinja2&#39;</span>
+  <span class="n">TEMPLATE_PARSER_TEST</span> <span class="o">=</span> <span class="s1">&#39;generic_plaso_parser_test.jinja2&#39;</span>
+  <span class="n">TEMPLATE_FORMATTER_FILE</span> <span class="o">=</span> <span class="s1">&#39;generic__plaso_formatter.jinja2&#39;</span>
+  <span class="n">TEMPLATE_FORMATTER_TEST</span> <span class="o">=</span> <span class="s1">&#39;generic_plaso_formatter_test.jinja2&#39;</span>
+
+  <span class="c1"># Questions, a list that contains all the needed questions that the</span>
+  <span class="c1"># user should be prompted about before the plugin or parser is created.</span>
+  <span class="c1"># Each element in the list should be of the named tuple question.</span>
+  <span class="n">QUESTIONS</span> <span class="o">=</span> <span class="p">[]</span>
+
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Initializes the plaso scaffolder.&quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">PlasoBaseScaffolder</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_formatter_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;plaso&#39;</span><span class="p">,</span> <span class="s1">&#39;formatters&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_formatter_test_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;formatters&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_parser_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;plaso&#39;</span><span class="p">,</span> <span class="s1">&#39;parsers&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_parser_test_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;parsers&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_mapping_helper</span> <span class="o">=</span> <span class="n">mapping_helper</span><span class="o">.</span><span class="n">ParserMapper</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_mapping_helper</span><span class="o">.</span><span class="n">SetDefaultPaths</span><span class="p">()</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">class_name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">test_file</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">test_file_path</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+  <span class="k">def</span> <span class="nf">_GenerateFormatter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Generates the formatter file.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mapping_helper</span><span class="o">.</span><span class="n">RenderTemplate</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TEMPLATE_FORMATTER_FILE</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetJinjaContext</span><span class="p">())</span>
+
+  <span class="k">def</span> <span class="nf">_GenerateFormatterTest</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Generates the formatter test file.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mapping_helper</span><span class="o">.</span><span class="n">RenderTemplate</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TEMPLATE_FORMATTER_TEST</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetJinjaContext</span><span class="p">())</span>
+
+  <span class="k">def</span> <span class="nf">_GenerateParser</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Generates the parser file.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mapping_helper</span><span class="o">.</span><span class="n">RenderTemplate</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TEMPLATE_PARSER_FILE</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetJinjaContext</span><span class="p">())</span>
+
+  <span class="k">def</span> <span class="nf">_GenerateParserTest</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Generates the parser test file.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mapping_helper</span><span class="o">.</span><span class="n">RenderTemplate</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TEMPLATE_PARSER_TEST</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetJinjaContext</span><span class="p">())</span>
+
+<div class="viewcode-block" id="PlasoBaseScaffolder.GetJinjaContext"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.plaso.PlasoBaseScaffolder.GetJinjaContext">[docs]</a>  <span class="k">def</span> <span class="nf">GetJinjaContext</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Returns a dict that can be used as a context for Jinja2 templates.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      dict: containing:</span>
+<span class="sd">        str: name of Jinja argument.</span>
+<span class="sd">        object: Jinja argument value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">PlasoBaseScaffolder</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">GetJinjaContext</span><span class="p">()</span>
+
+    <span class="n">context</span><span class="p">[</span><span class="s1">&#39;class_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">class_name</span>
+    <span class="n">context</span><span class="p">[</span><span class="s1">&#39;test_file&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_file</span>
+    <span class="n">context</span><span class="p">[</span><span class="s1">&#39;test_file_path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_file_path</span>
+
+    <span class="k">return</span> <span class="n">context</span></div>
+
+<div class="viewcode-block" id="PlasoBaseScaffolder.GetQuestions"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.plaso.PlasoBaseScaffolder.GetQuestions">[docs]</a>  <span class="k">def</span> <span class="nf">GetQuestions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">interface</span><span class="o">.</span><span class="n">BaseQuestion</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Returns scaffolder questions as well as adding plaso related ones.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      list[interface.BaseQuestion]: questions to prompt the user with.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">test_file_question</span> <span class="o">=</span> <span class="n">TestFileQuestion</span><span class="p">(</span>
+        <span class="s1">&#39;test_file&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Absolute or relative path to the file that will be used for tests.&#39;</span><span class="p">)</span>
+    <span class="n">questions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">QUESTIONS</span>
+    <span class="n">questions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">test_file_question</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">questions</span></div>
+
+<div class="viewcode-block" id="PlasoBaseScaffolder.GenerateFiles"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.plaso.PlasoBaseScaffolder.GenerateFiles">[docs]</a>  <span class="k">def</span> <span class="nf">GenerateFiles</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot;Generates all the files required for a plaso parser or a plugin.</span>
+
+<span class="sd">    Yields:</span>
+<span class="sd">      list[tuple]: containing:</span>
+<span class="sd">       str: file name.</span>
+<span class="sd">       str: file content.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parser_name</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0:s}</span><span class="s1">.py&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_output_name</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">class_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mapping_helper</span><span class="o">.</span><span class="n">GenerateClassName</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_output_name</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+      <span class="n">parser_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parser_path</span><span class="p">,</span> <span class="n">parser_name</span><span class="p">)</span>
+      <span class="n">parser_content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_GenerateParser</span><span class="p">()</span>
+      <span class="k">yield</span> <span class="n">parser_path</span><span class="p">,</span> <span class="n">parser_content</span>
+    <span class="k">except</span> <span class="ne">SyntaxError</span> <span class="k">as</span> <span class="n">exception</span><span class="p">:</span>
+      <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">((</span>
+          <span class="s1">&#39;Syntax error while attempting to generate parser, error &#39;</span>
+          <span class="s1">&#39;message: </span><span class="si">{0!s}</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">exception</span><span class="p">))</span>
+
+    <span class="n">test_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parser_test_path</span><span class="p">,</span> <span class="n">parser_name</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+      <span class="n">test_content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_GenerateParserTest</span><span class="p">()</span>
+      <span class="k">yield</span> <span class="n">test_path</span><span class="p">,</span> <span class="n">test_content</span>
+    <span class="k">except</span> <span class="ne">SyntaxError</span> <span class="k">as</span> <span class="n">exception</span><span class="p">:</span>
+      <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">((</span>
+          <span class="s1">&#39;Syntax error while attempting to generate parser test, error &#39;</span>
+          <span class="s1">&#39;message: </span><span class="si">{0!s}</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">exception</span><span class="p">))</span>
+
+    <span class="n">formatter_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_formatter_path</span><span class="p">,</span> <span class="n">parser_name</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+      <span class="n">formatter_content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_GenerateFormatter</span><span class="p">()</span>
+      <span class="k">yield</span> <span class="n">formatter_path</span><span class="p">,</span> <span class="n">formatter_content</span>
+    <span class="k">except</span> <span class="ne">SyntaxError</span> <span class="k">as</span> <span class="n">exception</span><span class="p">:</span>
+      <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">((</span>
+          <span class="s1">&#39;Syntax error while attempting to generate formatter, error &#39;</span>
+          <span class="s1">&#39;message: </span><span class="si">{0!s}</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">exception</span><span class="p">))</span>
+
+    <span class="n">formatter_test_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_formatter_test_path</span><span class="p">,</span> <span class="n">parser_name</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+      <span class="n">formatter_test_content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_GenerateFormatterTest</span><span class="p">()</span>
+      <span class="k">yield</span> <span class="n">formatter_test_path</span><span class="p">,</span> <span class="n">formatter_test_content</span>
+    <span class="k">except</span> <span class="ne">SyntaxError</span> <span class="k">as</span> <span class="n">exception</span><span class="p">:</span>
+      <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">((</span>
+          <span class="s1">&#39;Syntax error while attempting to generate formatter test, error &#39;</span>
+          <span class="s1">&#39;message: </span><span class="si">{0!s}</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">exception</span><span class="p">))</span>
+
+    <span class="n">formatter_string</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;# TODO: put in alphabetical order.</span><span class="se">\n</span><span class="s1">from plaso.formatters import&#39;</span>
+        <span class="s1">&#39;</span><span class="si">{0:s}</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_output_name</span><span class="p">)</span>
+    <span class="n">formatter_init_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_formatter_path</span><span class="p">,</span> <span class="s1">&#39;__init__.py&#39;</span><span class="p">)</span>
+    <span class="k">yield</span> <span class="n">formatter_init_path</span><span class="p">,</span> <span class="n">formatter_string</span>
+
+    <span class="n">parser_string</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;# TODO: put in alphabetical order.</span><span class="se">\n</span><span class="s1">from </span><span class="si">{0:s}</span><span class="s1"> import </span><span class="si">{1:s}</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_parser_path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_name</span><span class="p">)</span>
+    <span class="n">parser_init_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parser_path</span><span class="p">,</span> <span class="s1">&#39;__init__.py&#39;</span><span class="p">)</span>
+    <span class="k">yield</span> <span class="n">parser_init_path</span><span class="p">,</span> <span class="n">parser_string</span></div>
+
+  <span class="c1"># pylint raises issues with OSError being raised and not documented, but it is</span>
+  <span class="c1"># not raised.</span>
+  <span class="c1"># pylint: disable=missing-raises-doc</span>
+<div class="viewcode-block" id="PlasoBaseScaffolder.GetFilesToCopy"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.plaso.PlasoBaseScaffolder.GetFilesToCopy">[docs]</a>  <span class="k">def</span> <span class="nf">GetFilesToCopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot;Return a list of files that need to be copied.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">      IOError: when the test file does not exist.</span>
+
+<span class="sd">    Yields:</span>
+<span class="sd">      tuple: containing:</span>
+<span class="sd">        str: file name of source.</span>
+<span class="sd">        str: file name of destination.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_file</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s1">&#39;A plaso parser cannot be generated without a test file.&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_file</span><span class="p">):</span>
+      <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s1">&#39;Test file [</span><span class="si">{0:s}</span><span class="s1">] does not exist.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_file</span><span class="p">))</span>
+
+    <span class="n">test_file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_file</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">test_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;test_data&#39;</span><span class="p">,</span> <span class="n">test_file_name</span><span class="p">)</span>
+
+    <span class="k">yield</span> <span class="n">test_file_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_file_path</span></div>
+
+<div class="viewcode-block" id="PlasoBaseScaffolder.RaiseIfNotReady"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.plaso.PlasoBaseScaffolder.RaiseIfNotReady">[docs]</a>  <span class="k">def</span> <span class="nf">RaiseIfNotReady</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Checks to see if all attributes are set to start generating files.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">      ScaffolderNotConfigured: if the scaffolder is not fully configured.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">PlasoBaseScaffolder</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">RaiseIfNotReady</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_file</span><span class="p">):</span>
+      <span class="n">errors</span><span class="o">.</span><span class="n">ScaffolderNotConfigured</span><span class="p">(</span>
+          <span class="s1">&#39;Test file path is incorrect, file does not exist.&#39;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="PlasoPluginScaffolder"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.plaso.PlasoPluginScaffolder">[docs]</a><span class="k">class</span> <span class="nc">PlasoPluginScaffolder</span><span class="p">(</span><span class="n">PlasoBaseScaffolder</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Scaffolder for generating plaso plugins.&quot;&quot;&quot;</span>
+
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Initializes the plaso plugin scaffolder.&quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">PlasoPluginScaffolder</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+    <span class="n">plugin_path_name</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0:s}</span><span class="s1">_plugins&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NAME</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_parser_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parser_path</span><span class="p">,</span> <span class="n">plugin_path_name</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_parser_test_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parser_test_path</span><span class="p">,</span> <span class="n">plugin_path_name</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">plugin_name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+<div class="viewcode-block" id="PlasoPluginScaffolder.GetJinjaContext"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.plaso.PlasoPluginScaffolder.GetJinjaContext">[docs]</a>  <span class="k">def</span> <span class="nf">GetJinjaContext</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Returns a dict that can be used as a context for Jinja2 templates.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      dict: containing:</span>
+<span class="sd">        str: name of Jinja argument.</span>
+<span class="sd">        object: Jinja argument value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">PlasoPluginScaffolder</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">GetJinjaContext</span><span class="p">()</span>
+    <span class="n">context</span><span class="p">[</span><span class="s1">&#39;plugin_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_name</span>
+    <span class="k">return</span> <span class="n">context</span></div></div>
+
+
+<div class="viewcode-block" id="PlasoParserScaffolder"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.plaso.PlasoParserScaffolder">[docs]</a><span class="k">class</span> <span class="nc">PlasoParserScaffolder</span><span class="p">(</span><span class="n">PlasoBaseScaffolder</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Scaffolder for generating plaso parsers.</span>
+
+<span class="sd">  Attributes:</span>
+<span class="sd">    parser_name(str): name of the parser to be generated.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Initializes the plaso plugin scaffolder.&quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">PlasoParserScaffolder</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">parser_name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+<div class="viewcode-block" id="PlasoParserScaffolder.GetJinjaContext"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.plaso.PlasoParserScaffolder.GetJinjaContext">[docs]</a>  <span class="k">def</span> <span class="nf">GetJinjaContext</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Returns a dict that can be used as a context for Jinja2 templates.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      dict: containing:</span>
+<span class="sd">        str: name of Jinja argument.</span>
+<span class="sd">        object: Jinja argument value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">PlasoParserScaffolder</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">GetJinjaContext</span><span class="p">()</span>
+    <span class="n">context</span><span class="p">[</span><span class="s1">&#39;parser_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_name</span>
+    <span class="k">return</span> <span class="n">context</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">L2t Scaffolder</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Plaso Developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

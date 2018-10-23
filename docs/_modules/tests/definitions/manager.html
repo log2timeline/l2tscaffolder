@@ -1,0 +1,217 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>tests.definitions.manager &#8212; L2t Scaffolder 2.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for tests.definitions.manager</h1><div class="highlight"><pre>
+<span></span><span class="c1"># !/usr/bin/python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Test class for the definition manager.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">unittest</span>
+
+<span class="kn">from</span> <span class="nn">plasoscaffolder.definitions</span> <span class="k">import</span> <span class="n">interface</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.definitions</span> <span class="k">import</span> <span class="n">manager</span>
+
+
+<div class="viewcode-block" id="GoldTestProject"><a class="viewcode-back" href="../../../tests.definitions.html#tests.definitions.manager.GoldTestProject">[docs]</a><span class="k">class</span> <span class="nc">GoldTestProject</span><span class="p">(</span><span class="n">interface</span><span class="o">.</span><span class="n">ScaffolderDefinition</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Test project.&quot;&quot;&quot;</span>
+
+  <span class="n">NAME</span> <span class="o">=</span> <span class="s1">&#39;gold&#39;</span>
+
+<div class="viewcode-block" id="GoldTestProject.ValidatePath"><a class="viewcode-back" href="../../../tests.definitions.html#tests.definitions.manager.GoldTestProject.ValidatePath">[docs]</a>  <span class="k">def</span> <span class="nf">ValidatePath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Validates the path to the root directory of the project.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      root_path (str): path to a project source tree.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      bool: true if the path contains &#39;gold&#39;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s1">&#39;gold&#39;</span> <span class="ow">in</span> <span class="n">root_path</span><span class="p">:</span>
+      <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="kc">False</span></div></div>
+
+
+<div class="viewcode-block" id="SilverTestProject"><a class="viewcode-back" href="../../../tests.definitions.html#tests.definitions.manager.SilverTestProject">[docs]</a><span class="k">class</span> <span class="nc">SilverTestProject</span><span class="p">(</span><span class="n">interface</span><span class="o">.</span><span class="n">ScaffolderDefinition</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Test project.&quot;&quot;&quot;</span>
+
+  <span class="n">NAME</span> <span class="o">=</span> <span class="s1">&#39;silver&#39;</span>
+
+<div class="viewcode-block" id="SilverTestProject.ValidatePath"><a class="viewcode-back" href="../../../tests.definitions.html#tests.definitions.manager.SilverTestProject.ValidatePath">[docs]</a>  <span class="k">def</span> <span class="nf">ValidatePath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Validates the path to the root directory of the project.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      root_path (str): path to a project source tree.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      bool: true if the path contains &#39;gold&#39;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s1">&#39;silver&#39;</span> <span class="ow">in</span> <span class="n">root_path</span><span class="p">:</span>
+      <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="kc">False</span></div></div>
+
+
+<div class="viewcode-block" id="FailingTestProject"><a class="viewcode-back" href="../../../tests.definitions.html#tests.definitions.manager.FailingTestProject">[docs]</a><span class="k">class</span> <span class="nc">FailingTestProject</span><span class="p">(</span><span class="n">interface</span><span class="o">.</span><span class="n">ScaffolderDefinition</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Test project that always fails.&quot;&quot;&quot;</span>
+
+  <span class="n">NAME</span> <span class="o">=</span> <span class="s1">&#39;failing&#39;</span>
+
+<div class="viewcode-block" id="FailingTestProject.ValidatePath"><a class="viewcode-back" href="../../../tests.definitions.html#tests.definitions.manager.FailingTestProject.ValidatePath">[docs]</a>  <span class="k">def</span> <span class="nf">ValidatePath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Test validation.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      root_path (str): path to a project source tree.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      bool: always False, for testing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="kc">False</span></div></div>
+
+
+<div class="viewcode-block" id="DefinitionManagerTest"><a class="viewcode-back" href="../../../tests.definitions.html#tests.definitions.manager.DefinitionManagerTest">[docs]</a><span class="k">class</span> <span class="nc">DefinitionManagerTest</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Test case for the definition manager. &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="DefinitionManagerTest.setUpClass"><a class="viewcode-back" href="../../../tests.definitions.html#tests.definitions.manager.DefinitionManagerTest.setUpClass">[docs]</a>  <span class="nd">@classmethod</span>
+  <span class="k">def</span> <span class="nf">setUpClass</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Sets up the test class.&quot;&quot;&quot;</span>
+    <span class="c1"># Need to make sure there are no registered projects, and can&#39;t iterate</span>
+    <span class="c1"># directly over projects since changing the dict in the middle of an iter</span>
+    <span class="c1"># causes errors.</span>
+    <span class="n">registered_definitions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+        <span class="n">manager</span><span class="o">.</span><span class="n">DefinitionManager</span><span class="o">.</span><span class="n">GetDefinitionObjects</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">definition_object</span> <span class="ow">in</span> <span class="n">registered_definitions</span><span class="p">:</span>
+      <span class="n">registered_class</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">definition_object</span><span class="p">)</span>
+      <span class="n">manager</span><span class="o">.</span><span class="n">DefinitionManager</span><span class="o">.</span><span class="n">DeregisterDefinition</span><span class="p">(</span><span class="n">registered_class</span><span class="p">)</span>
+
+    <span class="n">manager</span><span class="o">.</span><span class="n">DefinitionManager</span><span class="o">.</span><span class="n">RegisterDefinition</span><span class="p">(</span><span class="n">GoldTestProject</span><span class="p">)</span>
+    <span class="n">manager</span><span class="o">.</span><span class="n">DefinitionManager</span><span class="o">.</span><span class="n">RegisterDefinition</span><span class="p">(</span><span class="n">FailingTestProject</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DefinitionManagerTest.testGetDefinitionByName"><a class="viewcode-back" href="../../../tests.definitions.html#tests.definitions.manager.DefinitionManagerTest.testGetDefinitionByName">[docs]</a>  <span class="k">def</span> <span class="nf">testGetDefinitionByName</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Test getting definitions by name.&quot;&quot;&quot;</span>
+    <span class="n">test_definition</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">DefinitionManager</span><span class="o">.</span><span class="n">GetDefinitionByName</span><span class="p">(</span>
+        <span class="n">GoldTestProject</span><span class="o">.</span><span class="n">NAME</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">test_definition</span><span class="o">.</span><span class="n">NAME</span><span class="p">,</span> <span class="n">GoldTestProject</span><span class="o">.</span><span class="n">NAME</span><span class="p">)</span>
+
+    <span class="n">test_definition</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">DefinitionManager</span><span class="o">.</span><span class="n">GetDefinitionByName</span><span class="p">(</span>
+        <span class="s1">&#39;DoesNotExist&#39;</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">test_definition</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DefinitionManagerTest.testRegisteringAndDeregistering"><a class="viewcode-back" href="../../../tests.definitions.html#tests.definitions.manager.DefinitionManagerTest.testRegisteringAndDeregistering">[docs]</a>  <span class="k">def</span> <span class="nf">testRegisteringAndDeregistering</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Test registering and deregistering definitions.&quot;&quot;&quot;</span>
+    <span class="n">definitions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">manager</span><span class="o">.</span><span class="n">DefinitionManager</span><span class="o">.</span><span class="n">GetDefinitionNames</span><span class="p">())</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">definitions</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">manager</span><span class="o">.</span><span class="n">DefinitionManager</span><span class="o">.</span><span class="n">RegisterDefinition</span><span class="p">(</span><span class="n">SilverTestProject</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+        <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">manager</span><span class="o">.</span><span class="n">DefinitionManager</span><span class="o">.</span><span class="n">GetDefinitionNames</span><span class="p">())),</span> <span class="mi">3</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="ne">KeyError</span><span class="p">):</span>
+      <span class="n">manager</span><span class="o">.</span><span class="n">DefinitionManager</span><span class="o">.</span><span class="n">RegisterDefinition</span><span class="p">(</span><span class="n">SilverTestProject</span><span class="p">)</span>
+
+    <span class="n">manager</span><span class="o">.</span><span class="n">DefinitionManager</span><span class="o">.</span><span class="n">DeregisterDefinition</span><span class="p">(</span><span class="n">SilverTestProject</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+        <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">manager</span><span class="o">.</span><span class="n">DefinitionManager</span><span class="o">.</span><span class="n">GetDefinitionNames</span><span class="p">())),</span> <span class="mi">2</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DefinitionManagerTest.testGetDefinitionNames"><a class="viewcode-back" href="../../../tests.definitions.html#tests.definitions.manager.DefinitionManagerTest.testGetDefinitionNames">[docs]</a>  <span class="k">def</span> <span class="nf">testGetDefinitionNames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Test getting definition names.&quot;&quot;&quot;</span>
+    <span class="n">definitions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">manager</span><span class="o">.</span><span class="n">DefinitionManager</span><span class="o">.</span><span class="n">GetDefinitionNames</span><span class="p">())</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">definitions</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">correct_definitions</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;gold&#39;</span><span class="p">,</span> <span class="s1">&#39;failing&#39;</span><span class="p">]</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertSetEqual</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">definitions</span><span class="p">),</span> <span class="nb">set</span><span class="p">(</span><span class="n">correct_definitions</span><span class="p">))</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+  <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">L2t Scaffolder</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Plaso Developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

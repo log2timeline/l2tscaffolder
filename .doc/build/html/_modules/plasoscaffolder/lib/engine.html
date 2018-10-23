@@ -1,0 +1,226 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>plasoscaffolder.lib.engine &#8212; L2t Scaffolder 2.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for plasoscaffolder.lib.engine</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;The scaffolder engine.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Iterator</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Type</span>
+
+<span class="kn">from</span> <span class="nn">plasoscaffolder.definitions</span> <span class="k">import</span> <span class="n">manager</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.lib</span> <span class="k">import</span> <span class="n">errors</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.lib</span> <span class="k">import</span> <span class="n">file_handler</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.scaffolders</span> <span class="k">import</span> <span class="n">interface</span> <span class="k">as</span> <span class="n">scaffolder_interface</span>
+
+
+<div class="viewcode-block" id="ScaffolderEngine"><a class="viewcode-back" href="../../../plasoscaffolder.lib.html#plasoscaffolder.lib.engine.ScaffolderEngine">[docs]</a><span class="k">class</span> <span class="nc">ScaffolderEngine</span><span class="p">:</span>
+  <span class="sd">&quot;&quot;&quot;The engine, responsible for file handling and setting up scaffolders.&quot;&quot;&quot;</span>
+
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Initializes the engine.&quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">ScaffolderEngine</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_attributes</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_definition</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_definition_root_path</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_file_handler</span> <span class="o">=</span> <span class="n">file_handler</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_file_name_prefix</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_scaffolder</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">module_name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+  <span class="k">def</span> <span class="nf">_RaiseIfNotReady</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Checks to see if all attributes are set to start generating files.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">      errors.EngineNotConfigured: when the engine is not fully configured.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_definition_root_path</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">EngineNotConfigured</span><span class="p">(</span>
+          <span class="s1">&#39;The path to the project root is not properly configured.&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">module_name</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">EngineNotConfigured</span><span class="p">(</span><span class="s1">&#39;Module name has not been configured.&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scaffolder</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">EngineNotConfigured</span><span class="p">(</span><span class="s1">&#39;Scaffolder object not yet set.&#39;</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">_scaffolder</span><span class="o">.</span><span class="n">RaiseIfNotReady</span><span class="p">()</span>
+    <span class="k">except</span> <span class="n">errors</span><span class="o">.</span><span class="n">ScaffolderNotConfigured</span> <span class="k">as</span> <span class="n">exception</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">EngineNotConfigured</span><span class="p">(</span><span class="n">exception</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ScaffolderEngine.GenerateFiles"><a class="viewcode-back" href="../../../plasoscaffolder.lib.html#plasoscaffolder.lib.engine.ScaffolderEngine.GenerateFiles">[docs]</a>  <span class="k">def</span> <span class="nf">GenerateFiles</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Generates needed files.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">      errors.EngineNotConfigured: when not all attributes have been configured.</span>
+
+<span class="sd">    Yields:</span>
+<span class="sd">      str: the full path to a file that was generated and written to disk.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_RaiseIfNotReady</span><span class="p">()</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">_scaffolder</span><span class="o">.</span><span class="n">SetOutputName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_name_prefix</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">file_source</span><span class="p">,</span> <span class="n">file_destination</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scaffolder</span><span class="o">.</span><span class="n">GetFilesToCopy</span><span class="p">():</span>
+      <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">file_source</span><span class="p">):</span>
+        <span class="n">full_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_definition_root_path</span><span class="p">,</span> <span class="n">file_destination</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+          <span class="n">written_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_handler</span><span class="o">.</span><span class="n">CopyFile</span><span class="p">(</span><span class="n">file_source</span><span class="p">,</span> <span class="n">full_path</span><span class="p">)</span>
+          <span class="k">yield</span> <span class="n">written_file</span>
+        <span class="k">except</span> <span class="n">errors</span><span class="o">.</span><span class="n">FileHandlingError</span> <span class="k">as</span> <span class="n">exception</span><span class="p">:</span>
+          <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+              <span class="s1">&#39;Unable to copy file: </span><span class="si">{0:s}</span><span class="s1"> to </span><span class="si">{1:s}</span><span class="s1"> with error: </span><span class="si">{2!s}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                  <span class="n">file_source</span><span class="p">,</span> <span class="n">full_path</span><span class="p">,</span> <span class="n">exception</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">content</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scaffolder</span><span class="o">.</span><span class="n">GenerateFiles</span><span class="p">():</span>
+      <span class="n">full_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_definition_root_path</span><span class="p">,</span> <span class="n">file_path</span><span class="p">)</span>
+      <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_handler</span><span class="o">.</span><span class="n">AddContent</span><span class="p">(</span><span class="n">full_path</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ScaffolderEngine.SetModuleName"><a class="viewcode-back" href="../../../plasoscaffolder.lib.html#plasoscaffolder.lib.engine.ScaffolderEngine.SetModuleName">[docs]</a>  <span class="k">def</span> <span class="nf">SetModuleName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Sets the module name as chosen by the user.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      module_name (str): name of the module to be generated by the scaffolder.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">file_name_prefix</span> <span class="o">=</span> <span class="n">module_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
+    <span class="n">file_name_prefix</span> <span class="o">=</span> <span class="n">file_name_prefix</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">module_name</span> <span class="o">=</span> <span class="n">file_name_prefix</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+    <span class="n">module_name</span> <span class="o">=</span> <span class="n">module_name</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
+    <span class="n">module_name</span> <span class="o">=</span> <span class="n">module_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_file_name_prefix</span> <span class="o">=</span> <span class="n">file_name_prefix</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">module_name</span> <span class="o">=</span> <span class="n">module_name</span></div>
+
+<div class="viewcode-block" id="ScaffolderEngine.SetScaffolder"><a class="viewcode-back" href="../../../plasoscaffolder.lib.html#plasoscaffolder.lib.engine.ScaffolderEngine.SetScaffolder">[docs]</a>  <span class="k">def</span> <span class="nf">SetScaffolder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scaffolder</span><span class="p">:</span> <span class="n">scaffolder_interface</span><span class="o">.</span><span class="n">Scaffolder</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Stores and initializes the scaffolder object in the engine.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      scaffolder (scaffolder_interface.Scaffolder): the scaffolder class</span>
+<span class="sd">          that the engine will use to generate files.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_scaffolder</span> <span class="o">=</span> <span class="n">scaffolder</span></div>
+
+<div class="viewcode-block" id="ScaffolderEngine.SetProjectRootPath"><a class="viewcode-back" href="../../../plasoscaffolder.lib.html#plasoscaffolder.lib.engine.ScaffolderEngine.SetProjectRootPath">[docs]</a>  <span class="k">def</span> <span class="nf">SetProjectRootPath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Sets the path to the root of the project tree.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">      errors.NoValidDefinition: when root path is not identified as a valid</span>
+<span class="sd">          definition path.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">definition</span> <span class="ow">in</span> <span class="n">manager</span><span class="o">.</span><span class="n">DefinitionManager</span><span class="o">.</span><span class="n">GetDefinitionObjects</span><span class="p">():</span>
+      <span class="k">if</span> <span class="n">definition</span><span class="o">.</span><span class="n">ValidatePath</span><span class="p">(</span><span class="n">root_path</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_definition</span> <span class="o">=</span> <span class="n">definition</span><span class="o">.</span><span class="n">NAME</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_definition_root_path</span> <span class="o">=</span> <span class="n">root_path</span>
+        <span class="k">return</span>
+
+    <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">NoValidDefinition</span><span class="p">(</span><span class="s1">&#39;No valid definition has been identified.&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ScaffolderEngine.StoreScaffolderAttribute"><a class="viewcode-back" href="../../../plasoscaffolder.lib.html#plasoscaffolder.lib.engine.ScaffolderEngine.StoreScaffolderAttribute">[docs]</a>  <span class="k">def</span> <span class="nf">StoreScaffolderAttribute</span><span class="p">(</span>
+      <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">value_type</span><span class="p">:</span> <span class="n">Type</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Stores an attribute read from the CLI.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      name (str): the attribute name.</span>
+<span class="sd">      value (object): the attribute value.</span>
+<span class="sd">      value_type (type): the attribute type.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">      KeyError: if the attribute name is already defined.</span>
+<span class="sd">      ScaffolderNotConfigured: if the scaffolder has not yet been set.</span>
+<span class="sd">      ValueError: if the value is not of the correct type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scaffolder</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">ScaffolderNotConfigured</span><span class="p">(</span><span class="s1">&#39;Scaffolder has not yet been set.&#39;</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">_scaffolder</span><span class="o">.</span><span class="n">SetAttribute</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">value_type</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">L2t Scaffolder</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Plaso Developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

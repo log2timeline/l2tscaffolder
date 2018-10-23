@@ -1,19 +1,11 @@
-tests\.other package
-====================
+tests.other package
+===================
 
 Submodules
 ----------
 
-tests\.other\.test\_dependencies module
----------------------------------------
-
-.. automodule:: tests.other.test_dependencies
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-tests\.other\.test\_version module
-----------------------------------
+tests.other.test\_version module
+--------------------------------
 
 .. automodule:: tests.other.test_version
     :members:

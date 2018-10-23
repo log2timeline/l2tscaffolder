@@ -1,0 +1,302 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>plasoscaffolder.scaffolders.interface &#8212; L2t Scaffolder 2.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for plasoscaffolder.scaffolders.interface</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;The scaffolder interface classes.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">abc</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Iterator</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Tuple</span>
+
+<span class="kn">from</span> <span class="nn">plasoscaffolder.lib</span> <span class="k">import</span> <span class="n">definitions</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.lib</span> <span class="k">import</span> <span class="n">errors</span>
+
+
+<div class="viewcode-block" id="BaseQuestion"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.interface.BaseQuestion">[docs]</a><span class="k">class</span> <span class="nc">BaseQuestion</span><span class="p">:</span>
+  <span class="sd">&quot;&quot;&quot;Scaffolder question.</span>
+
+<span class="sd">  Attributes:</span>
+<span class="sd">    attribute (str): the name of the attribute the question prompts for.</span>
+<span class="sd">    prompt (str): help string that is displayed before the question is asked.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="c1"># The type defines the variable type this question expects</span>
+  <span class="c1"># as an answer.</span>
+  <span class="n">TYPE</span> <span class="o">=</span> <span class="kc">None</span>
+
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Initializes the question.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      attribute (str): the name of the attribute the question prompts for.</span>
+<span class="sd">      prompt (str): help string that is displayed before the question is asked.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="n">attribute</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">prompt</span> <span class="o">=</span> <span class="n">prompt</span>
+
+  <span class="k">def</span> <span class="nf">_ValidateType</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">answer</span><span class="p">:</span> <span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Validates the answer against the expected type.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      answer (object): the answer to the question asked.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">      errors.UnableToConfigure: if the answer is not the correct type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">answer</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">TYPE</span><span class="p">):</span>
+      <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">UnableToConfigure</span><span class="p">((</span>
+          <span class="s1">&#39;Answer is not of the correct type. It is </span><span class="si">{0!s}</span><span class="s1"> &#39;</span>
+          <span class="s1">&#39;instead of being </span><span class="si">{1!s}</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">answer</span><span class="p">)),</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TYPE</span><span class="p">))</span>
+
+<div class="viewcode-block" id="BaseQuestion.ValidateAnswer"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.interface.BaseQuestion.ValidateAnswer">[docs]</a>  <span class="k">def</span> <span class="nf">ValidateAnswer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">answer</span><span class="p">:</span> <span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Validate an answer to a question.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      answer (object): the answer to the question asked.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">      errors.UnableToConfigure: if the answer is invalid.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_ValidateType</span><span class="p">(</span><span class="n">answer</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="DictQuestion"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.interface.DictQuestion">[docs]</a><span class="k">class</span> <span class="nc">DictQuestion</span><span class="p">(</span><span class="n">BaseQuestion</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Scaffolder dict question.</span>
+
+<span class="sd">  Attributes:</span>
+<span class="sd">    attribute (str): the name of the attribute the question prompts for.</span>
+<span class="sd">    prompt (str): help string that is displayed before the question is asked.</span>
+<span class="sd">    key_prompt (str): the help string that is displayed before asking for each</span>
+<span class="sd">        key.</span>
+<span class="sd">    value_prompt (str): the help string that is displayed before asking for each</span>
+<span class="sd">        value in the dict.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="n">TYPE</span> <span class="o">=</span> <span class="nb">dict</span>
+
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">key_prompt</span><span class="p">,</span> <span class="n">value_prompt</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Initialize the question.&quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">DictQuestion</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">attribute</span><span class="p">,</span> <span class="n">prompt</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">key_prompt</span> <span class="o">=</span> <span class="n">key_prompt</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">value_prompt</span> <span class="o">=</span> <span class="n">value_prompt</span></div>
+
+
+<div class="viewcode-block" id="IntQuestion"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.interface.IntQuestion">[docs]</a><span class="k">class</span> <span class="nc">IntQuestion</span><span class="p">(</span><span class="n">BaseQuestion</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Scaffolder integer question.&quot;&quot;&quot;</span>
+  <span class="n">TYPE</span> <span class="o">=</span> <span class="nb">int</span></div>
+
+
+<div class="viewcode-block" id="ListQuestion"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.interface.ListQuestion">[docs]</a><span class="k">class</span> <span class="nc">ListQuestion</span><span class="p">(</span><span class="n">BaseQuestion</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Scaffolder list question.&quot;&quot;&quot;</span>
+  <span class="n">TYPE</span> <span class="o">=</span> <span class="nb">list</span></div>
+
+
+<div class="viewcode-block" id="StringQuestion"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.interface.StringQuestion">[docs]</a><span class="k">class</span> <span class="nc">StringQuestion</span><span class="p">(</span><span class="n">BaseQuestion</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Scaffolder string question.&quot;&quot;&quot;</span>
+  <span class="n">TYPE</span> <span class="o">=</span> <span class="nb">str</span></div>
+
+
+<div class="viewcode-block" id="Scaffolder"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.interface.Scaffolder">[docs]</a><span class="k">class</span> <span class="nc">Scaffolder</span><span class="p">:</span>
+  <span class="sd">&quot;&quot;&quot;The scaffolder interface.&quot;&quot;&quot;</span>
+
+  <span class="c1"># The name of the component/parser/submodule this scaffolder generates.</span>
+  <span class="n">NAME</span> <span class="o">=</span> <span class="s1">&#39;base_parser&#39;</span>
+
+  <span class="c1"># One liner describing what the scaffolder generates.</span>
+  <span class="n">DESCRIPTION</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+  <span class="c1"># Define which project this particular scaffolder belongs to.</span>
+  <span class="n">PROJECT</span> <span class="o">=</span> <span class="n">definitions</span><span class="o">.</span><span class="n">DEFINITION_PLASO</span>
+
+  <span class="c1"># Questions, a list that contains all the needed questions that the</span>
+  <span class="c1"># user should be prompted about before the plugin or parser is created.</span>
+  <span class="c1"># Each element in the list should be an instance of BaseQuestion.</span>
+  <span class="n">QUESTIONS</span> <span class="o">=</span> <span class="p">[]</span>
+
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Initializes the scaffolder.&quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">Scaffolder</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_output_name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+<div class="viewcode-block" id="Scaffolder.GetJinjaContext"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.interface.Scaffolder.GetJinjaContext">[docs]</a>  <span class="k">def</span> <span class="nf">GetJinjaContext</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Returns a dict that can be used as a context for Jinja2 templates.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      dict: containing:</span>
+<span class="sd">        str: name of Jinja argument.</span>
+<span class="sd">        object: Jinja argument value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{}</span></div>
+
+<div class="viewcode-block" id="Scaffolder.GetQuestions"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.interface.Scaffolder.GetQuestions">[docs]</a>  <span class="k">def</span> <span class="nf">GetQuestions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseQuestion</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Returns scaffolder questions.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      list[BaseQuestion]: questions to prompt the user with.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">QUESTIONS</span></div>
+
+<div class="viewcode-block" id="Scaffolder.GenerateFiles"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.interface.Scaffolder.GenerateFiles">[docs]</a>  <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+  <span class="k">def</span> <span class="nf">GenerateFiles</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot;Generates files this scaffolder provides.</span>
+
+<span class="sd">    Yields:</span>
+<span class="sd">      list: file name and content of the file to be written to disk.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="Scaffolder.GetFilesToCopy"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.interface.Scaffolder.GetFilesToCopy">[docs]</a>  <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+  <span class="k">def</span> <span class="nf">GetFilesToCopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot;Return a list of files that need to be copied.</span>
+
+<span class="sd">    Yields:</span>
+<span class="sd">      tuple (str, str): file name of source and destination.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="Scaffolder.RaiseIfNotReady"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.interface.Scaffolder.RaiseIfNotReady">[docs]</a>  <span class="k">def</span> <span class="nf">RaiseIfNotReady</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Checks to see if all attributes are set to start generating files.</span>
+
+<span class="sd">    By default this function only checks to see if all attributes defined</span>
+<span class="sd">    in questions and Jinja2 context have values and are not empty.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">      ScaffolderNotConfigured: if the scaffolder is not fully configured.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">question</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetQuestions</span><span class="p">():</span>
+      <span class="n">attribute</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">question</span><span class="o">.</span><span class="n">attribute</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+      <span class="k">if</span> <span class="ow">not</span> <span class="n">attribute</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">ScaffolderNotConfigured</span><span class="p">(</span>
+            <span class="s1">&#39;Attribute [</span><span class="si">{0:s}</span><span class="s1">] is not set.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">question</span><span class="o">.</span><span class="n">attribute</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">jinja_context_attribute</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetJinjaContext</span><span class="p">():</span>
+      <span class="k">if</span> <span class="ow">not</span> <span class="n">jinja_context_attribute</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">ScaffolderNotConfigured</span><span class="p">((</span>
+            <span class="s1">&#39;The required attribute for jinja2 template: [</span><span class="si">{0:s}</span><span class="s1">] is not &#39;</span>
+            <span class="s1">&#39;set.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">jinja_context_attribute</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Scaffolder.SetOutputName"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.interface.Scaffolder.SetOutputName">[docs]</a>  <span class="k">def</span> <span class="nf">SetOutputName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Sets the name of the output module.</span>
+
+<span class="sd">    This is the name of the generated output module this scaffolder</span>
+<span class="sd">    implements.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      output_name (str): the name of the output that the scaffolder generates,</span>
+<span class="sd">          whether that is an output module, plugin, parser, analyzer or</span>
+<span class="sd">          something else.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_output_name</span> <span class="o">=</span> <span class="n">output_name</span></div>
+
+<div class="viewcode-block" id="Scaffolder.SetAttribute"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.interface.Scaffolder.SetAttribute">[docs]</a>  <span class="k">def</span> <span class="nf">SetAttribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">value_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Stores an attribute read from the CLI.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      name (str): the attribute name.</span>
+<span class="sd">      value (object): the attribute value.</span>
+<span class="sd">      value_type (type): the attribute type.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">      ValueError: if the value is not of the correct type.</span>
+<span class="sd">      KeyError: If the attribute is not configured for this scaffolder.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+      <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+          <span class="s1">&#39;Attribute </span><span class="si">{0:s}</span><span class="s1"> is not configured for this scaffolder.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">value_type</span><span class="p">):</span>
+      <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Value is of type </span><span class="si">{0:s}</span><span class="s1">, not </span><span class="si">{1:s}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+          <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">value_type</span><span class="p">))</span>
+
+    <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">L2t Scaffolder</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Plaso Developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

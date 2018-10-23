@@ -1,0 +1,311 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>plasoscaffolder.scaffolders.plaso_sqlite &#8212; L2t Scaffolder 2.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for plasoscaffolder.scaffolders.plaso_sqlite</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;The scaffolder interface classes.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sqlite3</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Iterator</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Tuple</span>
+
+<span class="kn">from</span> <span class="nn">plasoscaffolder.lib</span> <span class="k">import</span> <span class="n">errors</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.scaffolders</span> <span class="k">import</span> <span class="n">interface</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.scaffolders</span> <span class="k">import</span> <span class="n">plaso</span>
+<span class="kn">from</span> <span class="nn">plasoscaffolder.scaffolders</span> <span class="k">import</span> <span class="n">manager</span>
+
+
+<div class="viewcode-block" id="SQLQuestion"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.plaso_sqlite.SQLQuestion">[docs]</a><span class="k">class</span> <span class="nc">SQLQuestion</span><span class="p">(</span><span class="n">interface</span><span class="o">.</span><span class="n">DictQuestion</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;SQL Query question.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SQLQuestion.ValidateAnswer"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.plaso_sqlite.SQLQuestion.ValidateAnswer">[docs]</a>  <span class="k">def</span> <span class="nf">ValidateAnswer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">answer</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Validates the answer to the SQL query question.</span>
+
+<span class="sd">    The answer should be a dict that has query names as key values</span>
+<span class="sd">    and valid SQLite commands as values. This function attempts</span>
+<span class="sd">    to verify that the SQL commands do not have syntax errors in them</span>
+<span class="sd">    by attempting to run it against an empty SQLite database stored</span>
+<span class="sd">    in memory.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      answer (dict): the answer to the question asked.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">      errors.UnableToConfigure: if the answer is invalid.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">SQLQuestion</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">ValidateAnswer</span><span class="p">(</span><span class="n">answer</span><span class="p">)</span>
+
+    <span class="n">temp_db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;:memory:&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">query_name</span><span class="p">,</span> <span class="n">query</span> <span class="ow">in</span> <span class="n">answer</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+      <span class="k">try</span><span class="p">:</span>
+        <span class="n">temp_db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+      <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">exception</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">UnableToConfigure</span><span class="p">(</span>
+            <span class="s1">&#39;Unable to run query [</span><span class="si">{0:s}</span><span class="s1">] with error: </span><span class="si">{1!s}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">query_name</span><span class="p">,</span> <span class="n">exception</span><span class="p">))</span>
+      <span class="k">except</span> <span class="p">(</span><span class="n">sqlite3</span><span class="o">.</span><span class="n">DatabaseError</span><span class="p">,</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exception</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">exception</span><span class="p">)</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;syntax error&#39;</span><span class="p">):</span>
+          <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">UnableToConfigure</span><span class="p">(</span>
+              <span class="s1">&#39;Unable to run query [</span><span class="si">{0:s}</span><span class="s1">] with error: </span><span class="si">{1!s}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                  <span class="n">query_name</span><span class="p">,</span> <span class="n">exception</span><span class="p">))</span></div></div>
+
+
+<div class="viewcode-block" id="PlasoSQLiteScaffolder"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.plaso_sqlite.PlasoSQLiteScaffolder">[docs]</a><span class="k">class</span> <span class="nc">PlasoSQLiteScaffolder</span><span class="p">(</span><span class="n">plaso</span><span class="o">.</span><span class="n">PlasoPluginScaffolder</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;The plaso SQLite plugin scaffolder.</span>
+
+<span class="sd">  Attributes:</span>
+<span class="sd">    database_name (str): name of the test SQLite database for the plugin.</span>
+<span class="sd">    database_schema (dict): a dict containing all table names (keys) and the SQL</span>
+<span class="sd">        statement used to create the table (value), derived from the test</span>
+<span class="sd">        database.</span>
+<span class="sd">    data_types (dict): a dict containing all the data types generated for the</span>
+<span class="sd">        parser, the key is the name for each SQL statement run against the</span>
+<span class="sd">        database and the value is the data type used for each generated event</span>
+<span class="sd">        resulting from that SQL statement.</span>
+<span class="sd">    queries (dict): a dict containing query name and SQL statements or queries</span>
+<span class="sd">        run against the database.</span>
+<span class="sd">    query_columns (dict): for each SQL statement run against the database, with</span>
+<span class="sd">        the key being query name and value being a list of all SQL column names</span>
+<span class="sd">        that are returned for each query.</span>
+<span class="sd">    required_tables (list): a list of all required tables needed for the plugin</span>
+<span class="sd">        to parse this particular database.</span>
+<span class="sd">    timestamp_columns (dict): a dict containing a list of all columns with</span>
+<span class="sd">        timestamp values, with query names as the key.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="c1"># The name of the plugin or parser this scaffolder provides.</span>
+  <span class="n">NAME</span> <span class="o">=</span> <span class="s1">&#39;sqlite&#39;</span>
+  <span class="n">DESCRIPTION</span> <span class="o">=</span> <span class="s1">&#39;Provides a scaffolder to generate a plaso SQLite plugin.&#39;</span>
+
+  <span class="n">SCHEMA_QUERY</span> <span class="o">=</span> <span class="p">(</span>
+      <span class="s1">&#39;SELECT tbl_name, sql &#39;</span>
+      <span class="s1">&#39;FROM sqlite_master &#39;</span>
+      <span class="s1">&#39;WHERE type = &quot;table&quot; AND tbl_name != &quot;xp_proc&quot; &#39;</span>
+      <span class="s1">&#39;AND tbl_name != &quot;sqlite_sequence&quot;&#39;</span><span class="p">)</span>
+
+  <span class="c1"># Filenames of templates.</span>
+  <span class="n">TEMPLATE_PARSER_FILE</span> <span class="o">=</span> <span class="s1">&#39;sqlite_plugin.jinja2&#39;</span>
+  <span class="n">TEMPLATE_PARSER_TEST</span> <span class="o">=</span> <span class="s1">&#39;sqlite_plugin_test.jinja2&#39;</span>
+  <span class="n">TEMPLATE_FORMATTER_FILE</span> <span class="o">=</span> <span class="s1">&#39;sqlite_plugin_formatter.jinja2&#39;</span>
+  <span class="n">TEMPLATE_FORMATTER_TEST</span> <span class="o">=</span> <span class="s1">&#39;sqlite_plugin_formatter_test.jinja2&#39;</span>
+
+  <span class="c1"># Questions, a list that contains all the needed questions that the</span>
+  <span class="c1"># user should be prompted about before the plugin or parser is created.</span>
+  <span class="c1"># Each element in the list needs to be an instance of BaseQuestion.</span>
+  <span class="n">QUESTIONS</span> <span class="o">=</span> <span class="p">[</span>
+      <span class="n">SQLQuestion</span><span class="p">(</span>
+          <span class="n">attribute</span><span class="o">=</span><span class="s1">&#39;queries&#39;</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="p">(</span>
+            <span class="s1">&#39;Define the name of the SQL query (key) as well as the actual SQL &#39;</span>
+            <span class="s1">&#39;queries (value) this plugin will execute&#39;</span><span class="p">),</span>
+          <span class="n">key_prompt</span><span class="o">=</span><span class="s1">&#39;Query Name&#39;</span><span class="p">,</span> <span class="n">value_prompt</span><span class="o">=</span><span class="s1">&#39;SQL Statement&#39;</span><span class="p">),</span>
+      <span class="n">interface</span><span class="o">.</span><span class="n">ListQuestion</span><span class="p">(</span>
+          <span class="n">attribute</span><span class="o">=</span><span class="s1">&#39;required_tables&#39;</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="s1">&#39;List of required tables&#39;</span><span class="p">)]</span>
+
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Initializes the plaso SQLite plugin scaffolder.&quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">PlasoSQLiteScaffolder</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">database_name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">database_schema</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">data_types</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">queries</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">query_columns</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">required_tables</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">timestamp_columns</span> <span class="o">=</span> <span class="p">{}</span>
+
+  <span class="k">def</span> <span class="nf">_GetQueryColumns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Generates column names from a SQL statement.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      query (str): a SQL query.</span>
+
+<span class="sd">    Yields:</span>
+<span class="sd">      str: a column name extracted from a SQL statement.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">query_string</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="s1">&#39;select&#39;</span><span class="p">)</span>
+    <span class="n">query_column_string</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">query_string</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="s1">&#39;from&#39;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">query_column_string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">):</span>
+      <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">column_alias</span> <span class="o">=</span> <span class="n">column</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="s1">&#39; as &#39;</span><span class="p">)</span>
+      <span class="n">column</span> <span class="o">=</span> <span class="n">column_alias</span> <span class="ow">or</span> <span class="n">column</span>
+
+      <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">column</span> <span class="o">=</span> <span class="n">column</span><span class="o">.</span><span class="n">rpartition</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+
+      <span class="k">if</span> <span class="ow">not</span> <span class="n">column</span><span class="p">:</span>
+        <span class="k">continue</span>
+
+      <span class="k">yield</span> <span class="n">column</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+  <span class="k">def</span> <span class="nf">_GetSchema</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Returns the schema of a SQLite database as a dict.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      database_path (str): full path to the SQLite database.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      dict: containing:</span>
+<span class="sd">        str: name of a table in the</span>
+<span class="sd">        str:  SQL command that was used to create the table.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">      sqlite3.DatabaseError: if the database cannot be read.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">database</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">database_path</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+      <span class="n">database</span><span class="o">.</span><span class="n">row_factory</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Row</span>
+      <span class="n">cursor</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+      <span class="n">sql_results</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">SCHEMA_QUERY</span><span class="p">)</span>
+
+      <span class="n">schema</span> <span class="o">=</span> <span class="p">{</span>
+          <span class="n">table_name</span><span class="p">:</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+          <span class="k">for</span> <span class="n">table_name</span><span class="p">,</span> <span class="n">query</span> <span class="ow">in</span> <span class="n">sql_results</span><span class="p">}</span>
+
+    <span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">DatabaseError</span><span class="p">:</span>
+      <span class="n">database</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+      <span class="k">raise</span>
+
+    <span class="k">return</span> <span class="n">schema</span>
+
+<div class="viewcode-block" id="PlasoSQLiteScaffolder.GetJinjaContext"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.plaso_sqlite.PlasoSQLiteScaffolder.GetJinjaContext">[docs]</a>  <span class="k">def</span> <span class="nf">GetJinjaContext</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Returns a dict that can be used as a context for Jinja2 templates.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      dict: containing:</span>
+<span class="sd">        str: name of Jinja argument.</span>
+<span class="sd">        object: Jinja argument value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">PlasoSQLiteScaffolder</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">GetJinjaContext</span><span class="p">()</span>
+    <span class="n">context</span><span class="p">[</span><span class="s1">&#39;database_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_name</span>
+    <span class="n">context</span><span class="p">[</span><span class="s1">&#39;database_schema&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_schema</span>
+    <span class="n">context</span><span class="p">[</span><span class="s1">&#39;data_types&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_types</span>
+    <span class="n">context</span><span class="p">[</span><span class="s1">&#39;queries&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">queries</span>
+    <span class="n">context</span><span class="p">[</span><span class="s1">&#39;query_columns&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_columns</span>
+    <span class="n">context</span><span class="p">[</span><span class="s1">&#39;required_tables&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">required_tables</span>
+    <span class="n">context</span><span class="p">[</span><span class="s1">&#39;timestamp_columns&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamp_columns</span>
+    <span class="k">return</span> <span class="n">context</span></div>
+
+<div class="viewcode-block" id="PlasoSQLiteScaffolder.GenerateFiles"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.plaso_sqlite.PlasoSQLiteScaffolder.GenerateFiles">[docs]</a>  <span class="k">def</span> <span class="nf">GenerateFiles</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot;Generates files required for the SQLite plugin.</span>
+
+<span class="sd">    Yields:</span>
+<span class="sd">      tuple: file name and content of the file to be written to disk.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">database_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_file</span><span class="o">.</span><span class="n">rpartition</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">database_name</span> <span class="o">=</span> <span class="n">database_name</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">data_types</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">sql_columns</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">timestamp_columns</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">query_name</span><span class="p">,</span> <span class="n">query</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">queries</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">data_types</span><span class="p">[</span><span class="n">query_name</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0:s}</span><span class="s1">:</span><span class="si">{1:s}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">_output_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39;:&#39;</span><span class="p">),</span> <span class="n">query_name</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+      <span class="n">timestamp_columns</span><span class="p">[</span><span class="n">query_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+      <span class="n">sql_columns</span><span class="p">[</span><span class="n">query_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+      <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_GetQueryColumns</span><span class="p">(</span><span class="n">query</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s1">&#39;time&#39;</span> <span class="ow">in</span> <span class="n">column</span><span class="p">:</span>
+          <span class="n">timestamp_columns</span><span class="p">[</span><span class="n">query_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">column</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+        <span class="n">sql_columns</span><span class="p">[</span><span class="n">query_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">query_columns</span> <span class="o">=</span> <span class="n">sql_columns</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">timestamp_columns</span> <span class="o">=</span> <span class="n">timestamp_columns</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">database_schema</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_GetSchema</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_file</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">content</span> <span class="ow">in</span> <span class="nb">super</span><span class="p">(</span><span class="n">PlasoSQLiteScaffolder</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">GenerateFiles</span><span class="p">():</span>
+      <span class="k">yield</span> <span class="n">name</span><span class="p">,</span> <span class="n">content</span></div></div>
+
+
+<span class="n">manager</span><span class="o">.</span><span class="n">ScaffolderManager</span><span class="o">.</span><span class="n">RegisterScaffolder</span><span class="p">(</span><span class="n">PlasoSQLiteScaffolder</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">L2t Scaffolder</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Plaso Developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

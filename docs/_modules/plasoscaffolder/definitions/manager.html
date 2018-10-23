@@ -1,0 +1,183 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>plasoscaffolder.definitions.manager &#8212; L2t Scaffolder 2.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for plasoscaffolder.definitions.manager</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;The definition manager.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Iterator</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Type</span>
+
+<span class="kn">from</span> <span class="nn">plasoscaffolder.definitions</span> <span class="k">import</span> <span class="n">interface</span>
+
+
+<div class="viewcode-block" id="DefinitionManager"><a class="viewcode-back" href="../../../plasoscaffolder.definitions.html#plasoscaffolder.definitions.manager.DefinitionManager">[docs]</a><span class="k">class</span> <span class="nc">DefinitionManager</span><span class="p">:</span>
+  <span class="sd">&quot;&quot;&quot;The definition manager.&quot;&quot;&quot;</span>
+
+  <span class="n">_definition_classes</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="DefinitionManager.DeregisterDefinition"><a class="viewcode-back" href="../../../plasoscaffolder.definitions.html#plasoscaffolder.definitions.manager.DefinitionManager.DeregisterDefinition">[docs]</a>  <span class="nd">@classmethod</span>
+  <span class="k">def</span> <span class="nf">DeregisterDefinition</span><span class="p">(</span>
+      <span class="bp">cls</span><span class="p">,</span> <span class="n">definition_class</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">interface</span><span class="o">.</span><span class="n">ScaffolderDefinition</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;Deregisters a definition class.</span>
+
+<span class="sd">    Definition classes are identified by their NAME attribute.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      definition_class (type): definition class (subclass of</span>
+<span class="sd">          ScaffolderDefinition).</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">      KeyError: if definition class is not set for the corresponding name.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">definition_name</span> <span class="o">=</span> <span class="n">definition_class</span><span class="o">.</span><span class="n">NAME</span>
+
+    <span class="k">if</span> <span class="n">definition_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_definition_classes</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Definition class not set for name: </span><span class="si">{0:s}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+          <span class="n">definition_name</span><span class="p">))</span>
+
+    <span class="k">del</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_definition_classes</span><span class="p">[</span><span class="n">definition_name</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="DefinitionManager.GetDefinitionByName"><a class="viewcode-back" href="../../../plasoscaffolder.definitions.html#plasoscaffolder.definitions.manager.DefinitionManager.GetDefinitionByName">[docs]</a>  <span class="nd">@classmethod</span>
+  <span class="k">def</span> <span class="nf">GetDefinitionByName</span><span class="p">(</span>
+      <span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">[</span><span class="n">interface</span><span class="o">.</span><span class="n">ScaffolderDefinition</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Returns a definition class based on registered name.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      name (str): name of the definition.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      interface.ScaffolderDefinition: definition class or None</span>
+<span class="sd">          if name is not registered.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_definition_classes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DefinitionManager.GetDefinitionNames"><a class="viewcode-back" href="../../../plasoscaffolder.definitions.html#plasoscaffolder.definitions.manager.DefinitionManager.GetDefinitionNames">[docs]</a>  <span class="nd">@classmethod</span>
+  <span class="k">def</span> <span class="nf">GetDefinitionNames</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Yields all names of registered definition classes.</span>
+
+<span class="sd">    Yields:</span>
+<span class="sd">      str: definition names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">definition_name</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_definition_classes</span><span class="p">:</span>
+      <span class="k">yield</span> <span class="n">definition_name</span></div>
+
+<div class="viewcode-block" id="DefinitionManager.GetDefinitionObjects"><a class="viewcode-back" href="../../../plasoscaffolder.definitions.html#plasoscaffolder.definitions.manager.DefinitionManager.GetDefinitionObjects">[docs]</a>  <span class="nd">@classmethod</span>
+  <span class="k">def</span> <span class="nf">GetDefinitionObjects</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">interface</span><span class="o">.</span><span class="n">ScaffolderDefinition</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Yields instances of each registered definition class.</span>
+
+<span class="sd">    Yields:</span>
+<span class="sd">      ScaffolderDefinition: definition object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">definition_class</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_definition_classes</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+      <span class="k">yield</span> <span class="n">definition_class</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="DefinitionManager.RegisterDefinition"><a class="viewcode-back" href="../../../plasoscaffolder.definitions.html#plasoscaffolder.definitions.manager.DefinitionManager.RegisterDefinition">[docs]</a>  <span class="nd">@classmethod</span>
+  <span class="k">def</span> <span class="nf">RegisterDefinition</span><span class="p">(</span>
+      <span class="bp">cls</span><span class="p">,</span> <span class="n">definition_class</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">interface</span><span class="o">.</span><span class="n">ScaffolderDefinition</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;Registers a definition class.</span>
+
+<span class="sd">    Definition classes are identified by their NAME attribute.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      definition_class (ScaffolderDefinition): definition class.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">      KeyError: if definition class is already set for the corresponding name.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">definition_name</span> <span class="o">=</span> <span class="n">definition_class</span><span class="o">.</span><span class="n">NAME</span>
+
+    <span class="k">if</span> <span class="n">definition_name</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_definition_classes</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Project class already set for name: </span><span class="si">{0:s}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+          <span class="n">definition_name</span><span class="p">))</span>
+
+    <span class="bp">cls</span><span class="o">.</span><span class="n">_definition_classes</span><span class="p">[</span><span class="n">definition_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">definition_class</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">L2t Scaffolder</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Plaso Developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

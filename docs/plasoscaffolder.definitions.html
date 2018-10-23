@@ -1,0 +1,272 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>plasoscaffolder.definitions package &#8212; L2t Scaffolder 2.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="plasoscaffolder-definitions-package">
+<h1>plasoscaffolder.definitions package<a class="headerlink" href="#plasoscaffolder-definitions-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-plasoscaffolder.definitions.interface">
+<span id="plasoscaffolder-definitions-interface-module"></span><h2>plasoscaffolder.definitions.interface module<a class="headerlink" href="#module-plasoscaffolder.definitions.interface" title="Permalink to this headline">¶</a></h2>
+<p>Interface defining how a project class looks like.</p>
+<dl class="class">
+<dt id="plasoscaffolder.definitions.interface.ScaffolderDefinition">
+<em class="property">class </em><code class="descclassname">plasoscaffolder.definitions.interface.</code><code class="descname">ScaffolderDefinition</code><a class="reference internal" href="_modules/plasoscaffolder/definitions/interface.html#ScaffolderDefinition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.definitions.interface.ScaffolderDefinition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Scaffolder definition interface.</p>
+<dl class="attribute">
+<dt id="plasoscaffolder.definitions.interface.ScaffolderDefinition.NAME">
+<code class="descname">NAME</code><em class="property"> = 'undefined'</em><a class="headerlink" href="#plasoscaffolder.definitions.interface.ScaffolderDefinition.NAME" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.definitions.interface.ScaffolderDefinition.ValidatePath">
+<code class="descname">ValidatePath</code><span class="sig-paren">(</span><em>root_path: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/plasoscaffolder/definitions/interface.html#ScaffolderDefinition.ValidatePath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.definitions.interface.ScaffolderDefinition.ValidatePath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates the path to the root directory of the project.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>root_path (str): the path to the root of the project directory.</dd>
+<dt>Returns:</dt>
+<dd>bool: whether the given path is the correct root path of the project.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-plasoscaffolder.definitions.manager">
+<span id="plasoscaffolder-definitions-manager-module"></span><h2>plasoscaffolder.definitions.manager module<a class="headerlink" href="#module-plasoscaffolder.definitions.manager" title="Permalink to this headline">¶</a></h2>
+<p>The definition manager.</p>
+<dl class="class">
+<dt id="plasoscaffolder.definitions.manager.DefinitionManager">
+<em class="property">class </em><code class="descclassname">plasoscaffolder.definitions.manager.</code><code class="descname">DefinitionManager</code><a class="reference internal" href="_modules/plasoscaffolder/definitions/manager.html#DefinitionManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.definitions.manager.DefinitionManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The definition manager.</p>
+<dl class="classmethod">
+<dt id="plasoscaffolder.definitions.manager.DefinitionManager.DeregisterDefinition">
+<em class="property">classmethod </em><code class="descname">DeregisterDefinition</code><span class="sig-paren">(</span><em>definition_class: Type[plasoscaffolder.definitions.interface.ScaffolderDefinition]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plasoscaffolder/definitions/manager.html#DefinitionManager.DeregisterDefinition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.definitions.manager.DefinitionManager.DeregisterDefinition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deregisters a definition class.</p>
+<p>Definition classes are identified by their NAME attribute.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>definition_class (type): definition class (subclass of</dt>
+<dd>ScaffolderDefinition).</dd>
+</dl>
+</dd>
+<dt>Raises:</dt>
+<dd>KeyError: if definition class is not set for the corresponding name.</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="plasoscaffolder.definitions.manager.DefinitionManager.GetDefinitionByName">
+<em class="property">classmethod </em><code class="descname">GetDefinitionByName</code><span class="sig-paren">(</span><em>name: str</em><span class="sig-paren">)</span> &#x2192; Type[plasoscaffolder.definitions.interface.ScaffolderDefinition]<a class="reference internal" href="_modules/plasoscaffolder/definitions/manager.html#DefinitionManager.GetDefinitionByName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.definitions.manager.DefinitionManager.GetDefinitionByName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a definition class based on registered name.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>name (str): name of the definition.</dd>
+<dt>Returns:</dt>
+<dd><dl class="first last docutils">
+<dt>interface.ScaffolderDefinition: definition class or None</dt>
+<dd>if name is not registered.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="plasoscaffolder.definitions.manager.DefinitionManager.GetDefinitionNames">
+<em class="property">classmethod </em><code class="descname">GetDefinitionNames</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Iterator[str]<a class="reference internal" href="_modules/plasoscaffolder/definitions/manager.html#DefinitionManager.GetDefinitionNames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.definitions.manager.DefinitionManager.GetDefinitionNames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields all names of registered definition classes.</p>
+<dl class="docutils">
+<dt>Yields:</dt>
+<dd>str: definition names.</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="plasoscaffolder.definitions.manager.DefinitionManager.GetDefinitionObjects">
+<em class="property">classmethod </em><code class="descname">GetDefinitionObjects</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Iterator[plasoscaffolder.definitions.interface.ScaffolderDefinition]<a class="reference internal" href="_modules/plasoscaffolder/definitions/manager.html#DefinitionManager.GetDefinitionObjects"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.definitions.manager.DefinitionManager.GetDefinitionObjects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields instances of each registered definition class.</p>
+<dl class="docutils">
+<dt>Yields:</dt>
+<dd>ScaffolderDefinition: definition object.</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="plasoscaffolder.definitions.manager.DefinitionManager.RegisterDefinition">
+<em class="property">classmethod </em><code class="descname">RegisterDefinition</code><span class="sig-paren">(</span><em>definition_class: Type[plasoscaffolder.definitions.interface.ScaffolderDefinition]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plasoscaffolder/definitions/manager.html#DefinitionManager.RegisterDefinition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.definitions.manager.DefinitionManager.RegisterDefinition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers a definition class.</p>
+<p>Definition classes are identified by their NAME attribute.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>definition_class (ScaffolderDefinition): definition class.</dd>
+<dt>Raises:</dt>
+<dd>KeyError: if definition class is already set for the corresponding name.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-plasoscaffolder.definitions.plaso">
+<span id="plasoscaffolder-definitions-plaso-module"></span><h2>plasoscaffolder.definitions.plaso module<a class="headerlink" href="#module-plasoscaffolder.definitions.plaso" title="Permalink to this headline">¶</a></h2>
+<p>The plaso definition class.</p>
+<dl class="class">
+<dt id="plasoscaffolder.definitions.plaso.PlasoProject">
+<em class="property">class </em><code class="descclassname">plasoscaffolder.definitions.plaso.</code><code class="descname">PlasoProject</code><a class="reference internal" href="_modules/plasoscaffolder/definitions/plaso.html#PlasoProject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.definitions.plaso.PlasoProject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plasoscaffolder.definitions.interface.ScaffolderDefinition" title="plasoscaffolder.definitions.interface.ScaffolderDefinition"><code class="xref py py-class docutils literal notranslate"><span class="pre">plasoscaffolder.definitions.interface.ScaffolderDefinition</span></code></a></p>
+<p>Plaso project definition.</p>
+<dl class="attribute">
+<dt id="plasoscaffolder.definitions.plaso.PlasoProject.NAME">
+<code class="descname">NAME</code><em class="property"> = 'plaso'</em><a class="headerlink" href="#plasoscaffolder.definitions.plaso.PlasoProject.NAME" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.definitions.plaso.PlasoProject.ValidatePath">
+<code class="descname">ValidatePath</code><span class="sig-paren">(</span><em>root_path: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/plasoscaffolder/definitions/plaso.html#PlasoProject.ValidatePath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.definitions.plaso.PlasoProject.ValidatePath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates the path to a Plaso development tree.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>root_path (str): the path to the root of the project directory.</dd>
+<dt>Returns:</dt>
+<dd><dl class="first last docutils">
+<dt>bool: whether the given path is the correct root path to a Plaso</dt>
+<dd>development tree.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-plasoscaffolder.definitions.timesketch">
+<span id="plasoscaffolder-definitions-timesketch-module"></span><h2>plasoscaffolder.definitions.timesketch module<a class="headerlink" href="#module-plasoscaffolder.definitions.timesketch" title="Permalink to this headline">¶</a></h2>
+<p>The Timesketch definition class.</p>
+<dl class="class">
+<dt id="plasoscaffolder.definitions.timesketch.TimesketchProject">
+<em class="property">class </em><code class="descclassname">plasoscaffolder.definitions.timesketch.</code><code class="descname">TimesketchProject</code><a class="reference internal" href="_modules/plasoscaffolder/definitions/timesketch.html#TimesketchProject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.definitions.timesketch.TimesketchProject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plasoscaffolder.definitions.interface.ScaffolderDefinition" title="plasoscaffolder.definitions.interface.ScaffolderDefinition"><code class="xref py py-class docutils literal notranslate"><span class="pre">plasoscaffolder.definitions.interface.ScaffolderDefinition</span></code></a></p>
+<p>Timesketch project definition.</p>
+<dl class="attribute">
+<dt id="plasoscaffolder.definitions.timesketch.TimesketchProject.NAME">
+<code class="descname">NAME</code><em class="property"> = 'timesketch'</em><a class="headerlink" href="#plasoscaffolder.definitions.timesketch.TimesketchProject.NAME" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plasoscaffolder.definitions.timesketch.TimesketchProject.ValidatePath">
+<code class="descname">ValidatePath</code><span class="sig-paren">(</span><em>root_path: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/plasoscaffolder/definitions/timesketch.html#TimesketchProject.ValidatePath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plasoscaffolder.definitions.timesketch.TimesketchProject.ValidatePath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates the path to a Timesketch development tree.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>root_path (str): the path to the root of the project directory.</dd>
+<dt>Returns:</dt>
+<dd><dl class="first last docutils">
+<dt>bool: whether the given path is the correct root path to a Timesketch</dt>
+<dd>development tree.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-plasoscaffolder.definitions">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-plasoscaffolder.definitions" title="Permalink to this headline">¶</a></h2>
+<p>This file imports Python modules that registers definitions.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">L2t Scaffolder</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Plaso Developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/plasoscaffolder.definitions.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

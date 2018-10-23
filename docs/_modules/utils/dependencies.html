@@ -1,0 +1,476 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>utils.dependencies &#8212; L2t Scaffolder 2.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for utils.dependencies</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Helper to check for availability and version of dependencies.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">unicode_literals</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="k">try</span><span class="p">:</span>
+  <span class="kn">import</span> <span class="nn">ConfigParser</span> <span class="k">as</span> <span class="nn">configparser</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+  <span class="kn">import</span> <span class="nn">configparser</span>  <span class="c1"># pylint: disable=import-error</span>
+
+
+<div class="viewcode-block" id="DependencyDefinition"><a class="viewcode-back" href="../../utils.html#utils.dependencies.DependencyDefinition">[docs]</a><span class="k">class</span> <span class="nc">DependencyDefinition</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Dependency definition.</span>
+
+<span class="sd">  Attributes:</span>
+<span class="sd">    dpkg_name (str): name of the dpkg package that provides the dependency.</span>
+<span class="sd">    is_optional (bool): True if the dependency is optional.</span>
+<span class="sd">    l2tbinaries_name (str): name of the l2tbinaries package that provides</span>
+<span class="sd">        the dependency.</span>
+<span class="sd">    maximum_version (str): maximum supported version.</span>
+<span class="sd">    minimum_version (str): minimum supported version.</span>
+<span class="sd">    name (str): name of (the Python module that provides) the dependency.</span>
+<span class="sd">    pypi_name (str): name of the PyPI package that provides the dependency.</span>
+<span class="sd">    python2_only (bool): True if the dependency is only supported by Python 2.</span>
+<span class="sd">    rpm_name (str): name of the rpm package that provides the dependency.</span>
+<span class="sd">    version_property (str): name of the version attribute or function.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Initializes a dependency configuration.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      name (str): name of the dependency.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">DependencyDefinition</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">dpkg_name</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">is_optional</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">l2tbinaries_name</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">maximum_version</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">minimum_version</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">pypi_name</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">python2_only</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">rpm_name</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">version_property</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="DependencyDefinitionReader"><a class="viewcode-back" href="../../utils.html#utils.dependencies.DependencyDefinitionReader">[docs]</a><span class="k">class</span> <span class="nc">DependencyDefinitionReader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Dependency definition reader.&quot;&quot;&quot;</span>
+
+  <span class="n">_VALUE_NAMES</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">([</span>
+      <span class="s1">&#39;dpkg_name&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;is_optional&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;l2tbinaries_name&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;maximum_version&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;minimum_version&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;pypi_name&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;python2_only&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;rpm_name&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;version_property&#39;</span><span class="p">])</span>
+
+  <span class="k">def</span> <span class="nf">_GetConfigValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config_parser</span><span class="p">,</span> <span class="n">section_name</span><span class="p">,</span> <span class="n">value_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Retrieves a value from the config parser.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      config_parser (ConfigParser): configuration parser.</span>
+<span class="sd">      section_name (str): name of the section that contains the value.</span>
+<span class="sd">      value_name (str): name of the value.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      object: configuration value or None if the value does not exists.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+      <span class="k">return</span> <span class="n">config_parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">section_name</span><span class="p">,</span> <span class="n">value_name</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">configparser</span><span class="o">.</span><span class="n">NoOptionError</span><span class="p">:</span>
+      <span class="k">return</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="DependencyDefinitionReader.Read"><a class="viewcode-back" href="../../utils.html#utils.dependencies.DependencyDefinitionReader.Read">[docs]</a>  <span class="k">def</span> <span class="nf">Read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Reads dependency definitions.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      file_object (file): file-like object to read from.</span>
+
+<span class="sd">    Yields:</span>
+<span class="sd">      DependencyDefinition: dependency definition.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">config_parser</span> <span class="o">=</span> <span class="n">configparser</span><span class="o">.</span><span class="n">RawConfigParser</span><span class="p">()</span>
+    <span class="c1"># pylint: disable=deprecated-method</span>
+    <span class="c1"># TODO: replace readfp by read_file, check if Python 2 compatible</span>
+    <span class="n">config_parser</span><span class="o">.</span><span class="n">readfp</span><span class="p">(</span><span class="n">file_object</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">section_name</span> <span class="ow">in</span> <span class="n">config_parser</span><span class="o">.</span><span class="n">sections</span><span class="p">():</span>
+      <span class="n">dependency_definition</span> <span class="o">=</span> <span class="n">DependencyDefinition</span><span class="p">(</span><span class="n">section_name</span><span class="p">)</span>
+      <span class="k">for</span> <span class="n">value_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_VALUE_NAMES</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_GetConfigValue</span><span class="p">(</span><span class="n">config_parser</span><span class="p">,</span> <span class="n">section_name</span><span class="p">,</span> <span class="n">value_name</span><span class="p">)</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">dependency_definition</span><span class="p">,</span> <span class="n">value_name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+      <span class="k">yield</span> <span class="n">dependency_definition</span></div></div>
+
+
+<div class="viewcode-block" id="DependencyHelper"><a class="viewcode-back" href="../../utils.html#utils.dependencies.DependencyHelper">[docs]</a><span class="k">class</span> <span class="nc">DependencyHelper</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Dependency helper.</span>
+
+<span class="sd">  Attributes:</span>
+<span class="sd">    dependencies (dict[str, DependencyDefinition]): dependencies.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="n">_VERSION_NUMBERS_REGEX</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[0-9.]+&#39;</span><span class="p">)</span>
+  <span class="n">_VERSION_SPLIT_REGEX</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\.|\-&#39;</span><span class="p">)</span>
+
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">configuration_file</span><span class="o">=</span><span class="s1">&#39;dependencies.ini&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Initializes a dependency helper.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      configuration_file (Optional[str]): path to the dependencies</span>
+<span class="sd">          configuration file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">DependencyHelper</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_test_dependencies</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">dependencies</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">dependency_reader</span> <span class="o">=</span> <span class="n">DependencyDefinitionReader</span><span class="p">()</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">configuration_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_object</span><span class="p">:</span>
+      <span class="k">for</span> <span class="n">dependency</span> <span class="ow">in</span> <span class="n">dependency_reader</span><span class="o">.</span><span class="n">Read</span><span class="p">(</span><span class="n">file_object</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dependencies</span><span class="p">[</span><span class="n">dependency</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">dependency</span>
+
+    <span class="n">dependency</span> <span class="o">=</span> <span class="n">DependencyDefinition</span><span class="p">(</span><span class="s1">&#39;mock&#39;</span><span class="p">)</span>
+    <span class="n">dependency</span><span class="o">.</span><span class="n">minimum_version</span> <span class="o">=</span> <span class="s1">&#39;0.7.1&#39;</span>
+    <span class="n">dependency</span><span class="o">.</span><span class="n">version_property</span> <span class="o">=</span> <span class="s1">&#39;__version__&#39;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_test_dependencies</span><span class="p">[</span><span class="s1">&#39;mock&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dependency</span>
+
+  <span class="k">def</span> <span class="nf">_CheckPythonModule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dependency</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Checks the availability of a Python module.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      dependency (DependencyDefinition): dependency definition.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      tuple: consists:</span>
+
+<span class="sd">        bool: True if the Python module is available and conforms to</span>
+<span class="sd">            the minimum required version, False otherwise.</span>
+<span class="sd">        str: status message.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">module_object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ImportPythonModule</span><span class="p">(</span><span class="n">dependency</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">module_object</span><span class="p">:</span>
+      <span class="n">status_message</span> <span class="o">=</span> <span class="s1">&#39;missing: </span><span class="si">{0:s}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dependency</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+      <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">status_message</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">dependency</span><span class="o">.</span><span class="n">version_property</span><span class="p">:</span>
+      <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">dependency</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CheckPythonModuleVersion</span><span class="p">(</span>
+        <span class="n">dependency</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">module_object</span><span class="p">,</span> <span class="n">dependency</span><span class="o">.</span><span class="n">version_property</span><span class="p">,</span>
+        <span class="n">dependency</span><span class="o">.</span><span class="n">minimum_version</span><span class="p">,</span> <span class="n">dependency</span><span class="o">.</span><span class="n">maximum_version</span><span class="p">)</span>
+
+  <span class="k">def</span> <span class="nf">_CheckPythonModuleVersion</span><span class="p">(</span>
+      <span class="bp">self</span><span class="p">,</span> <span class="n">module_name</span><span class="p">,</span> <span class="n">module_object</span><span class="p">,</span> <span class="n">version_property</span><span class="p">,</span> <span class="n">minimum_version</span><span class="p">,</span>
+      <span class="n">maximum_version</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Checks the version of a Python module.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      module_object (module): Python module.</span>
+<span class="sd">      module_name (str): name of the Python module.</span>
+<span class="sd">      version_property (str): version attribute or function.</span>
+<span class="sd">      minimum_version (str): minimum version.</span>
+<span class="sd">      maximum_version (str): maximum version.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      tuple: consists:</span>
+
+<span class="sd">        bool: True if the Python module is available and conforms to</span>
+<span class="sd">            the minimum required version, False otherwise.</span>
+<span class="sd">        str: status message.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">module_version</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">version_property</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;()&#39;</span><span class="p">):</span>
+      <span class="n">module_version</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module_object</span><span class="p">,</span> <span class="n">version_property</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">version_method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
+          <span class="n">module_object</span><span class="p">,</span> <span class="n">version_property</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="kc">None</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">version_method</span><span class="p">:</span>
+        <span class="n">module_version</span> <span class="o">=</span> <span class="n">version_method</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">module_version</span><span class="p">:</span>
+      <span class="n">status_message</span> <span class="o">=</span> <span class="p">(</span>
+          <span class="s1">&#39;unable to determine version information for: </span><span class="si">{0:s}</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+              <span class="n">module_name</span><span class="p">)</span>
+      <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">status_message</span>
+
+    <span class="c1"># Make sure the module version is a string.</span>
+    <span class="n">module_version</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0!s}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">module_version</span><span class="p">)</span>
+
+    <span class="c1"># Split the version string and convert every digit into an integer.</span>
+    <span class="c1"># A string compare of both version strings will yield an incorrect result.</span>
+
+    <span class="c1"># Strip any semantic suffixes such as a1, b1, pre, post, rc, dev.</span>
+    <span class="n">module_version</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_VERSION_NUMBERS_REGEX</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">module_version</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">module_version</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;.&#39;</span><span class="p">:</span>
+      <span class="n">module_version</span> <span class="o">=</span> <span class="n">module_version</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">try</span><span class="p">:</span>
+      <span class="n">module_version_map</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+          <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_VERSION_SPLIT_REGEX</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">module_version</span><span class="p">)))</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+      <span class="n">status_message</span> <span class="o">=</span> <span class="s1">&#39;unable to parse module version: </span><span class="si">{0:s}</span><span class="s1"> </span><span class="si">{1:s}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+          <span class="n">module_name</span><span class="p">,</span> <span class="n">module_version</span><span class="p">)</span>
+      <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">status_message</span>
+
+    <span class="k">if</span> <span class="n">minimum_version</span><span class="p">:</span>
+      <span class="k">try</span><span class="p">:</span>
+        <span class="n">minimum_version_map</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+            <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_VERSION_SPLIT_REGEX</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">minimum_version</span><span class="p">)))</span>
+      <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="n">status_message</span> <span class="o">=</span> <span class="s1">&#39;unable to parse minimum version: </span><span class="si">{0:s}</span><span class="s1"> </span><span class="si">{1:s}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">module_name</span><span class="p">,</span> <span class="n">minimum_version</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">status_message</span>
+
+      <span class="k">if</span> <span class="n">module_version_map</span> <span class="o">&lt;</span> <span class="n">minimum_version_map</span><span class="p">:</span>
+        <span class="n">status_message</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s1">&#39;</span><span class="si">{0:s}</span><span class="s1"> version: </span><span class="si">{1!s}</span><span class="s1"> is too old, </span><span class="si">{2!s}</span><span class="s1"> or later required&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">module_name</span><span class="p">,</span> <span class="n">module_version</span><span class="p">,</span> <span class="n">minimum_version</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">status_message</span>
+
+    <span class="k">if</span> <span class="n">maximum_version</span><span class="p">:</span>
+      <span class="k">try</span><span class="p">:</span>
+        <span class="n">maximum_version_map</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+            <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_VERSION_SPLIT_REGEX</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">maximum_version</span><span class="p">)))</span>
+      <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="n">status_message</span> <span class="o">=</span> <span class="s1">&#39;unable to parse maximum version: </span><span class="si">{0:s}</span><span class="s1"> </span><span class="si">{1:s}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">module_name</span><span class="p">,</span> <span class="n">maximum_version</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">status_message</span>
+
+      <span class="k">if</span> <span class="n">module_version_map</span> <span class="o">&gt;</span> <span class="n">maximum_version_map</span><span class="p">:</span>
+        <span class="n">status_message</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s1">&#39;</span><span class="si">{0:s}</span><span class="s1"> version: </span><span class="si">{1!s}</span><span class="s1"> is too recent, </span><span class="si">{2!s}</span><span class="s1"> or earlier &#39;</span>
+            <span class="s1">&#39;required&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">module_name</span><span class="p">,</span> <span class="n">module_version</span><span class="p">,</span> <span class="n">maximum_version</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">status_message</span>
+
+    <span class="n">status_message</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0:s}</span><span class="s1"> version: </span><span class="si">{1!s}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">module_name</span><span class="p">,</span> <span class="n">module_version</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">status_message</span>
+
+  <span class="k">def</span> <span class="nf">_CheckSQLite3</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Checks the availability of sqlite3.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      tuple: consists:</span>
+
+<span class="sd">        bool: True if the Python module is available and conforms to</span>
+<span class="sd">            the minimum required version, False otherwise.</span>
+<span class="sd">        str: status message.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># On Windows sqlite3 can be provided by both pysqlite2.dbapi2 and</span>
+    <span class="c1"># sqlite3. sqlite3 is provided with the Python installation and</span>
+    <span class="c1"># pysqlite2.dbapi2 by the pysqlite2 Python module. Typically</span>
+    <span class="c1"># pysqlite2.dbapi2 would contain a newer version of sqlite3, hence</span>
+    <span class="c1"># we check for its presence first.</span>
+    <span class="n">module_name</span> <span class="o">=</span> <span class="s1">&#39;pysqlite2.dbapi2&#39;</span>
+    <span class="n">minimum_version</span> <span class="o">=</span> <span class="s1">&#39;3.7.8&#39;</span>
+
+    <span class="n">module_object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ImportPythonModule</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">module_object</span><span class="p">:</span>
+      <span class="n">module_name</span> <span class="o">=</span> <span class="s1">&#39;sqlite3&#39;</span>
+
+    <span class="n">module_object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ImportPythonModule</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">module_object</span><span class="p">:</span>
+      <span class="n">status_message</span> <span class="o">=</span> <span class="s1">&#39;missing: </span><span class="si">{0:s}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span>
+      <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">status_message</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CheckPythonModuleVersion</span><span class="p">(</span>
+        <span class="n">module_name</span><span class="p">,</span> <span class="n">module_object</span><span class="p">,</span> <span class="s1">&#39;sqlite_version&#39;</span><span class="p">,</span> <span class="n">minimum_version</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+  <span class="k">def</span> <span class="nf">_ImportPythonModule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Imports a Python module.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      module_name (str): name of the module.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      module: Python module or None if the module cannot be imported.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+      <span class="n">module_object</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">__import__</span><span class="p">,</span> <span class="p">[</span><span class="n">module_name</span><span class="p">]))[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+      <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="c1"># If the module name contains dots get the upper most module object.</span>
+    <span class="k">if</span> <span class="s1">&#39;.&#39;</span> <span class="ow">in</span> <span class="n">module_name</span><span class="p">:</span>
+      <span class="k">for</span> <span class="n">submodule_name</span> <span class="ow">in</span> <span class="n">module_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="n">module_object</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module_object</span><span class="p">,</span> <span class="n">submodule_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">module_object</span>
+
+  <span class="k">def</span> <span class="nf">_PrintCheckDependencyStatus</span><span class="p">(</span>
+      <span class="bp">self</span><span class="p">,</span> <span class="n">dependency</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">status_message</span><span class="p">,</span> <span class="n">verbose_output</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Prints the check dependency status.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      dependency (DependencyDefinition): dependency definition.</span>
+<span class="sd">      result (bool): True if the Python module is available and conforms to</span>
+<span class="sd">            the minimum required version, False otherwise.</span>
+<span class="sd">      status_message (str): status message.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">result</span> <span class="ow">or</span> <span class="n">dependency</span><span class="o">.</span><span class="n">is_optional</span><span class="p">:</span>
+      <span class="k">if</span> <span class="n">dependency</span><span class="o">.</span><span class="n">is_optional</span><span class="p">:</span>
+        <span class="n">status_indicator</span> <span class="o">=</span> <span class="s1">&#39;[OPTIONAL]&#39;</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="n">status_indicator</span> <span class="o">=</span> <span class="s1">&#39;[FAILURE]&#39;</span>
+
+      <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0:s}</span><span class="se">\t</span><span class="si">{1:s}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">status_indicator</span><span class="p">,</span> <span class="n">status_message</span><span class="p">))</span>
+
+    <span class="k">elif</span> <span class="n">verbose_output</span><span class="p">:</span>
+      <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;[OK]</span><span class="se">\t\t</span><span class="si">{0:s}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">status_message</span><span class="p">))</span>
+
+<div class="viewcode-block" id="DependencyHelper.CheckDependencies"><a class="viewcode-back" href="../../utils.html#utils.dependencies.DependencyHelper.CheckDependencies">[docs]</a>  <span class="k">def</span> <span class="nf">CheckDependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose_output</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Checks the availability of the dependencies.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      verbose_output (Optional[bool]): True if output should be verbose.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      bool: True if the dependencies are available, False otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Checking availability and versions of dependencies.&#39;</span><span class="p">)</span>
+    <span class="n">check_result</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">for</span> <span class="n">module_name</span><span class="p">,</span> <span class="n">dependency</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dependencies</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+      <span class="k">if</span> <span class="n">module_name</span> <span class="o">==</span> <span class="s1">&#39;sqlite3&#39;</span><span class="p">:</span>
+        <span class="n">result</span><span class="p">,</span> <span class="n">status_message</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CheckSQLite3</span><span class="p">()</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="n">result</span><span class="p">,</span> <span class="n">status_message</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CheckPythonModule</span><span class="p">(</span><span class="n">dependency</span><span class="p">)</span>
+
+      <span class="k">if</span> <span class="ow">not</span> <span class="n">result</span> <span class="ow">and</span> <span class="n">module_name</span> <span class="o">==</span> <span class="s1">&#39;lzma&#39;</span><span class="p">:</span>
+        <span class="n">dependency</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;backports.lzma&#39;</span>
+        <span class="n">result</span><span class="p">,</span> <span class="n">status_message</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CheckPythonModule</span><span class="p">(</span><span class="n">dependency</span><span class="p">)</span>
+
+      <span class="k">if</span> <span class="ow">not</span> <span class="n">result</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">dependency</span><span class="o">.</span><span class="n">is_optional</span><span class="p">:</span>
+        <span class="n">check_result</span> <span class="o">=</span> <span class="kc">False</span>
+
+      <span class="bp">self</span><span class="o">.</span><span class="n">_PrintCheckDependencyStatus</span><span class="p">(</span>
+          <span class="n">dependency</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">status_message</span><span class="p">,</span> <span class="n">verbose_output</span><span class="o">=</span><span class="n">verbose_output</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">check_result</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">verbose_output</span><span class="p">:</span>
+      <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;[OK]&#39;</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">check_result</span></div>
+
+<div class="viewcode-block" id="DependencyHelper.CheckTestDependencies"><a class="viewcode-back" href="../../utils.html#utils.dependencies.DependencyHelper.CheckTestDependencies">[docs]</a>  <span class="k">def</span> <span class="nf">CheckTestDependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose_output</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Checks the availability of the dependencies when running tests.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      verbose_output (Optional[bool]): True if output should be verbose.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      bool: True if the dependencies are available, False otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">CheckDependencies</span><span class="p">(</span><span class="n">verbose_output</span><span class="o">=</span><span class="n">verbose_output</span><span class="p">):</span>
+      <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Checking availability and versions of test dependencies.&#39;</span><span class="p">)</span>
+    <span class="n">check_result</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">for</span> <span class="n">dependency</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_test_dependencies</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span>
+        <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">dependency</span><span class="p">:</span> <span class="n">dependency</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+      <span class="n">result</span><span class="p">,</span> <span class="n">status_message</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CheckPythonModule</span><span class="p">(</span><span class="n">dependency</span><span class="p">)</span>
+      <span class="k">if</span> <span class="ow">not</span> <span class="n">result</span><span class="p">:</span>
+        <span class="n">check_result</span> <span class="o">=</span> <span class="kc">False</span>
+
+      <span class="bp">self</span><span class="o">.</span><span class="n">_PrintCheckDependencyStatus</span><span class="p">(</span>
+          <span class="n">dependency</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">status_message</span><span class="p">,</span> <span class="n">verbose_output</span><span class="o">=</span><span class="n">verbose_output</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">check_result</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">verbose_output</span><span class="p">:</span>
+      <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;[OK]&#39;</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">check_result</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">L2t Scaffolder</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Plaso Developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

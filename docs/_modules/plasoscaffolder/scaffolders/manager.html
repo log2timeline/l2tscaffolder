@@ -1,0 +1,271 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>plasoscaffolder.scaffolders.manager &#8212; L2t Scaffolder 2.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for plasoscaffolder.scaffolders.manager</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;The scaffolder manager.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Iterator</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Type</span>
+
+<span class="kn">from</span> <span class="nn">plasoscaffolder.scaffolders</span> <span class="k">import</span> <span class="n">interface</span>
+
+
+<div class="viewcode-block" id="ScaffolderManager"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.manager.ScaffolderManager">[docs]</a><span class="k">class</span> <span class="nc">ScaffolderManager</span><span class="p">:</span>
+  <span class="sd">&quot;&quot;&quot;The scaffolder manager.&quot;&quot;&quot;</span>
+
+  <span class="n">_scaffolder_classes</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="ScaffolderManager.DeregisterScaffolder"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.manager.ScaffolderManager.DeregisterScaffolder">[docs]</a>  <span class="nd">@classmethod</span>
+  <span class="k">def</span> <span class="nf">DeregisterScaffolder</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">scaffolder_class</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">interface</span><span class="o">.</span><span class="n">Scaffolder</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;Deregisters a scaffolder class.</span>
+
+<span class="sd">    The scaffolder classes are identified based on their lower case name.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      scaffolder_class (type): scaffolder class (subclass of Scaffolder).</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">      KeyError: if scaffolder class is not set for the corresponding name.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">scaffolder_name</span> <span class="o">=</span> <span class="n">scaffolder_class</span><span class="o">.</span><span class="n">NAME</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">scaffolder_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_scaffolder_classes</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Scaffolder class not set for name: </span><span class="si">{0:s}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+          <span class="n">scaffolder_class</span><span class="o">.</span><span class="n">NAME</span><span class="p">))</span>
+
+    <span class="k">del</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_scaffolder_classes</span><span class="p">[</span><span class="n">scaffolder_name</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="ScaffolderManager.GetScaffolderClasses"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.manager.ScaffolderManager.GetScaffolderClasses">[docs]</a>  <span class="nd">@classmethod</span>
+  <span class="k">def</span> <span class="nf">GetScaffolderClasses</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">interface</span><span class="o">.</span><span class="n">Scaffolder</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot;Generates a list of all registered scaffolder classes.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">scaffolder_class</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_scaffolder_classes</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+      <span class="k">yield</span> <span class="n">scaffolder_class</span></div>
+
+<div class="viewcode-block" id="ScaffolderManager.GetScaffolderNames"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.manager.ScaffolderManager.GetScaffolderNames">[docs]</a>  <span class="nd">@classmethod</span>
+  <span class="k">def</span> <span class="nf">GetScaffolderNames</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Retrieves the scaffolder names.</span>
+
+<span class="sd">    Yields:</span>
+<span class="sd">      str: scaffolder names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">scaffolder_name</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">GetScaffolders</span><span class="p">():</span>
+      <span class="k">yield</span> <span class="n">scaffolder_name</span></div>
+
+<div class="viewcode-block" id="ScaffolderManager.GetScaffolderInformation"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.manager.ScaffolderManager.GetScaffolderInformation">[docs]</a>  <span class="nd">@classmethod</span>
+  <span class="k">def</span> <span class="nf">GetScaffolderInformation</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot;Retrieves the scaffolder information.</span>
+
+<span class="sd">    Yields:</span>
+<span class="sd">      tuple[str, str]: pairs of scaffolder names and descriptions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">scaffolder_name</span><span class="p">,</span> <span class="n">scaffolder_class</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">GetScaffolders</span><span class="p">():</span>
+      <span class="k">yield</span> <span class="p">(</span><span class="n">scaffolder_name</span><span class="p">,</span> <span class="n">scaffolder_class</span><span class="o">.</span><span class="n">DESCRIPTION</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ScaffolderManager.GetScaffolderObjectByName"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.manager.ScaffolderManager.GetScaffolderObjectByName">[docs]</a>  <span class="nd">@classmethod</span>
+  <span class="k">def</span> <span class="nf">GetScaffolderObjectByName</span><span class="p">(</span>
+      <span class="bp">cls</span><span class="p">,</span> <span class="n">scaffolder_name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">interface</span><span class="o">.</span><span class="n">Scaffolder</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Retrieves a specific scaffolder object by its name.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      scaffolder_name (str): name of the scaffolder.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      Scaffolder: scaffolder object or None.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">scaffolder_class</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_scaffolder_classes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="n">scaffolder_name</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">scaffolder_class</span><span class="p">:</span>
+      <span class="k">return</span> <span class="n">scaffolder_class</span><span class="p">()</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="ScaffolderManager.GetScaffolderObjects"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.manager.ScaffolderManager.GetScaffolderObjects">[docs]</a>  <span class="nd">@classmethod</span>
+  <span class="k">def</span> <span class="nf">GetScaffolderObjects</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">interface</span><span class="o">.</span><span class="n">Scaffolder</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Retrieves the scaffolder objects.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      dict[str, Scaffolder]: scaffolders per name.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">scaffolder_objects</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">scaffolder_name</span><span class="p">,</span> <span class="n">scaffolder_class</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_scaffolder_classes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+      <span class="n">scaffolder_object</span> <span class="o">=</span> <span class="n">scaffolder_class</span><span class="p">()</span>
+      <span class="n">scaffolder_objects</span><span class="p">[</span><span class="n">scaffolder_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaffolder_object</span>
+
+    <span class="k">return</span> <span class="n">scaffolder_objects</span></div>
+
+<div class="viewcode-block" id="ScaffolderManager.GetScaffolderQuestions"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.manager.ScaffolderManager.GetScaffolderQuestions">[docs]</a>  <span class="nd">@classmethod</span>
+  <span class="k">def</span> <span class="nf">GetScaffolderQuestions</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">interface</span><span class="o">.</span><span class="n">BaseQuestion</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Retrieves all the questions asked by scaffolders.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      list[interface.BaseQuestion]: questions asked by all scaffolders.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">questions</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">scaffolder_class</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_scaffolder_classes</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+      <span class="n">scaffolder_object</span> <span class="o">=</span> <span class="n">scaffolder_class</span><span class="p">()</span>
+      <span class="n">questions</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">scaffolder_object</span><span class="o">.</span><span class="n">GetQuestions</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="n">questions</span></div>
+
+<div class="viewcode-block" id="ScaffolderManager.GetScaffolderQuestionByName"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.manager.ScaffolderManager.GetScaffolderQuestionByName">[docs]</a>  <span class="nd">@classmethod</span>
+  <span class="k">def</span> <span class="nf">GetScaffolderQuestionByName</span><span class="p">(</span>
+      <span class="bp">cls</span><span class="p">,</span> <span class="n">scaffolder_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">interface</span><span class="o">.</span><span class="n">BaseQuestion</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Retrieve a list of questions asked by a scaffolder based on name.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      scaffolder_name (str): name of the scaffolder.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      list: a list with all the questions needed to setup the  scaffolder.</span>
+<span class="sd">          If scaffolder_name is not registered an empty list will be returned.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">scaffolder_class</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_scaffolder_classes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="n">scaffolder_name</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">scaffolder_class</span><span class="p">:</span>
+      <span class="k">return</span> <span class="nb">list</span><span class="p">()</span>
+
+    <span class="n">scaffolder_object</span> <span class="o">=</span> <span class="n">scaffolder_class</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">scaffolder_object</span><span class="o">.</span><span class="n">GetQuestions</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ScaffolderManager.GetScaffolders"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.manager.ScaffolderManager.GetScaffolders">[docs]</a>  <span class="nd">@classmethod</span>
+  <span class="k">def</span> <span class="nf">GetScaffolders</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Type</span><span class="p">[</span><span class="n">interface</span><span class="o">.</span><span class="n">Scaffolder</span><span class="p">]]]:</span>
+    <span class="sd">&quot;&quot;&quot;Retrieves the registered scaffolders.</span>
+
+<span class="sd">    Retrieves a dictionary of all registered scaffolders.</span>
+
+<span class="sd">    Yields:</span>
+<span class="sd">      tuple: contains:</span>
+
+<span class="sd">      * str: name of the scaffolder:</span>
+<span class="sd">      * type: scaffolder class (subclass of Scaffolder).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">scaffolder_name</span><span class="p">,</span> <span class="n">scaffolder_class</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_scaffolder_classes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+      <span class="k">yield</span> <span class="n">scaffolder_name</span><span class="p">,</span> <span class="n">scaffolder_class</span></div>
+
+<div class="viewcode-block" id="ScaffolderManager.RegisterScaffolder"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.manager.ScaffolderManager.RegisterScaffolder">[docs]</a>  <span class="nd">@classmethod</span>
+  <span class="k">def</span> <span class="nf">RegisterScaffolder</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">scaffolder_class</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">interface</span><span class="o">.</span><span class="n">Scaffolder</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;Registers a scaffolder class.</span>
+
+<span class="sd">    The scaffolder classes are identified based on their lower case name.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      scaffolder_class (type): scaffolder class (subclass of Scaffolder).</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">      KeyError: if scaffolder class is already set for the corresponding name.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">scaffolder_name</span> <span class="o">=</span> <span class="n">scaffolder_class</span><span class="o">.</span><span class="n">NAME</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">scaffolder_name</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_scaffolder_classes</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Scaffolder class already set for name: </span><span class="si">{0:s}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+          <span class="n">scaffolder_class</span><span class="o">.</span><span class="n">NAME</span><span class="p">))</span>
+
+    <span class="bp">cls</span><span class="o">.</span><span class="n">_scaffolder_classes</span><span class="p">[</span><span class="n">scaffolder_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaffolder_class</span></div>
+
+<div class="viewcode-block" id="ScaffolderManager.RegisterScaffolders"><a class="viewcode-back" href="../../../plasoscaffolder.scaffolders.html#plasoscaffolder.scaffolders.manager.ScaffolderManager.RegisterScaffolders">[docs]</a>  <span class="nd">@classmethod</span>
+  <span class="k">def</span> <span class="nf">RegisterScaffolders</span><span class="p">(</span>
+      <span class="bp">cls</span><span class="p">,</span> <span class="n">scaffolder_classes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">interface</span><span class="o">.</span><span class="n">Scaffolder</span><span class="p">]]):</span>
+    <span class="sd">&quot;&quot;&quot;Registers scaffolder classes.</span>
+
+<span class="sd">    The scaffolder classes are identified based on their lower case name.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      scaffolder_classes (list[type]): scaffolders classes</span>
+<span class="sd">          (subclasses of Scaffolder).</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">      KeyError: if scaffolder class is already set for the corresponding name.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">scaffolder_class</span> <span class="ow">in</span> <span class="n">scaffolder_classes</span><span class="p">:</span>
+      <span class="bp">cls</span><span class="o">.</span><span class="n">RegisterScaffolder</span><span class="p">(</span><span class="n">scaffolder_class</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">L2t Scaffolder</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Plaso Developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

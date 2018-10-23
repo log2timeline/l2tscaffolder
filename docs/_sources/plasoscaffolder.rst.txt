@@ -6,23 +6,12 @@ Subpackages
 
 .. toctree::
 
-    plasoscaffolder.bll
-    plasoscaffolder.common
-    plasoscaffolder.dal
+    plasoscaffolder.definitions
     plasoscaffolder.frontend
-    plasoscaffolder.model
-
-Submodules
-----------
-
-plasoscaffolder\.dependencies module
-------------------------------------
-
-.. automodule:: plasoscaffolder.dependencies
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
+    plasoscaffolder.helpers
+    plasoscaffolder.lib
+    plasoscaffolder.scaffolders
+    plasoscaffolder.templates
 
 Module contents
 ---------------
