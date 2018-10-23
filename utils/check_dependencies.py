@@ -20,6 +20,6 @@ if __name__ == '__main__':
     build_instructions_url = (
         'https://github.com/log2timeline/plaso/wiki/Users-Guide')
 
-    print('See: {0:s} on how to set up plaso scaffolder.'.format(
+    print('See: {0:s} on how to set up l2t scaffolder.'.format(
         build_instructions_url))
     print('')
