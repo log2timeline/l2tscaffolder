@@ -168,7 +168,9 @@ class ScaffolderFrontend:
     except ValueError:
       raise KeyError('Unable to convert {0:s} into a number.'.format(result))
 
-    raise KeyError('Item [{0:d}] not in list, please pick a valid number.')
+    raise KeyError(
+        'Item [{0:d}] not in list, please pick a valid number.'.format(
+            result_int))
 
   @classmethod
   def CreateGitFeatureBranch(cls, project_path: str, module_name: str):
@@ -241,7 +243,7 @@ class ScaffolderFrontend:
         try:
           definition_string = cls._GetSelection(definitions, 'Definition')
         except KeyError as e:
-          cls._OUTPUT_HANDLER.PrintError(e)
+          cls._OUTPUT_HANDLER.PrintError('{0!s}'.format(e))
 
     if definition_string in definitions:
       cls._OUTPUT_HANDLER.PrintOutput('{0:s} chosen.'.format(definition_string))
@@ -326,7 +328,7 @@ class ScaffolderFrontend:
       try:
         scaffolder = cls._GetSelection(list(scaffolders.keys()), 'Scaffolder')
       except KeyError as e:
-        cls._OUTPUT_HANDLER.PrintError(e)
+        cls._OUTPUT_HANDLER.PrintError('{0!s}'.format(e))
     if scaffolder in scaffolders:
       return scaffolders[scaffolder]()
 
