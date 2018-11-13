@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Timesketch scaffolder that generates analyser plugins."""
+"""Timesketch scaffolder that generates analyzer plugins."""
 import os
 import logging
 
@@ -80,7 +80,7 @@ class TimesketchBaseScaffolder(interface.Scaffolder):
     return context
 
   def GenerateFiles(self) -> Iterator[Tuple[str, str]]:
-    """Generates all the files required for a Timesketch analyser plugin.
+    """Generates all the files required for a Timesketch analyzer plugin.
 
     Yields:
       list[tuple]: containing:
