@@ -1,8 +1,7 @@
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
 """The scaffolder frontend."""
-import re
-
+import os
 from typing import Dict
 from typing import List
 from typing import Type
@@ -19,25 +18,26 @@ from plasoscaffolder.scaffolders import manager as scaffolder_manager
 
 
 class ScaffolderFrontend:
-  """A frontend implementation for the scaffolder project.
+  """A frontend implementation for the scaffolder project."""
 
-  Attributes:
-    OUTPUT_HANDLER (output_handler.BaseOutputHandler: output handler
-        that is used to request and read input from end user.
-  """
-
-  OUTPUT_HANDLER = output_handler.BaseOutputHandler()
+  _git_helper = None
+  _OUTPUT_HANDLER = output_handler.BaseOutputHandler()
 
   @classmethod
   def _AskDictQuestion(
-      cls, question: scaffolder_interface.BaseQuestion) -> Dict[str, Type]:
-    """Ask the user a question and return a dict answer back.
+      cls, question: scaffolder_interface.DictQuestion) -> Dict[str, str]:
+    """Prompts the user with a question and return a dict answer back.
 
     Args:
-      question (scaffolder_interface.BaseQuestion): the question to ask.
+      question (scaffolder_interface.DictQuestion): the question to ask.
 
     Returns:
-      dict: the answer as supplied by the user.
+      dict: the answer as supplied by the user. The user is prompted with
+          questions to both supply the key and value to each entry in the
+          dict. Key is chosen as the first response from the user and value
+          as the second one. If the user attempts to add an entry with a key
+          that already exists an error is presented to the user and they asked
+          to try again (addition is rejected if key already exists).
     """
     return_dict = {}
 
@@ -45,18 +45,18 @@ class ScaffolderFrontend:
     entry_index = 1
     while more_entries:
       # pylint: disable=assignment-from-no-return
-      key = cls.OUTPUT_HANDLER.PromptInfo(
+      key = cls._OUTPUT_HANDLER.PromptInfo(
           '{0:s} [#{1:d}]'.format(question.key_prompt, entry_index))
       if key in return_dict:
-        cls.OUTPUT_HANDLER.PrintError(
+        cls._OUTPUT_HANDLER.PrintError(
             'Key value ({0:s}) already entered.'.format(key))
         continue
 
-      value = cls.OUTPUT_HANDLER.PromptInfo(
+      value = cls._OUTPUT_HANDLER.PromptInfo(
           '{0:s} [#{1:d}]'.format(question.value_prompt, entry_index))
 
       return_dict[key] = value
-      more_entries = cls.OUTPUT_HANDLER.Confirm('More entries?', abort=False)
+      more_entries = cls._OUTPUT_HANDLER.Confirm('More entries?', abort=False)
       entry_index += 1
 
     question.ValidateAnswer(return_dict)
@@ -64,11 +64,11 @@ class ScaffolderFrontend:
 
   @classmethod
   def _AskListQuestion(
-      cls, question: scaffolder_interface.BaseQuestion) -> List[object]:
-    """Ask the user a question and return a list back.
+      cls, question: scaffolder_interface.ListQuestion) -> List[str]:
+    """Prompts the user with a question and return a list back.
 
     Args:
-      question (scaffolder_interface.BaseQuestion): the question to ask.
+      question (scaffolder_interface.ListQuestion): the question to ask.
 
     Returns:
       list: the answer as supplied by the user.
@@ -79,14 +79,15 @@ class ScaffolderFrontend:
     entry_index = 1
     while more_entries:
       # pylint: disable=assignment-from-no-return
-      value = cls.OUTPUT_HANDLER.PromptInfo(
+      value = cls._OUTPUT_HANDLER.PromptInfo(
           'Value to add [#{0:d}]'.format(entry_index))
       if not value:
-        cls.OUTPUT_HANDLER.PrintError('Empty value, not adding.')
+        cls._OUTPUT_HANDLER.PrintError('Empty value, not adding.')
       else:
         return_list.append(value)
 
-      more_entries = cls.OUTPUT_HANDLER.Confirm('Add more values?', abort=False)
+      more_entries = cls._OUTPUT_HANDLER.Confirm(
+          'Add more values?', abort=False)
       entry_index += 1
 
     question.ValidateAnswer(return_list)
@@ -94,7 +95,7 @@ class ScaffolderFrontend:
 
   @classmethod
   def _AskQuestion(cls, question: scaffolder_interface.BaseQuestion) -> Type:
-    """Ask the user a question and return an answer back.
+    """Prompts the user with a question and return an answer back.
 
     Args:
       question (scaffolder_interface.BaseQuestion): the question to ask.
@@ -106,8 +107,8 @@ class ScaffolderFrontend:
       errors.WrongCliInput: when an unsupported question type is
           encountered.
     """
-    cls.OUTPUT_HANDLER.PrintNewLine()
-    cls.OUTPUT_HANDLER.PrintInfo(question.prompt)
+    cls._OUTPUT_HANDLER.PrintNewLine()
+    cls._OUTPUT_HANDLER.PrintInfo(question.prompt)
 
     if question.TYPE == str:
       return cls._AskStringQuestion(question)
@@ -124,46 +125,50 @@ class ScaffolderFrontend:
 
   @classmethod
   def _AskStringQuestion(
-      cls, question: scaffolder_interface.BaseQuestion) -> str:
-    """Ask the user a question and return a string answer back.
+      cls, question: scaffolder_interface.StringQuestion) -> str:
+    """Prompts the user with a question and return a string answer back.
 
     Args:
-      question (scaffolder_interface.BaseQuestion): the question to ask.
+      question (scaffolder_interface.StringQuestion): the question to ask.
 
     Returns:
       str: the answer as supplied by the user.
     """
     # pylint: disable=assignment-from-no-return
-    value = cls.OUTPUT_HANDLER.PromptInfo('Value')
+    value = cls._OUTPUT_HANDLER.PromptInfo('Value')
     question.ValidateAnswer(value)
     return value
 
   @classmethod
   def _GetSelection(cls, items: list, item_text: str) -> str:
-    """Present a list of items to user and return back the chosen one.
+    """Present a list of strings to user and return back user choice.
 
     Args:
-      items (list): the list of items to present to the user.
+      items (list): list of strings to present to the user.
       item_text (str): heading used in presentation to the user.
 
     Returns:
-      str: the chosen item from the list.
+      str: the chosen string from the list.
+
+    Raises:
+      KeyError: if the user selection is not part of the list or
+          it's not a valid number.
     """
     for item_count, item in enumerate(items):
-      cls.OUTPUT_HANDLER.PrintInfo(
+      cls._OUTPUT_HANDLER.PrintInfo(
           '  [{0:d}] {1:s}'.format(item_count + 1, item))
 
     # pylint: disable=assignment-from-no-return
-    result = cls.OUTPUT_HANDLER.PromptInfo('{0:s} choice'.format(item_text))
+    result = cls._OUTPUT_HANDLER.PromptInfo('{0:s} choice'.format(item_text))
     try:
       result_int = int(result, 10)
 
       if result_int <= len(items):
         return items[result_int - 1]
     except ValueError:
-      pass
+      raise KeyError('Unable to convert {0:s} into a number.'.format(result))
 
-    return result
+    raise KeyError('Item [{0:d}] not in list, please pick a valid number.')
 
   @classmethod
   def CreateGitFeatureBranch(cls, project_path: str, module_name: str):
@@ -176,18 +181,8 @@ class ScaffolderFrontend:
       project_path (str): path to the git project folder.
       module_name (str): name of the output module.
     """
-    git_helper = git.GitHelper(project_path)
-    active_branch = git_helper.GetActiveBranch()
-
-    branch_name = re.sub('(?<!^)(?=[A-Z])', '_', module_name).lower()
-    if active_branch == branch_name:
-      cls.OUTPUT_HANDLER.PrintOutput((
-          'Feature branch [{0:s}] already exists and is the '
-          'active branch').format(branch_name))
-      return
-
-    git_helper.CreateFeatureBranch(branch_name)
-    cls.OUTPUT_HANDLER.PrintOutput(
+    branch_name = cls._git_helper.CreateFeatureBranch(module_name=module_name)
+    cls._OUTPUT_HANDLER.PrintOutput(
         'Created the feature branch: {0:s} inside {1:s}'.format(
             branch_name, project_path))
 
@@ -215,9 +210,9 @@ class ScaffolderFrontend:
           break
         except errors.UnableToConfigure as exception:
           # pylint: disable=assignment-from-no-return
-          cls.OUTPUT_HANDLER.PrintError(
+          cls._OUTPUT_HANDLER.PrintError(
               'Unable to configure, with error: {0:s}'.format(repr(exception)))
-          gather_answer = cls.OUTPUT_HANDLER.Confirm('Want to try again?')
+          gather_answer = cls._OUTPUT_HANDLER.Confirm('Want to try again?')
           if not gather_answer:
             raise
 
@@ -227,7 +222,7 @@ class ScaffolderFrontend:
   @classmethod
   def GetDefinition(
       cls, definition_string: str) -> definition_interface.ScaffolderDefinition:
-    """Return the definition object as chosen by the user.
+    """Returns the definition object as chosen by the user.
 
     Args:
       definition_string (str): definition name, read from user input.
@@ -238,56 +233,62 @@ class ScaffolderFrontend:
     definitions = list(
         definition_manager.DefinitionManager.GetDefinitionNames())
 
-    cls.OUTPUT_HANDLER.PrintNewLine()
+    cls._OUTPUT_HANDLER.PrintNewLine()
     if not definition_string:
-      cls.OUTPUT_HANDLER.PrintInfo('Available definitions: ')
-      definition_string = cls._GetSelection(definitions, 'Definition')
+      cls._OUTPUT_HANDLER.PrintInfo('Available definitions: ')
+      definition_string = ''
+      while not definition_string:
+        try:
+          definition_string = cls._GetSelection(definitions, 'Definition')
+        except KeyError as e:
+          cls._OUTPUT_HANDLER.PrintError(e)
 
     if definition_string in definitions:
-      cls.OUTPUT_HANDLER.PrintOutput('{0:s} chosen.'.format(definition_string))
+      cls._OUTPUT_HANDLER.PrintOutput('{0:s} chosen.'.format(definition_string))
       def_class = definition_manager.DefinitionManager.GetDefinitionByName(
           definition_string)
       return def_class()
 
-    cls.OUTPUT_HANDLER.PrintError(
+    cls._OUTPUT_HANDLER.PrintError(
         'Definition {0:s} does not exist.'.format(definition_string))
     return cls.GetDefinition('')
 
   @classmethod
   def GetModuleName(cls) -> str:
-    """Return the module name as chosen by the user."""
-    cls.OUTPUT_HANDLER.PrintNewLine()
-    cls.OUTPUT_HANDLER.PrintInfo((
+    """Returns the module name as chosen by the user."""
+    cls._OUTPUT_HANDLER.PrintNewLine()
+    cls._OUTPUT_HANDLER.PrintInfo((
         'Name of the module to be generated. This can be something like "'
         'foobar sqlite" or "event analytics".\n\nThis will be used for class '
         'name generation and file name prefixes.'))
-    return cls.OUTPUT_HANDLER.PromptInfo('Module Name')
+    return cls._OUTPUT_HANDLER.PromptInfo('Module Name')
 
   @classmethod
   def GetProjectPath(
       cls, definition: definition_interface.ScaffolderDefinition) -> str:
-    """Return the path to the project as chosen by the user.
+    """Returns the path to the project's root folder as chosen by the user.
 
     Args:
       definition (definition_interface.ScaffolderDefinition): the chosen
           definition. Used to validate the project path.
 
     Returns:
-      str: the path to the project file.
+      str: the path to the project's root folder.
 
     Raises:
       errors.WrongCliInput: when no valid project path has been provided.
     """
-    cls.OUTPUT_HANDLER.PrintNewLine()
+    cls._OUTPUT_HANDLER.PrintNewLine()
     # pylint: disable=assignment-from-no-return
-    project_path = cls.OUTPUT_HANDLER.PromptInfo('Path to the project root')
+    project_path = cls._OUTPUT_HANDLER.PromptInfo('Path to the project root')
     if definition.ValidatePath(project_path):
-      cls.OUTPUT_HANDLER.PrintOutput(
+      cls._OUTPUT_HANDLER.PrintOutput(
           'Path [{0:s}] set as the project path.'.format(project_path))
+      cls._git_helper = git.GitHelper(project_path)
       return project_path
 
     # pylint: disable=assignment-from-no-return
-    check = cls.OUTPUT_HANDLER.Confirm((
+    check = cls._OUTPUT_HANDLER.Confirm((
         'Path [{0:s}] does not lead to a valid project for {1:s}. '
         'Do you want to try again?').format(project_path, definition.NAME))
 
@@ -295,13 +296,13 @@ class ScaffolderFrontend:
       return cls.GetProjectPath(definition)
 
     raise errors.WrongCliInput(
-        u'Unable to proceed without a valid project path.')
+        'Unable to proceed without a valid project path.')
 
   @classmethod
   def GetScaffolder(
       cls, definition: definition_interface.ScaffolderDefinition
   ) -> scaffolder_interface.Scaffolder:
-    """Return the scaffolder as chosen by the user.
+    """Returns the scaffolder as chosen by the user.
 
     Args:
       definition (definition_interface.ScaffolderDefinition): the chosen
@@ -316,15 +317,20 @@ class ScaffolderFrontend:
       if scaffolder.PROJECT == definition.NAME:
         scaffolders[scaffolder_name] = scaffolder
 
-    cls.OUTPUT_HANDLER.PrintNewLine()
-    cls.OUTPUT_HANDLER.PrintInfo(
+    cls._OUTPUT_HANDLER.PrintNewLine()
+    cls._OUTPUT_HANDLER.PrintInfo(
         'Available scaffolders for {0:s}:'.format(definition.NAME))
 
-    scaffolder = cls._GetSelection(list(scaffolders.keys()), 'Scaffolder')
+    scaffolder = ''
+    while not scaffolder:
+      try:
+        scaffolder = cls._GetSelection(list(scaffolders.keys()), 'Scaffolder')
+      except KeyError as e:
+        cls._OUTPUT_HANDLER.PrintError(e)
     if scaffolder in scaffolders:
       return scaffolders[scaffolder]()
 
-    cls.OUTPUT_HANDLER.PrintError(
+    cls._OUTPUT_HANDLER.PrintError(
         'Scaffolder: {0:s} does not exist.'.format(scaffolder))
     return cls.GetScaffolder(definition)
 
@@ -335,8 +341,8 @@ class ScaffolderFrontend:
     Args:
       definition_value (str): the definition string chosen by UI.
     """
-    cls.OUTPUT_HANDLER.PrintInfo('   == Starting the scaffolder ==')
-    cls.OUTPUT_HANDLER.PrintInfo('Gathering all required information.')
+    cls._OUTPUT_HANDLER.PrintInfo('   == Starting the scaffolder ==')
+    cls._OUTPUT_HANDLER.PrintInfo('Gathering all required information.')
     scaffolder_engine = engine.ScaffolderEngine()
 
     definition = cls.GetDefinition(definition_value)
@@ -346,13 +352,15 @@ class ScaffolderFrontend:
 
     module_name = cls.GetModuleName()
     scaffolder_engine.SetModuleName(module_name)
+    cls._OUTPUT_HANDLER.PrintInfo(
+        'About to create a new feature branch to store newly generated code.')
     try:
       cls.CreateGitFeatureBranch(project_path, scaffolder_engine.module_name)
     except errors.UnableToConfigure as exception:
-      cls.OUTPUT_HANDLER.PrintError((
-          'Unable to create feature branch, is this a valid git project path? '
-          'The error message was: {0:s}').format(repr(exception)))
-      cls.OUTPUT_HANDLER.PrintError('Due to fatal error, not proceeding.')
+      cls._OUTPUT_HANDLER.PrintError((
+          'Unable to create feature branch, is {0:s} a valid git project path? '
+          'The error message was: {1!s}').format(project_path, exception))
+      cls._OUTPUT_HANDLER.PrintError('Due to fatal error, not proceeding.')
       return
 
     scaffolder = cls.GetScaffolder(definition)
@@ -361,13 +369,17 @@ class ScaffolderFrontend:
       cls.GatherScaffolderAnswers(scaffolder, scaffolder_engine)
     except errors.UnableToConfigure as exception:
       # pylint: disable=assignment-from-no-return
-      cls.OUTPUT_HANDLER.PrintError(
-          'Unabl to properly confgure scaffolder, aborting.')
+      cls._OUTPUT_HANDLER.PrintError(
+          'Unable to properly confgure scaffolder, aborting.')
       return
 
     # pylint: disable=assignment-from-no-return
-    ready = cls.OUTPUT_HANDLER.Confirm('Ready to generate files?')
+    ready = cls._OUTPUT_HANDLER.Confirm('Ready to generate files?')
     if ready:
       for file_path in scaffolder_engine.GenerateFiles():
-        cls.OUTPUT_HANDLER.PrintOutput(
+        cls._OUTPUT_HANDLER.PrintOutput(
             'File: {0:s} written to disk.'.format(file_path))
+        _, _, file_path_inside_project = file_path.partition(project_path)
+        if file_path_inside_project.startswith(os.sep):
+          file_path_inside_project = file_path_inside_project[1:]
+        cls._git_helper.AddFileToTrack(file_path_inside_project)

@@ -4,6 +4,7 @@
 This file provides a class to assist with git operations.
 """
 import os
+import re
 
 from typing import Tuple
 
@@ -26,6 +27,16 @@ class GitHelper(cli.CLIHelper):
     super(GitHelper, self).__init__()
     self.project_path = project_path
     self._cwd = os.getcwd()
+
+  def AddFileToTrack(self, file_path: str):
+    """Add a file to those that are tracked by the git repo.
+
+    Args:
+      file_path (str): path to the file to be added to tracked
+          files by this git repo.
+    """
+    command = 'git add {0:s}'.format(file_path)
+    _, _, _ = self.RunCommand(command)
 
   def GetActiveBranch(self) -> str:
     """Determines the active branch of the git project.
@@ -80,20 +91,40 @@ class GitHelper(cli.CLIHelper):
 
     return exit_code
 
-  def CreateFeatureBranch(self, branch: str):
+  def CreateFeatureBranch(self, branch: str = '', module_name: str = ''):
     """Creates a feature branch in the git project.
 
     Arguments:
       branch (str): the name of the git branch.
+      module_name (str): the name of the module. If module_name is present
+          it will be used to construct the branch name, otherwise branch
+          name will be used.
+
+    Returns:
+      str: the name of the created feature branch.
 
     Raises:
       errors.UnableToConfigure: when the tool is not able to create
           the feature branch of the git project.
     """
-    command = 'git checkout -b {0:s}'.format(branch)
+    if module_name:
+      branch_name = re.sub('(?<!^)(?=[A-Z])', '_', module_name).lower()
+    else:
+      branch_name = branch
+
+    if not branch_name:
+      raise errors.UnableToConfigure('No branch name given.')
+
+    active_branch = self.GetActiveBranch()
+    if active_branch == branch_name:
+      return branch_name
+
+    command = 'git checkout -b {0:s}'.format(branch_name)
     exit_code, _, error = self.RunCommand(command)
 
     if exit_code != 0:
       raise errors.UnableToConfigure((
           'Unable to create the feature branch, with error message '
           '{0:s}').format(error))
+
+    return branch_name

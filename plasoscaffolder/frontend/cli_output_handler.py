@@ -9,51 +9,50 @@ class OutputHandlerClick(output_handler.BaseOutputHandler):
   """Class representing the output handler for click."""
 
   def Confirm(self, text: str, default=True, abort=True):
-    """Ask for a confirmation, either yes or no to a question.
+    """Return a bool from a yes/no question presented to the end user.
 
-     Args:
-       text (str): prompts the user for a confirmation, with the given test as
-           the question
-       default (bool): the default for the confirmation answer. If True the
-           default is Y(es), if False the default is N(o)
-       abort (bool): if the program should abort if the user answer to the
-           confirm prompt is no. The default is an abort.
+    Args:
+      text (str): the question presented to the end user.
+      default (bool): the default for the confirmation answer. If True the
+          default is Y(es), if False the default is N(o)
+      abort (bool): if the program should abort if the user answer to the
+          confirm prompt is no. The default is an abort.
 
-     Returns:
-        bool: False if the user entered no, True if the user entered yes
-     """
+    Returns:
+       bool: False if the user entered no, True if the user entered yes
+    """
     return click.confirm(text, abort=abort, default=default)
 
   def PrintError(self, text: str):
-    """A echo for errors with click.
+    """Present an error message.
 
     Args:
-      text (str): the text to print
+      text (str): the error message to present.
     """
     click.secho(text, fg='red', bold=True)
 
   def PrintInfo(self, text: str):
-    """A echo for information with click.
+    """Present the user with an informational text.
 
     Args:
-      text (str): the text to print
+      text (str): the text to present.
     """
     click.secho(text, fg='cyan')
 
   def PrintNewLine(self):
-    """A new line added to output."""
+    """Add a new or blank line to the output."""
     click.echo('')
 
   def PrintOutput(self, text: str):
-    """A echo for information with click.
+    """Present the user with output from the tool.
 
     Args:
-      text (str): the text to print.
+      text (str): the text to present the user with.
     """
     click.secho(text, fg='yellow', bold=True)
 
   def PromptError(self, text: str) -> str:
-    """A prompt for errors with click.
+    """Present the user with an error message prompt and return back the answer.
 
     Args:
       text (str): the text to prompt
@@ -64,26 +63,29 @@ class OutputHandlerClick(output_handler.BaseOutputHandler):
     return click.prompt(click.style(text, fg='red'), type=str)
 
   def PromptInfo(self, text: str) -> str:
-    """A prompt for information with click.
+    """Present the user with a message prompt and return back the answer.
 
     Args:
-      text (str): the text to  prompt
+      text (str): the text to prompt
 
     Returns:
       str: the user input
     """
     return click.prompt(text, type=str)
 
-  def PromptInfoWithDefault(self, text: str, text_type: object,
+  def PromptInfoWithDefault(self, text: str, input_type: object,
                             default: object) -> str:
-    """A prompt for information, with a default value and a required type.
+    """Present the user with a prompt with a default return value and a type.
+
+    The prompt can have a default value to be chosen as well as a defined type
+    of the returned data.
 
     Args:
       text (str): the text to prompt
-      text_type (object): the type of the input
+      input_type (object): the type of the input
       default (object): the default value
 
     Returns:
       str: the user input
     """
-    return click.prompt(text, type=text_type, default=default)
+    return click.prompt(text, type=input_type, default=default)

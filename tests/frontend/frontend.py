@@ -109,18 +109,18 @@ class TestOutputHander(output_handler.BaseOutputHandler):
     return self._GetInput()
 
   def PromptInfoWithDefault(
-      self, text: str, text_type: object, default: object) -> str:
+      self, text: str, input_type: object, default: object) -> str:
     """A prompt for information, with a default value and a required type.
 
     Args:
       text (str): the text to prompt
-      text_type (object): the type of the input
+      input_type (object): the type of the input
       default (object): the default value
 
     Returns:
       str: the user input
     """
-    self._output.write('{0:s} [{1:s}]'.format(text, text_type))
+    self._output.write('{0:s} [{1:s}]'.format(text, input_type))
     return self._GetInput()
 
   def SetOutput(self, output_writer):
@@ -131,13 +131,13 @@ class TestOutputHander(output_handler.BaseOutputHandler):
 class TestFrontend(frontend.ScaffolderFrontend):
   """Test implementation of the frontend."""
 
-  OUTPUT_HANDLER = TestOutputHander()
+  _OUTPUT_HANDLER = TestOutputHander()
 
   @classmethod
   def CreateGitFeatureBranch(cls, project_path: str, module_name: str):
     """Mock creating feature branch."""
     branch_name = re.sub('(?<!^)(?=[A-Z])', '_', module_name).lower()
-    cls.OUTPUT_HANDLER.PrintOutput(
+    cls._OUTPUT_HANDLER.PrintOutput(
         'Created the feature branch: {0:s} inside {1:s}'.format(
             branch_name, project_path))
 
@@ -182,7 +182,7 @@ class ScaffolderFrontendTest(unittest.TestCase):
     files are generated.
     """
     string_buffer = io.StringIO()
-    test_output_handler = TestFrontend.OUTPUT_HANDLER
+    test_output_handler = TestFrontend._OUTPUT_HANDLER  # pylint: disable=protected-access
     test_output_handler.SetOutput(string_buffer)
 
     test_output_handler.FeedLine(self.root_directory.name)
