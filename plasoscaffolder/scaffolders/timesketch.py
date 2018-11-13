@@ -5,11 +5,9 @@ import logging
 
 from typing import Dict
 from typing import Iterator
-from typing import List
 from typing import Tuple
 
 from plasoscaffolder.lib import definitions
-from plasoscaffolder.lib import errors
 from plasoscaffolder.lib import mapping_helper
 from plasoscaffolder.scaffolders import interface
 
@@ -62,8 +60,8 @@ class TimesketchBaseScaffolder(interface.Scaffolder):
   def GetFilesToCopy(self) -> Iterator[Tuple[str, str]]:
     """Return a list of files that need to be copied.
 
-    Yields:
-      tuple (str, str): file name of source and destination.
+    Returns:
+      an empty iterator.
     """
     return iter(())
 

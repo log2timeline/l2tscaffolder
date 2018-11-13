@@ -3,7 +3,6 @@
 """Tests for the Timesketch sketch analyzer scaffolder."""
 import unittest
 
-from plasoscaffolder.lib import errors
 from plasoscaffolder.scaffolders import timesketch_sketch
 
 
