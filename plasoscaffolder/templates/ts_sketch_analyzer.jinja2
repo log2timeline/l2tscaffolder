@@ -15,7 +15,7 @@ class {{ class_name }}SketchPlugin(interface.BaseSketchAnalyzer):
 
         Args:
             sketch_id: Sketch ID
-            index_name: Elasticsearch index name
+            sketch_id: Sketch ID
         """
         self.index_name = index_name
         super({{ class_name }}SketchPlugin, self).__init__(sketch_id, index_name)
