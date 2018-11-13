@@ -9,14 +9,9 @@ from plasoscaffolder.frontend import frontend
 
 
 class ScaffolderCli(frontend.ScaffolderFrontend):
-  """A CLI implementation for the scaffolder project.
+  """A CLI implementation for the scaffolder project."""
 
-  Attributes:
-    OUTPUT_HANDLER (cli_output_handler.OutputHandlerClick): output handler
-        that is used to request and read input from end user.
-  """
-
-  OUTPUT_HANDLER = cli_output_handler.OutputHandlerClick()
+  _OUTPUT_HANDLER = cli_output_handler.OutputHandlerClick()
 
   # pylint: disable=arguments-differ
   @classmethod
