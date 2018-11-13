@@ -8,11 +8,11 @@ from timesketch.lib.testlib import BaseTest
 from timesketch.lib.testlib import MockDataStore
 
 
-class Test{{ plugin_name }}Plugin(BaseTest):
+class Test{{ class_name }}Plugin(BaseTest):
     """Tests the functionality of the analyzer."""
 
     def __init__(self, *args, **kwargs):
-        super(Test{{ plugin_name }}Plugin, self).__init__(*args, **kwargs)
+        super(Test{{ class_name }}Plugin, self).__init__(*args, **kwargs)
 
     # Mock the Elasticsearch datastore.
     @mock.patch(
