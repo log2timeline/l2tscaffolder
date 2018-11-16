@@ -1,0 +1,50 @@
+"""Index analyzer plugin for {{ plugin_name|lower|replace('_',' ')}}."""
+from __future__ import unicode_literals
+
+from timesketch.lib.analyzers import interface
+from timesketch.lib.analyzers import manager
+
+
+class {{ class_name }}Plugin(interface.BaseIndexAnalyzer):
+    """Index analyzer for {{ class_name }}."""
+
+    NAME = '{{ plugin_name }}'
+
+    def __init__(self, index_name):
+        """Initialize the Index Analyzer.
+
+        Args:
+            index_name: Elasticsearch index name
+        """
+        super({{ class_name }}Plugin, self).__init__(index_name)
+
+    def run(self):
+        """Entry point for the analyzer.
+
+        Returns:
+            String with summary of the analyzer result
+        """
+        # TODO: Add Elasticsearch query to get the events you need.
+        query = ''
+
+        # TODO: Specify what returned fields you need for your analyzer.
+        return_fields = ['message']
+
+        # Generator of events based on your query.
+        events = self.event_stream(
+            query_string=query,
+            return_fields=return_fields
+        )
+
+        # TODO: Add analyzer logic here.
+        # Methods available to use for index analyzers:
+        # event.add_attributes({'foo': 'bar'})
+        # event.add_tags(['tag_name'])
+        for event in events:
+            pass
+
+        # TODO: Return a summary from the analyzer.
+        return 'String to be returned'
+
+
+manager.AnalysisManager.register_analyzer({{ class_name }}Plugin)
