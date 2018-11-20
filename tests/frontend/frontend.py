@@ -5,6 +5,7 @@ import io
 import os
 import re
 import unittest
+from unittest.mock import MagicMock
 import tempfile
 
 import timeout_decorator
@@ -131,15 +132,35 @@ class TestOutputHander(output_handler.BaseOutputHandler):
 class TestFrontend(frontend.ScaffolderFrontend):
   """Test implementation of the frontend."""
 
-  _OUTPUT_HANDLER = TestOutputHander()
+  def __init__(self, output_handler_to_use):
+    """Initialze the frontend."""
+    super(TestFrontend, self).__init__(output_handler_to_use)
+    self._mock = MagicMock()
+    self._git_helper = self._mock
 
-  @classmethod
-  def CreateGitFeatureBranch(cls, project_path: str, module_name: str):
+  def CreateGitFeatureBranch(self, project_path: str, module_name: str):
     """Mock creating feature branch."""
     branch_name = re.sub('(?<!^)(?=[A-Z])', '_', module_name).lower()
-    cls._OUTPUT_HANDLER.PrintOutput(
+    self._output_handler.PrintOutput(
         'Created the feature branch: {0:s} inside {1:s}'.format(
             branch_name, project_path))
+
+  def GetProjectPath(self, definition):
+    """Returns the path to the project's root folder as chosen by the user.
+
+    Args:
+      definition (definition_interface.ScaffolderDefinition): the chosen
+          definition. Used to validate the project path.
+
+    Returns:
+      str: the path to the project's root folder.
+
+    Raises:
+      errors.WrongCliInput: when no valid project path has been provided.
+    """
+    return_value = super(TestFrontend, self).GetProjectPath(definition)
+    self._git_helper = self._mock
+    return return_value
 
 
 class ScaffolderFrontendTest(unittest.TestCase):
@@ -182,12 +203,12 @@ class ScaffolderFrontendTest(unittest.TestCase):
     files are generated.
     """
     string_buffer = io.StringIO()
-    test_output_handler = TestFrontend._OUTPUT_HANDLER  # pylint: disable=protected-access
+    test_output_handler = TestOutputHander()
     test_output_handler.SetOutput(string_buffer)
 
     test_output_handler.FeedLine(self.root_directory.name)
     test_output_handler.FeedLine('foobar test')
-    test_output_handler.FeedLine('1')
+    test_output_handler.FeedLine('0')
     test_output_handler.FeedLine('FooQuery')
     test_output_handler.FeedLine('SELECT foo FROM bar;')
     test_output_handler.FeedLine('n')
@@ -198,7 +219,8 @@ class ScaffolderFrontendTest(unittest.TestCase):
         os.path.join(cwd, 'test_data', 'test_sqlite.db'))
     test_output_handler.FeedLine('Y')
 
-    TestFrontend.Start('plaso')
+    test_frontend = TestFrontend(test_output_handler)
+    test_frontend.Start('plaso')
 
     string_buffer.seek(0)
     lines = string_buffer.read().split('\n')

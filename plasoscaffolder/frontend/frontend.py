@@ -5,7 +5,6 @@ import os
 from typing import Dict
 from typing import List
 
-from plasoscaffolder.frontend import output_handler
 from plasoscaffolder.helpers import git
 from plasoscaffolder.lib import engine
 from plasoscaffolder.lib import errors
@@ -18,8 +17,6 @@ from plasoscaffolder.scaffolders import manager as scaffolder_manager
 
 class ScaffolderFrontend:
   """A frontend implementation for the scaffolder project."""
-
-  _git_helper = None
 
   def __init__(self, output_handler):
     """Initialze the frontend."""
@@ -162,7 +159,7 @@ class ScaffolderFrontend:
     try:
       result_int = int(result, 10)
 
-      if result_int >= 0 and result_int < len(items):
+      if 0 <= result_int < len(items):
         return items[result_int]
     except ValueError:
       raise KeyError('Unable to convert {0:s} into a number.'.format(result))
@@ -218,7 +215,8 @@ class ScaffolderFrontend:
             raise
 
   def GetDefinition(
-      self, definition_string: str) -> definition_interface.ScaffolderDefinition:
+      self,
+      definition_string: str) -> definition_interface.ScaffolderDefinition:
     """Returns the definition object as chosen by the user.
 
     Args:
@@ -241,7 +239,8 @@ class ScaffolderFrontend:
           self._output_handler.PrintError('{0!s}'.format(e))
 
     if definition_string in definitions:
-      self._output_handler.PrintOutput('{0:s} chosen.'.format(definition_string))
+      self._output_handler.PrintOutput(
+          '{0:s} chosen.'.format(definition_string))
       def_class = definition_manager.DefinitionManager.GetDefinitionByName(
           definition_string)
       return def_class()

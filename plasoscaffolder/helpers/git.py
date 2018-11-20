@@ -110,8 +110,8 @@ class GitHelper(cli.CLIHelper):
     Arguments:
       branch (str): the name of the git branch to switch to or create.
       module_name (str): the name of the module. If module_name is present
-          it will be used to construct the branch name, otherwise branch
-          name will be used.
+          it will be used to construct the branch name, otherwise the branch
+          attribute will be used as the branch name.
 
     Returns:
       str: the name of the created feature branch.
@@ -134,7 +134,7 @@ class GitHelper(cli.CLIHelper):
 
     switching_to_branch = self.SwitchToBranch(branch_name)
     if not switching_to_branch:
-      return
+      return branch_name
 
     command = 'git checkout -b {0:s}'.format(branch_name)
     exit_code, _, error = self.RunCommand(command)
