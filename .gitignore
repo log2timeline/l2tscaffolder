@@ -27,6 +27,7 @@ dist
 /docs/_sources/
 /docs/_static/
 docs/
+.doc
 
 # Code review files
 /.review
