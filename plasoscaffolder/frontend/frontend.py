@@ -4,7 +4,6 @@
 import os
 from typing import Dict
 from typing import List
-from typing import Type
 
 from plasoscaffolder.frontend import output_handler
 from plasoscaffolder.helpers import git
@@ -28,16 +27,17 @@ class ScaffolderFrontend:
       cls, question: scaffolder_interface.DictQuestion) -> Dict[str, str]:
     """Prompts the user with a question and return a dict answer back.
 
+    The user is prompted to supply both the key and value for each
+    entry in the dict. The key is the first response from the user and
+    value the second one. If the user attempts to add an entry with a key
+    that already exists an error is presented to the user and they are asked
+    to try again.
+
     Args:
       question (scaffolder_interface.DictQuestion): the question to ask.
 
     Returns:
-      dict: the answer as supplied by the user. The user is prompted with
-          questions to both supply the key and value to each entry in the
-          dict. Key is chosen as the first response from the user and value
-          as the second one. If the user attempts to add an entry with a key
-          that already exists an error is presented to the user and they asked
-          to try again (addition is rejected if key already exists).
+      dict: the answer as supplied by the user.
     """
     return_dict = {}
 
@@ -94,14 +94,14 @@ class ScaffolderFrontend:
     return return_list
 
   @classmethod
-  def _AskQuestion(cls, question: scaffolder_interface.BaseQuestion) -> Type:
+  def _AskQuestion(cls, question: scaffolder_interface.BaseQuestion) -> object:
     """Prompts the user with a question and return an answer back.
 
     Args:
       question (scaffolder_interface.BaseQuestion): the question to ask.
 
     Returns:
-      object: an object, whos type is defined in question.type.
+      object: an object, whose type is defined by the question.
 
     Raises:
       errors.WrongCliInput: when an unsupported question type is
@@ -110,18 +110,18 @@ class ScaffolderFrontend:
     cls._OUTPUT_HANDLER.PrintNewLine()
     cls._OUTPUT_HANDLER.PrintInfo(question.prompt)
 
-    if question.TYPE == str:
+    if isinstance(question, scaffolder_interface.StringQuestion):
       return cls._AskStringQuestion(question)
 
-    if question.TYPE == dict:
+    if isinstance(question, scaffolder_interface.DictQuestion):
       return cls._AskDictQuestion(question)
 
-    if question.TYPE == list:
+    if isinstance(question, scaffolder_interface.ListQuestion):
       return cls._AskListQuestion(question)
 
     # TODO: Add support for other types of questions.
     raise errors.WrongCliInput(
-        'Question type {0:s} not supported.'.format(str(question.TYPE)))
+        'Question type {0:s} not supported.'.format(str(question.__class__)))
 
   @classmethod
   def _AskStringQuestion(
@@ -141,7 +141,7 @@ class ScaffolderFrontend:
 
   @classmethod
   def _GetSelection(cls, items: list, item_text: str) -> str:
-    """Present a list of strings to user and return back user choice.
+    """Presents a list of strings to user and return back user choice.
 
     Args:
       items (list): list of strings to present to the user.
@@ -174,7 +174,7 @@ class ScaffolderFrontend:
 
   @classmethod
   def CreateGitFeatureBranch(cls, project_path: str, module_name: str):
-    """Create a feature branch inside the git project.
+    """Creates a feature branch inside the git project.
 
     Creates a feature branch inside the git project path
     to store all the generated files in.
@@ -190,7 +190,7 @@ class ScaffolderFrontend:
 
   @classmethod
   def GatherScaffolderAnswers(cls, scaffolder, scaffolder_engine):
-    """Ask all questions that scaffolder requires and store the results in it.
+    """Asks all questions that scaffolder requires and store the results in it.
 
     Args:
       scaffolder (scaffolder_interface.Scaffolder): the scaffolder that
@@ -209,7 +209,8 @@ class ScaffolderFrontend:
       while gather_answer:
         try:
           value = cls._AskQuestion(question)
-          break
+          scaffolder_engine.StoreScaffolderAttribute(
+              question.attribute, value, question.TYPE)
         except errors.UnableToConfigure as exception:
           # pylint: disable=assignment-from-no-return
           cls._OUTPUT_HANDLER.PrintError(
@@ -217,9 +218,6 @@ class ScaffolderFrontend:
           gather_answer = cls._OUTPUT_HANDLER.Confirm('Want to try again?')
           if not gather_answer:
             raise
-
-      scaffolder_engine.StoreScaffolderAttribute(
-          question.attribute, value, question.TYPE)
 
   @classmethod
   def GetDefinition(
