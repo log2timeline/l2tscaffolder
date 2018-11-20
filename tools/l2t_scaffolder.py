@@ -1,8 +1,5 @@
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
-# Docstrings are used by click in generating output. Since we don't want this
-#  behavior the following functions do not contain docstrings.
-
 """The l2t scaffolder tool."""
 import click
 
