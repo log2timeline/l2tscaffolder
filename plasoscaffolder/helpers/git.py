@@ -34,9 +34,17 @@ class GitHelper(cli.CLIHelper):
     Args:
       file_path (str): path to the file to be added to tracked
           files by this git repo.
+
+    Raises:
+      errors.UnableToConfigure: when the tool is not able to add
+          newly added files to the git repo.
     """
     command = 'git add {0:s}'.format(file_path)
-    _, _, _ = self.RunCommand(command)
+    exit_code, output, error = self.RunCommand(command)
+    if exit_code != 0:
+      raise errors.UnableToConfigure((
+          'Unable to add files to git branch, output of "git add" '
+          'command is [{0:s}] with the error: {1:s}'.format(output, error)))
 
   def GetActiveBranch(self) -> str:
     """Determines the active branch of the git project.
@@ -92,10 +100,15 @@ class GitHelper(cli.CLIHelper):
     return exit_code
 
   def CreateFeatureBranch(self, branch: str = '', module_name: str = ''):
-    """Creates a feature branch in the git project.
+    """Creates a feature branch in the git project if not exists.
+
+    This function takes either a branch name or a module name and converts
+    that into a branch name. It will then check to see if that branch already
+    exists, and if so, switch the active branch. If it does not exist, it will
+    create it and switch to it.
 
     Arguments:
-      branch (str): the name of the git branch.
+      branch (str): the name of the git branch to switch to or create.
       module_name (str): the name of the module. If module_name is present
           it will be used to construct the branch name, otherwise branch
           name will be used.
@@ -118,6 +131,10 @@ class GitHelper(cli.CLIHelper):
     active_branch = self.GetActiveBranch()
     if active_branch == branch_name:
       return branch_name
+
+    switching_to_branch = self.SwitchToBranch(branch_name)
+    if not switching_to_branch:
+      return
 
     command = 'git checkout -b {0:s}'.format(branch_name)
     exit_code, _, error = self.RunCommand(command)

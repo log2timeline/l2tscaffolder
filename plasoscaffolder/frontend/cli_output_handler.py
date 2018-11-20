@@ -73,8 +73,8 @@ class OutputHandlerClick(output_handler.BaseOutputHandler):
     """
     return click.prompt(text, type=str)
 
-  def PromptInfoWithDefault(self, text: str, input_type: object,
-                            default: object) -> str:
+  def PromptInfoWithDefault(self, text: str, input_type: type,
+                            default: object) -> object:
     """Present the user with a prompt with a default return value and a type.
 
     The prompt can have a default value to be chosen as well as a defined type
@@ -82,10 +82,10 @@ class OutputHandlerClick(output_handler.BaseOutputHandler):
 
     Args:
       text (str): the text to prompt
-      input_type (object): the type of the input
+      input_type (type): the type of the input
       default (object): the default value
 
     Returns:
-      str: the user input
+      object: the user input, using the supplid input type.
     """
     return click.prompt(text, type=input_type, default=default)
