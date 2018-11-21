@@ -6,7 +6,7 @@ from plasoscaffolder.frontend import output_handler
 
 
 class OutputHandlerClick(output_handler.BaseOutputHandler):
-  """Class representing the output handler for click."""
+  """Output handler for click."""
 
   def Confirm(self, text: str, default=True, abort=True):
     """Returns a bool from a yes/no question presented to the end user.
@@ -86,6 +86,6 @@ class OutputHandlerClick(output_handler.BaseOutputHandler):
       default (object): the default value
 
     Returns:
-      object: the user input, using the supplid input type.
+      object: the user input, using the supplied input type.
     """
     return click.prompt(text, type=input_type, default=default)

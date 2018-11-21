@@ -46,6 +46,36 @@ class GitHelper(cli.CLIHelper):
           'Unable to add files to git branch, output of "git add" '
           'command is [{0:s}] with the error: {1:s}'.format(output, error)))
 
+  def HasBranch(self, branch_name: str) -> bool:
+    """Tests for the existence of a specific branch.
+
+    Args:
+      branch_name (str): the name of the branch to test for.
+
+    Returns:
+      bool: True if the branch exists.
+    """
+    command = 'git show-ref --verify --quiet refs/heads/"{0:s}"'.format(
+        branch_name)
+    exit_code, output, error = self.RunCommand(command)
+    if exit_code == 0:
+      return True
+
+    return False
+
+  def GenerateBranchName(self, module_name: str) -> str:
+    """Generates a git branch name.
+
+    Args:
+      module_name (str): module name to generate a git branch name from.
+
+    Returns:
+      str: git branch name.
+    """
+    branch_name = re.sub('(?<!^)(?=[A-Z])', '_', module_name)
+    branch_name = branch_name.lower()
+    return branch_name
+
   def GetActiveBranch(self) -> str:
     """Determines the active branch of the git project.
 
@@ -98,48 +128,3 @@ class GitHelper(cli.CLIHelper):
     exit_code, _, _ = self.RunCommand(command)
 
     return exit_code
-
-  def SwitchToBranchWithCreate(self, module_name: str):
-    """Switches the git branch using module name and creates on if needed.
-
-    This function takes a module name and converts that into a branch name.
-    If the branch does exist within the git repository, the git branch will
-    be switched to it. If it doesn't a new feature branch will be created.
-
-    Arguments:
-      module_name (str): the name of the module. This name will be used to
-          create a branch name and then switch to it.
-
-    Returns:
-      str: the name of the feature branch, either newly created or the
-          discovered one that already existed.
-
-    Raises:
-      errors.UnableToConfigure: when the tool is not able to create
-          the feature branch of the git project.
-    """
-    if module_name:
-      branch_name = re.sub('(?<!^)(?=[A-Z])', '_', module_name).lower()
-    else:
-      branch_name = branch
-
-    if not branch_name:
-      raise errors.UnableToConfigure('No branch name given.')
-
-    active_branch = self.GetActiveBranch()
-    if active_branch == branch_name:
-      return branch_name
-
-    switching_to_branch = self.SwitchToBranch(branch_name)
-    if not switching_to_branch:
-      return branch_name
-
-    command = 'git checkout -b {0:s}'.format(branch_name)
-    exit_code, _, error = self.RunCommand(command)
-
-    if exit_code != 0:
-      raise errors.UnableToConfigure((
-          'Unable to create the feature branch, with error message '
-          '{0:s}').format(error))
-
-    return branch_name

@@ -63,7 +63,7 @@ class BaseOutputHandler:
       text (str): the text to prompt
 
     Returns:
-      str: the user input
+      str: the user input.
     """
 
   @abc.abstractmethod
@@ -74,12 +74,12 @@ class BaseOutputHandler:
       text (str): the text to prompt
 
     Returns:
-      str: the user input
+      str: the user input.
     """
 
   @abc.abstractmethod
-  def PromptInfoWithDefault(self, text: str, input_type: type,
-                            default: object) -> str:
+  def PromptInfoWithDefault(
+      self, text: str, input_type: type, default: object) -> str:
     """Presents the user with a prompt with a default return value and a type.
 
     The prompt can have a default value to be chosen as well as a defined type

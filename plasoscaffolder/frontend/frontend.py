@@ -20,7 +20,7 @@ class ScaffolderFrontend:
   """A frontend implementation for the scaffolder project."""
 
   def __init__(self, output_handler: handler.BaseOutputHandler):
-    """Initialze the frontend.
+    """Initializes the frontend.
 
     Args:
       output_handler (handler.BaseOutputHandler): the output handler used
@@ -180,10 +180,16 @@ class ScaffolderFrontend:
       project_path (str): path to the git project folder.
       module_name (str): name of the output module.
     """
-    branch_name = self._git_helper.SwitchToBranchWithCreate(module_name)
-    self._output_handler.PrintOutput(
-        'Created the feature branch: {0:s} inside {1:s}'.format(
-            branch_name, project_path))
+    branch_name = self._git_helper.GenerateBranchName(module_name)
+    if not self._git_helper.HasBranch(branch_name):
+      self._output_handler.PrintOutput(
+          'Creating feature branch: {0:s} inside {1:s}'.format(
+              branch_name, project_path))
+      self._git_helper.CreateBranch(branch_name)
+
+    self._output_handler.PrintOutput('Switching to feature branch {0:s}'.format(
+        branch_name))
+    self._git_helper.SwitchToBranch(branch_name)
 
   def GatherScaffolderAnswers(self, scaffolder, scaffolder_engine):
     """Asks all questions that scaffolder requires and store the results in it.
@@ -304,8 +310,8 @@ class ScaffolderFrontend:
       scaffolder_interface.ScaffolderCli: the chosen scaffolder object.
     """
     scaffolders = {}
-    get_scaffolders = scaffolder_manager.ScaffolderManager.GetScaffolders
-    for scaffolder_name, scaffolder in get_scaffolders():
+    manager = scaffolder_manager.ScaffolderManager
+    for scaffolder_name, scaffolder in manager.GetScaffolders():
       if scaffolder.PROJECT == definition.NAME:
         scaffolders[scaffolder_name] = scaffolder
 
@@ -317,8 +323,8 @@ class ScaffolderFrontend:
     while not scaffolder:
       try:
         scaffolder = self._GetSelection(list(scaffolders.keys()), 'Scaffolder')
-      except KeyError as e:
-        self._output_handler.PrintError('{0!s}'.format(e))
+      except KeyError as exception:
+        self._output_handler.PrintError('{0!s}'.format(exception))
     if scaffolder in scaffolders:
       return scaffolders[scaffolder]()
 
@@ -333,7 +339,7 @@ class ScaffolderFrontend:
       definition_value (str): the definition string chosen by UI.
     """
     self._output_handler.PrintInfo('   == Starting the scaffolder ==')
-    self._output_handler.PrintInfo('Gathering all required information.')
+    self._output_handler.PrintInfo('Gathering required information.')
     scaffolder_engine = engine.ScaffolderEngine()
 
     definition = self.GetDefinition(definition_value)
