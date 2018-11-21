@@ -8,10 +8,10 @@ from typing import Iterator
 from typing import List
 from typing import Tuple
 
-from plasoscaffolder.lib import definitions
-from plasoscaffolder.lib import errors
-from plasoscaffolder.lib import mapping_helper
-from plasoscaffolder.scaffolders import interface
+from l2tscaffolder.lib import definitions
+from l2tscaffolder.lib import errors
+from l2tscaffolder.lib import mapping_helper
+from l2tscaffolder.scaffolders import interface
 
 
 class TestFileQuestion(interface.StringQuestion):

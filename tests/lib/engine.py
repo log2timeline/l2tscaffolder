@@ -4,11 +4,11 @@
 import os
 import unittest
 
-from plasoscaffolder.definitions import interface as definition_interface
-from plasoscaffolder.definitions import manager as definition_manager
-from plasoscaffolder.lib import engine
-from plasoscaffolder.lib import errors
-from plasoscaffolder.scaffolders import interface as scaffolder_interface
+from l2tscaffolder.definitions import interface as definition_interface
+from l2tscaffolder.definitions import manager as definition_manager
+from l2tscaffolder.lib import engine
+from l2tscaffolder.lib import errors
+from l2tscaffolder.scaffolders import interface as scaffolder_interface
 
 
 class AwesomeScaffolder(scaffolder_interface.Scaffolder):

@@ -6,7 +6,7 @@ from __future__ import unicode_literals
 
 import unittest
 
-from plasoscaffolder.helpers import cli
+from l2tscaffolder.helpers import cli
 
 
 class CLIHelperTest(unittest.TestCase):

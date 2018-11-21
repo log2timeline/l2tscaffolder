@@ -3,7 +3,7 @@
 """Tests for the Timesketch sketch analyzer scaffolder."""
 import unittest
 
-from plasoscaffolder.scaffolders import timesketch_sketch
+from l2tscaffolder.scaffolders import timesketch_sketch
 
 
 class TimesketchSketchScaffolderTest(unittest.TestCase):

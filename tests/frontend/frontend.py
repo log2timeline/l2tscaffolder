@@ -8,12 +8,12 @@ import unittest
 from unittest.mock import MagicMock
 import tempfile
 
-from plasoscaffolder.definitions import manager as definition_manager
-from plasoscaffolder.definitions import plaso
-from plasoscaffolder.frontend import frontend
-from plasoscaffolder.frontend import output_handler
-from plasoscaffolder.scaffolders import manager as scaffolder_manager
-from plasoscaffolder.scaffolders import plaso_sqlite
+from l2tscaffolder.definitions import manager as definition_manager
+from l2tscaffolder.definitions import plaso
+from l2tscaffolder.frontend import frontend
+from l2tscaffolder.frontend import output_handler
+from l2tscaffolder.scaffolders import manager as scaffolder_manager
+from l2tscaffolder.scaffolders import plaso_sqlite
 
 
 class TestOutputHandler(output_handler.BaseOutputHandler):

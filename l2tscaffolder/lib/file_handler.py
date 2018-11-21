@@ -4,7 +4,7 @@ import os
 import pathlib
 import shutil
 
-from plasoscaffolder.lib import errors
+from l2tscaffolder.lib import errors
 
 
 class FileHandler:

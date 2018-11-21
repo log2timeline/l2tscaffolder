@@ -7,9 +7,9 @@ from typing import Dict
 from typing import Iterator
 from typing import Tuple
 
-from plasoscaffolder.lib import definitions
-from plasoscaffolder.lib import mapping_helper
-from plasoscaffolder.scaffolders import interface
+from l2tscaffolder.lib import definitions
+from l2tscaffolder.lib import mapping_helper
+from l2tscaffolder.scaffolders import interface
 
 
 class TimesketchBaseScaffolder(interface.Scaffolder):

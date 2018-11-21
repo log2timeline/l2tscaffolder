@@ -14,7 +14,7 @@ def TemplatePath() -> str:
   """
   return os.path.join(
       os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
-      'plasoscaffolder', 'bll', 'templates')
+      'l2tscaffolder', 'bll', 'templates')
 
 
 def TestTemplatePath() -> str:

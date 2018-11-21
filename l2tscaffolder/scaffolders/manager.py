@@ -8,7 +8,7 @@ from typing import Optional
 from typing import Tuple
 from typing import Type
 
-from plasoscaffolder.scaffolders import interface
+from l2tscaffolder.scaffolders import interface
 
 
 class ScaffolderManager:

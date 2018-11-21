@@ -8,8 +8,8 @@ import re
 
 from typing import Tuple
 
-from plasoscaffolder.helpers import cli
-from plasoscaffolder.lib import errors
+from l2tscaffolder.helpers import cli
+from l2tscaffolder.lib import errors
 
 class GitHelper(cli.CLIHelper):
   """Helper class for git operations.

@@ -3,7 +3,7 @@
 """Tests for the mapping helper."""
 import unittest
 
-from plasoscaffolder.lib import mapping_helper
+from l2tscaffolder.lib import mapping_helper
 from tests.test_helper import path_helper
 
 # pylint: disable=protected-access

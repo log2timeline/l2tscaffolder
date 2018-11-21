@@ -7,8 +7,8 @@ from typing import Iterator
 from typing import List
 from typing import Tuple
 
-from plasoscaffolder.lib import definitions
-from plasoscaffolder.lib import errors
+from l2tscaffolder.lib import definitions
+from l2tscaffolder.lib import errors
 
 
 class BaseQuestion:

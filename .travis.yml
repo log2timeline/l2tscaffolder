@@ -18,6 +18,6 @@ install:
 - pip install -r requirements.txt
 - pip install coverage
 script:
-- coverage run --source=plasoscaffolder ./run_tests.py test
+- coverage run --source=l2tscaffolder ./run_tests.py test
 after_success:
 - curl -o codecov.sh -s https://codecov.io/bash && /bin/bash ./codecov.sh

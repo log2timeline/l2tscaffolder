@@ -3,7 +3,7 @@
 """testing the main"""
 import unittest
 
-import plasoscaffolder
+import l2tscaffolder
 
 
 class VersionTest(unittest.TestCase):
@@ -11,7 +11,7 @@ class VersionTest(unittest.TestCase):
 
   def testGetVersion(self):
     """testing the get version"""
-    actual = plasoscaffolder.__version__
+    actual = l2tscaffolder.__version__
     self.assertEqual('20181120', actual)
 
 if __name__ == '__main__':

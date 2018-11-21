@@ -30,17 +30,18 @@ This will run the scaffolder tool to generate a plugin or a parser for plaso.
 Also see:
 
 + https://claudiasaxer.github.io/PlasoScaffolder <br>
-+ http://plasoscaffolder.readthedocs.io
++ http://l2tscaffolder.readthedocs.io
 
 ### Requirements
 Python 3.6, Python 2 is not supported.
 
 ### Installation
-pip install plasoscaffolder
+pip install l2tscaffolder
 
 ### Background
 The original PlasoScaffolder was written by [Claudia Saxer](https://github.com/ClaudiaSaxer)
 as part of her BSc and integrated into the log2timeline organization for
 purpose of maintenance.
 
-The original version of the tool was rewritten to extend the tool to support other projects than plaso SQlite plugin generation.
+The original version of the tool was rewritten to l2t_scaffolder and the tool
+extended to support other projects than plaso SQlite plugin generation.

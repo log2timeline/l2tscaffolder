@@ -6,7 +6,7 @@ import os
 import tempfile
 import unittest
 
-from plasoscaffolder.lib import file_handler
+from l2tscaffolder.lib import file_handler
 
 
 class FileHandlerTest(unittest.TestCase):
