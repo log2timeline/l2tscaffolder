@@ -20,13 +20,14 @@ dist
 /src/plasoscaffolder.egg-info
 
 # Auto-generated Sphinx documentation files
-/docs/.build/doctrees/
-/docs/.build/html
-/docs/.build/.doctrees/
-/docs/.build/_modules/
-/docs/.build/_sources/
-/docs/.build/_static/
-docs/.build/
+/docs/doctrees/
+/docs/html
+/docs/.doctrees/
+/docs/_modules/
+/docs/_sources/
+/docs/_static/
+/docs/_templates/
+/docs/_build/
 
 # Code review files
 /.review
