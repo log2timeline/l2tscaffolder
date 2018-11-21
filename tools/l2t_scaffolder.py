@@ -10,7 +10,7 @@ from plasoscaffolder.frontend import frontend
 @click.command()
 @click.argument(
     'definition', envvar='SCAFFOLDER_DEFINITION', type=str, default='')
-def StartCli(definition):
+def StartCLI(definition):
   """Generates templates for parser and plugins for l2t developers.
 
   This is a l2t scaffolder, used to generate templates for all plugin
@@ -23,4 +23,4 @@ def StartCli(definition):
 
 
 if __name__ == '__main__':
-  StartCli()  # pylint: disable=no-value-for-parameter
+  StartCLI()  # pylint: disable=no-value-for-parameter
