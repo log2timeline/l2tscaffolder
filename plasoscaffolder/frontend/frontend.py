@@ -43,14 +43,13 @@ class ScaffolderFrontend:
       question (scaffolder_interface.DictQuestion): the question to ask.
 
     Returns:
-      dict: the answer as supplied by the user.
+      dict[str, str]: keys and values provided by the user.
     """
     return_dict = {}
 
     more_entries = True
     entry_index = 1
     while more_entries:
-      # pylint: disable=assignment-from-no-return
       key = self._output_handler.PromptInfo(
           '{0:s} [#{1:d}]'.format(question.key_prompt, entry_index))
       if key in return_dict:
@@ -83,7 +82,6 @@ class ScaffolderFrontend:
     more_entries = True
     entry_index = 1
     while more_entries:
-      # pylint: disable=assignment-from-no-return
       value = self._output_handler.PromptInfo(
           'Value to add [#{0:d}]'.format(entry_index))
       if not value:
@@ -137,7 +135,6 @@ class ScaffolderFrontend:
     Returns:
       str: the answer as supplied by the user.
     """
-    # pylint: disable=assignment-from-no-return
     value = self._output_handler.PromptInfo('Value')
     question.ValidateAnswer(value)
     return value
@@ -160,7 +157,6 @@ class ScaffolderFrontend:
       self._output_handler.PrintInfo(
           '  [{0:d}] {1:s}'.format(item_count, item))
 
-    # pylint: disable=assignment-from-no-return
     result = self._output_handler.PromptInfo('{0:s} choice'.format(item_text))
     try:
       result_int = int(result, 10)
@@ -213,7 +209,6 @@ class ScaffolderFrontend:
               question.attribute, value, question.TYPE)
           break
         except errors.UnableToConfigure as exception:
-          # pylint: disable=assignment-from-no-return
           self._output_handler.PrintError(
               'Unable to configure, with error: {0:s}'.format(repr(exception)))
           gather_answer = self._output_handler.Confirm('Want to try again?')
@@ -279,7 +274,6 @@ class ScaffolderFrontend:
       errors.WrongCliInput: when no valid project path has been provided.
     """
     self._output_handler.PrintNewLine()
-    # pylint: disable=assignment-from-no-return
     project_path = self._output_handler.PromptInfo('Path to the project root')
     if definition.ValidatePath(project_path):
       self._output_handler.PrintOutput(
@@ -287,7 +281,6 @@ class ScaffolderFrontend:
       self._git_helper = git.GitHelper(project_path)
       return project_path
 
-    # pylint: disable=assignment-from-no-return
     check = self._output_handler.Confirm((
         'Path [{0:s}] does not lead to a valid project for {1:s}. '
         'Do you want to try again?').format(project_path, definition.NAME))
@@ -366,12 +359,11 @@ class ScaffolderFrontend:
     try:
       self.GatherScaffolderAnswers(scaffolder, scaffolder_engine)
     except errors.UnableToConfigure as exception:
-      # pylint: disable=assignment-from-no-return
       self._output_handler.PrintError(
-          'Unable to properly confgure scaffolder, aborting.')
+          ('Aborting. Unable to properly configure scaffolder '
+           'with error {0!s}.').format(exception))
       return
 
-    # pylint: disable=assignment-from-no-return
     ready = self._output_handler.Confirm('Ready to generate files?')
     if ready:
       for file_path in scaffolder_engine.GenerateFiles():

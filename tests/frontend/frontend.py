@@ -18,16 +18,16 @@ from plasoscaffolder.scaffolders import manager as scaffolder_manager
 from plasoscaffolder.scaffolders import plaso_sqlite
 
 
-class TestOutputHander(output_handler.BaseOutputHandler):
+class TestOutputHandler(output_handler.BaseOutputHandler):
   """Test implementation of the output handler."""
 
   def __init__(self):
-    """Initialize the test output handler."""
+    """Initializes the test output handler."""
     self._data = []
     self._output = None
 
   def _GetInput(self):
-    """Return a line from the data, or an empty string if no data."""
+    """Returns a line from the data, or an empty string if no data."""
     if not self._data:
       return ''
 
@@ -133,7 +133,7 @@ class TestFrontend(frontend.ScaffolderFrontend):
   """Test implementation of the frontend."""
 
   def __init__(self, output_handler_to_use):
-    """Initialze the frontend."""
+    """Initializes the frontend."""
     super(TestFrontend, self).__init__(output_handler_to_use)
     self._mock = MagicMock()
     self._git_helper = self._mock
@@ -166,6 +166,9 @@ class TestFrontend(frontend.ScaffolderFrontend):
 class ScaffolderFrontendTest(unittest.TestCase):
   """Test case for the scaffolder frontend."""
 
+  # Temporary directory for mocking a plaso source tree.
+  root_directory = None
+
   @classmethod
   def setUpClass(cls):
     """Set up the test class."""
@@ -193,17 +196,18 @@ class ScaffolderFrontendTest(unittest.TestCase):
 
   @classmethod
   def tearDownClass(cls):
+    """Cleans up after running tests."""
     cls.root_directory.cleanup()
 
   @timeout_decorator.timeout(20)
   def testFrontend(self):
-    """Test the frontend.
+    """Tests the frontend.
 
     This test runs the entire front-end and tests to see if
-    files are generated.
+    files are generated as expected.
     """
     string_buffer = io.StringIO()
-    test_output_handler = TestOutputHander()
+    test_output_handler = TestOutputHandler()
     test_output_handler.SetOutput(string_buffer)
 
     test_output_handler.FeedLine(self.root_directory.name)
