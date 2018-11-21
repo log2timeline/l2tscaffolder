@@ -57,7 +57,7 @@ class GitHelper(cli.CLIHelper):
     """
     command = 'git show-ref --verify --quiet refs/heads/"{0:s}"'.format(
         branch_name)
-    exit_code, output, error = self.RunCommand(command)
+    exit_code, _, _ = self.RunCommand(command)
     if exit_code == 0:
       return True
 
