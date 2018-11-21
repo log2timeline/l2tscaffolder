@@ -57,7 +57,7 @@ class GitHelper(cli.CLIHelper):
     """
     command = 'git show-ref --verify --quiet refs/heads/"{0:s}"'.format(
         branch_name)
-    exit_code, output, error = self.RunCommand(command)
+    exit_code, _, _ = self.RunCommand(command)
     if exit_code == 0:
       return True
 
@@ -125,6 +125,20 @@ class GitHelper(cli.CLIHelper):
       int: the exit code from the git command.
     """
     command = 'git checkout {0:s}'.format(branch)
+    exit_code, _, _ = self.RunCommand(command)
+
+    return exit_code
+
+  def CreateBranch(self, branch: str) -> int:
+    """Creates a git branch and returns the exit code of the command.
+
+    Arguments:
+      branch (str): the name of the git branch.
+
+    Returns:
+      int: the exit code from the git command.
+    """
+    command = 'git branch {0:s}'.format(branch)
     exit_code, _, _ = self.RunCommand(command)
 
     return exit_code
