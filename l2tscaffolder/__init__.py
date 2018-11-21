@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
 """defining the version"""
-__version__ = '20181120'
+__version__ = '20181121'
