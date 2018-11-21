@@ -100,7 +100,7 @@ class GitHelper(cli.CLIHelper):
     return exit_code
 
   def CreateFeatureBranch(self, branch: str = '', module_name: str = ''):
-    """Creates a feature branch in the git project if not exists.
+    """Creates a feature branch in the git project if it doesn't exist.
 
     This function takes either a branch name or a module name and converts
     that into a branch name. It will then check to see if that branch already

@@ -14,7 +14,7 @@ class BaseOutputHandler:
 
   @abc.abstractmethod
   def Confirm(self, text: str, default=True, abort=True):
-    """Return a bool from a yes/no question presented to the end user.
+    """Returns a bool from a yes/no question presented to the end user.
 
     Args:
       text (str): the question presented to the end user.
@@ -29,7 +29,7 @@ class BaseOutputHandler:
 
   @abc.abstractmethod
   def PrintError(self, text: str):
-    """Present an error message.
+    """Presents an error message.
 
     Args:
       text (str): the error message to present.
@@ -37,7 +37,7 @@ class BaseOutputHandler:
 
   @abc.abstractmethod
   def PrintInfo(self, text: str):
-    """Present the user with an informational text.
+    """Presents the user with an informational text.
 
     Args:
       text (str): the text to present.
@@ -45,11 +45,11 @@ class BaseOutputHandler:
 
   @abc.abstractmethod
   def PrintNewLine(self):
-    """Add a new or blank line to the output."""
+    """Adds a new or blank line to the output."""
 
   @abc.abstractmethod
   def PrintOutput(self, text: str):
-    """Present the user with output from the tool.
+    """Presents the user with output from the tool.
 
     Args:
       text (str): the text to present the user with.
@@ -57,7 +57,7 @@ class BaseOutputHandler:
 
   @abc.abstractmethod
   def PromptError(self, text: str) -> str:
-    """Present the user with an error message prompt and return back the answer.
+    """Presents the user with an error message prompt and return back the answer.
 
     Args:
       text (str): the text to prompt
@@ -68,7 +68,7 @@ class BaseOutputHandler:
 
   @abc.abstractmethod
   def PromptInfo(self, text: str) -> str:
-    """Present the user with a message prompt and return back the answer.
+    """Presents the user with a message prompt and return back the answer.
 
     Args:
       text (str): the text to prompt
@@ -80,7 +80,7 @@ class BaseOutputHandler:
   @abc.abstractmethod
   def PromptInfoWithDefault(self, text: str, input_type: type,
                             default: object) -> str:
-    """Present the user with a prompt with a default return value and a type.
+    """Presents the user with a prompt with a default return value and a type.
 
     The prompt can have a default value to be chosen as well as a defined type
     of the returned data.
@@ -91,5 +91,5 @@ class BaseOutputHandler:
       default (object): the default value
 
     Returns:
-      object: the user input, using the supplid input type.
+      object: the user input, using the supplied input type.
     """

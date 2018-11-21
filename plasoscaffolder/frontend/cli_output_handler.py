@@ -9,7 +9,7 @@ class OutputHandlerClick(output_handler.BaseOutputHandler):
   """Class representing the output handler for click."""
 
   def Confirm(self, text: str, default=True, abort=True):
-    """Return a bool from a yes/no question presented to the end user.
+    """Returns a bool from a yes/no question presented to the end user.
 
     Args:
       text (str): the question presented to the end user.
@@ -24,7 +24,7 @@ class OutputHandlerClick(output_handler.BaseOutputHandler):
     return click.confirm(text, abort=abort, default=default)
 
   def PrintError(self, text: str):
-    """Present an error message.
+    """Presents an error message.
 
     Args:
       text (str): the error message to present.
@@ -32,7 +32,7 @@ class OutputHandlerClick(output_handler.BaseOutputHandler):
     click.secho(text, fg='red', bold=True)
 
   def PrintInfo(self, text: str):
-    """Present the user with an informational text.
+    """Presents the user with an informational text.
 
     Args:
       text (str): the text to present.
@@ -40,11 +40,11 @@ class OutputHandlerClick(output_handler.BaseOutputHandler):
     click.secho(text, fg='cyan')
 
   def PrintNewLine(self):
-    """Add a new or blank line to the output."""
+    """Adds a new or blank line to the output."""
     click.echo('')
 
   def PrintOutput(self, text: str):
-    """Present the user with output from the tool.
+    """Presents the user with output from the tool.
 
     Args:
       text (str): the text to present the user with.
@@ -52,7 +52,7 @@ class OutputHandlerClick(output_handler.BaseOutputHandler):
     click.secho(text, fg='yellow', bold=True)
 
   def PromptError(self, text: str) -> str:
-    """Present the user with an error message prompt and return back the answer.
+    """Presents the user with an error message prompt and return back the answer.
 
     Args:
       text (str): the text to prompt
@@ -63,7 +63,7 @@ class OutputHandlerClick(output_handler.BaseOutputHandler):
     return click.prompt(click.style(text, fg='red'), type=str)
 
   def PromptInfo(self, text: str) -> str:
-    """Present the user with a message prompt and return back the answer.
+    """Presents the user with a message prompt and return back the answer.
 
     Args:
       text (str): the text to prompt
@@ -75,7 +75,7 @@ class OutputHandlerClick(output_handler.BaseOutputHandler):
 
   def PromptInfoWithDefault(self, text: str, input_type: type,
                             default: object) -> object:
-    """Present the user with a prompt with a default return value and a type.
+    """Presents the user with a prompt with a default return value and a type.
 
     The prompt can have a default value to be chosen as well as a defined type
     of the returned data.
