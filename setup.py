@@ -32,8 +32,8 @@ setup(
                       'jinja2>=2.9.6',
                       'colorama>=0.3.7',
                       'yapf==0.22',
-                      'timeout-decorator>=0.4.0',
                       'pexpect>=4.2.1'],
     scripts=glob.glob(os.path.join('tools', '[a-z]*.py')),
+    python_requires='>=3',
     keywords="plaso l2t scaffolder log2timeline turbinia timesketch",
 )
