@@ -231,7 +231,7 @@ class ScaffolderFrontendTest(unittest.TestCase):
     first_line = lines[0]
 
     expected_string = (
-        '== Starting the scaffolder ==Gathering all required information.')
+        '== Starting the scaffolder ==Gathering required information.')
     self.assertEqual(first_line.strip(), expected_string)
 
     expected_string = 'written to disk.'
