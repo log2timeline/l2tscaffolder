@@ -130,7 +130,7 @@ class GitHelper(cli.CLIHelper):
     return exit_code
 
   def CreateBranch(self, branch: str) -> int:
-    """Creates a git branch, switches to it and returns the exit code.
+    """Creates a git branch and returns the exit code of the command.
 
     Arguments:
       branch (str): the name of the git branch.
