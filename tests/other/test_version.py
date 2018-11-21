@@ -12,7 +12,7 @@ class VersionTest(unittest.TestCase):
   def testGetVersion(self):
     """testing the get version"""
     actual = plasoscaffolder.__version__
-    self.assertEqual('20170614', actual)
+    self.assertEqual('20181120', actual)
 
 if __name__ == '__main__':
   unittest.main()
