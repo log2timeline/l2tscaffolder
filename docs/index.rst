@@ -1,10 +1,11 @@
-.. l2tScaffolder documentation master file, created by
-   sphinx-quickstart on Tue Nov 20 06:08:15 2018.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Welcome to l2tScaffolder's documentation!
 =========================================
+
+The l2t_scaffolder is a tool developed to speed up l2t development by
+automatating the generation of plugins and parsers in various tools, such
+as plaso and timesketch.
+
+ATM there is no documentation to speak, but it will be provided shortly.
 
 .. toctree::
    :maxdepth: 2
