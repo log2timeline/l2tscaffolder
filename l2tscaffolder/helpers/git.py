@@ -138,7 +138,7 @@ class GitHelper(cli.CLIHelper):
     Returns:
       int: the exit code from the git command.
     """
-    command = 'git checkout -b {0:s}'.format(branch)
+    command = 'git branch {0:s}'.format(branch)
     exit_code, _, _ = self.RunCommand(command)
 
     return exit_code
