@@ -3,7 +3,7 @@
 import os
 import jinja2
 
-from plasoscaffolder.lib import code_formatter
+from l2tscaffolder.lib import code_formatter
 
 
 class ParserMapper:

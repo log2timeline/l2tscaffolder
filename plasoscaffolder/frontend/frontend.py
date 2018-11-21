@@ -5,15 +5,15 @@ import os
 from typing import Dict
 from typing import List
 
-from plasoscaffolder.frontend import output_handler as handler
-from plasoscaffolder.helpers import git
-from plasoscaffolder.lib import engine
-from plasoscaffolder.lib import errors
+from l2tscaffolder.frontend import output_handler as handler
+from l2tscaffolder.helpers import git
+from l2tscaffolder.lib import engine
+from l2tscaffolder.lib import errors
 
-from plasoscaffolder.definitions import interface as definition_interface
-from plasoscaffolder.definitions import manager as definition_manager
-from plasoscaffolder.scaffolders import interface as scaffolder_interface
-from plasoscaffolder.scaffolders import manager as scaffolder_manager
+from l2tscaffolder.definitions import interface as definition_interface
+from l2tscaffolder.definitions import manager as definition_manager
+from l2tscaffolder.scaffolders import interface as scaffolder_interface
+from l2tscaffolder.scaffolders import manager as scaffolder_manager
 
 
 class ScaffolderFrontend:

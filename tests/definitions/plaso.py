@@ -4,8 +4,8 @@
 import os
 import unittest
 
-from plasoscaffolder.lib import definitions
-from plasoscaffolder.definitions import plaso
+from l2tscaffolder.lib import definitions
+from l2tscaffolder.definitions import plaso
 
 
 class PlasoProjectTest(unittest.TestCase):

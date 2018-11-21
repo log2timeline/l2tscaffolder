@@ -16,8 +16,8 @@
 .build/
 dist
 /MANIFEST.test_data
-/plasoscaffolder.egg-info
-/src/plasoscaffolder.egg-info
+/l2tscaffolder.egg-info
+/src/l2tscaffolder.egg-info
 
 # Auto-generated Sphinx documentation files
 /docs/doctrees/

@@ -3,8 +3,8 @@
 """Test class for the definition manager."""
 import unittest
 
-from plasoscaffolder.definitions import interface
-from plasoscaffolder.definitions import manager
+from l2tscaffolder.definitions import interface
+from l2tscaffolder.definitions import manager
 
 
 class GoldTestProject(interface.ScaffolderDefinition):

@@ -7,10 +7,10 @@ from typing import Dict
 from typing import Iterator
 from typing import Tuple
 
-from plasoscaffolder.lib import errors
-from plasoscaffolder.scaffolders import interface
-from plasoscaffolder.scaffolders import plaso
-from plasoscaffolder.scaffolders import manager
+from l2tscaffolder.lib import errors
+from l2tscaffolder.scaffolders import interface
+from l2tscaffolder.scaffolders import plaso
+from l2tscaffolder.scaffolders import manager
 
 
 class SQLQuestion(interface.DictQuestion):

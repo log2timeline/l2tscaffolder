@@ -2,7 +2,7 @@
 """The output file handler for click"""
 import click
 
-from plasoscaffolder.frontend import output_handler
+from l2tscaffolder.frontend import output_handler
 
 
 class OutputHandlerClick(output_handler.BaseOutputHandler):

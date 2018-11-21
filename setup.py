@@ -7,11 +7,11 @@ import glob
 from setuptools import find_packages
 from setuptools import setup
 
-import plasoscaffolder
+import l2tscaffolder
 
 setup(
     name='l2tscaffolder',
-    version=plasoscaffolder.__version__,
+    version=l2tscaffolder.__version__,
     description=(
         'Scaffolder project for l2t, helping to bootstrap l2t development.'),
     license='Apache License, Version 2.0',
@@ -26,7 +26,7 @@ setup(
     ],
     packages=find_packages(),
     include_package_data=True,
-    package_data={'plasoscaffolder.templates': ['*.jinja2'],'':['.style.yapf']},
+    package_data={'l2tscaffolder.templates': ['*.jinja2'],'':['.style.yapf']},
     install_requires=['Click>=6.7',
                       'setuptools>=35.0.2',
                       'jinja2>=2.9.6',

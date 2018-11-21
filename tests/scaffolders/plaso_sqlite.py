@@ -3,8 +3,8 @@
 """Tests for the plaso sqlite scaffolder."""
 import unittest
 
-from plasoscaffolder.lib import errors
-from plasoscaffolder.scaffolders import plaso_sqlite
+from l2tscaffolder.lib import errors
+from l2tscaffolder.scaffolders import plaso_sqlite
 
 
 class PlasoSQLiteScaffolderTest(unittest.TestCase):

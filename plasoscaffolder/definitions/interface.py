@@ -2,7 +2,7 @@
 """Interface defining how a project class looks like."""
 import abc
 
-from plasoscaffolder.lib import definitions
+from l2tscaffolder.lib import definitions
 
 class ScaffolderDefinition:
   """Scaffolder definition interface."""

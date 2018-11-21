@@ -4,7 +4,7 @@
 from typing import Iterator
 from typing import Type
 
-from plasoscaffolder.definitions import interface
+from l2tscaffolder.definitions import interface
 
 
 class DefinitionManager:

@@ -3,8 +3,8 @@
 """The l2t scaffolder tool."""
 import click
 
-from plasoscaffolder.frontend import cli_output_handler
-from plasoscaffolder.frontend import frontend
+from l2tscaffolder.frontend import cli_output_handler
+from l2tscaffolder.frontend import frontend
 
 
 @click.command()

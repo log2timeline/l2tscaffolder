@@ -4,7 +4,7 @@
 
 import unittest
 
-from plasoscaffolder.helpers import git
+from l2tscaffolder.helpers import git
 
 
 class GitHelperTest(unittest.TestCase):

@@ -3,7 +3,7 @@
 """Tests for the code formatter."""
 import unittest
 
-from plasoscaffolder.lib import code_formatter
+from l2tscaffolder.lib import code_formatter
 from tests.test_helper import path_helper
 
 

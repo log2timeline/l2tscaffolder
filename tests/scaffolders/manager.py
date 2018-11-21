@@ -3,8 +3,8 @@
 """Tests for the scaffolder manager."""
 import unittest
 
-from plasoscaffolder.scaffolders import interface
-from plasoscaffolder.scaffolders import manager
+from l2tscaffolder.scaffolders import interface
+from l2tscaffolder.scaffolders import manager
 
 
 class BaseScaffolderTest(interface.Scaffolder):

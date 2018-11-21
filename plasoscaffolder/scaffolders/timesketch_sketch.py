@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """Timesketch sketch analyzer scaffolder."""
 
-from plasoscaffolder.scaffolders import timesketch
-from plasoscaffolder.scaffolders import manager
+from l2tscaffolder.scaffolders import timesketch
+from l2tscaffolder.scaffolders import manager
 
 
 class TimesketchSketchScaffolder(timesketch.TimesketchBaseScaffolder):

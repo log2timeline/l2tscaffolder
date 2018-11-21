@@ -6,10 +6,10 @@ import os
 from typing import Iterator
 from typing import Type
 
-from plasoscaffolder.definitions import manager
-from plasoscaffolder.lib import errors
-from plasoscaffolder.lib import file_handler
-from plasoscaffolder.scaffolders import interface as scaffolder_interface
+from l2tscaffolder.definitions import manager
+from l2tscaffolder.lib import errors
+from l2tscaffolder.lib import file_handler
+from l2tscaffolder.scaffolders import interface as scaffolder_interface
 
 
 class ScaffolderEngine:
