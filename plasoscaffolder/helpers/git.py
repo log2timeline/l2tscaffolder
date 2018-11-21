@@ -4,6 +4,7 @@
 This file provides a class to assist with git operations.
 """
 import os
+import re
 
 from typing import Tuple
 
@@ -26,6 +27,54 @@ class GitHelper(cli.CLIHelper):
     super(GitHelper, self).__init__()
     self.project_path = project_path
     self._cwd = os.getcwd()
+
+  def AddFileToTrack(self, file_path: str):
+    """Add a file to those that are tracked by the git repo.
+
+    Args:
+      file_path (str): path to the file to be added to tracked
+          files by this git repo.
+
+    Raises:
+      errors.UnableToConfigure: when the tool is not able to add
+          newly added files to the git repo.
+    """
+    command = 'git add {0:s}'.format(file_path)
+    exit_code, output, error = self.RunCommand(command)
+    if exit_code != 0:
+      raise errors.UnableToConfigure((
+          'Unable to add files to git branch, output of "git add" '
+          'command is [{0:s}] with the error: {1:s}'.format(output, error)))
+
+  def HasBranch(self, branch_name: str) -> bool:
+    """Tests for the existence of a specific branch.
+
+    Args:
+      branch_name (str): the name of the branch to test for.
+
+    Returns:
+      bool: True if the branch exists.
+    """
+    command = 'git show-ref --verify --quiet refs/heads/"{0:s}"'.format(
+        branch_name)
+    exit_code, output, error = self.RunCommand(command)
+    if exit_code == 0:
+      return True
+
+    return False
+
+  def GenerateBranchName(self, module_name: str) -> str:
+    """Generates a git branch name.
+
+    Args:
+      module_name (str): module name to generate a git branch name from.
+
+    Returns:
+      str: git branch name.
+    """
+    branch_name = re.sub('(?<!^)(?=[A-Z])', '_', module_name)
+    branch_name = branch_name.lower()
+    return branch_name
 
   def GetActiveBranch(self) -> str:
     """Determines the active branch of the git project.
@@ -79,21 +128,3 @@ class GitHelper(cli.CLIHelper):
     exit_code, _, _ = self.RunCommand(command)
 
     return exit_code
-
-  def CreateFeatureBranch(self, branch: str):
-    """Creates a feature branch in the git project.
-
-    Arguments:
-      branch (str): the name of the git branch.
-
-    Raises:
-      errors.UnableToConfigure: when the tool is not able to create
-          the feature branch of the git project.
-    """
-    command = 'git checkout -b {0:s}'.format(branch)
-    exit_code, _, error = self.RunCommand(command)
-
-    if exit_code != 0:
-      raise errors.UnableToConfigure((
-          'Unable to create the feature branch, with error message '
-          '{0:s}').format(error))
