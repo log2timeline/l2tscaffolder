@@ -47,6 +47,20 @@ Also see:
 ### Requirements
 Python 3.6+, Python 2 is not supported.
 
+### Installation
+
+The simple mechanism is to use pip within a virtualenv setup.
+
+Setup
+[virtualenv](https://github.com/log2timeline/L2tScaffolder/wiki/Running-scaffolder-in-virtualenv).
+
+And then use pip3 inside the virtualenv:
+
+```
+$ pip3 install l2tscaffolder
+```
+
+
 ### Background
 The original tool was called PlasoScaffolder, which was written by
 [Claudia Saxer](https://github.com/ClaudiaSaxer) as part of her BSc and
