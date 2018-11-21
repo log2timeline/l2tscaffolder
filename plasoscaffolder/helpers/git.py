@@ -99,22 +99,20 @@ class GitHelper(cli.CLIHelper):
 
     return exit_code
 
-  def CreateFeatureBranch(self, branch: str = '', module_name: str = ''):
-    """Creates a feature branch in the git project if not exists.
+  def SwitchToBranchWithCreate(self, module_name: str):
+    """Switches the git branch using module name and creates on if needed.
 
-    This function takes either a branch name or a module name and converts
-    that into a branch name. It will then check to see if that branch already
-    exists, and if so, switch the active branch. If it does not exist, it will
-    create it and switch to it.
+    This function takes a module name and converts that into a branch name.
+    If the branch does exist within the git repository, the git branch will
+    be switched to it. If it doesn't a new feature branch will be created.
 
     Arguments:
-      branch (str): the name of the git branch to switch to or create.
-      module_name (str): the name of the module. If module_name is present
-          it will be used to construct the branch name, otherwise the branch
-          attribute will be used as the branch name.
+      module_name (str): the name of the module. This name will be used to
+          create a branch name and then switch to it.
 
     Returns:
-      str: the name of the created feature branch.
+      str: the name of the feature branch, either newly created or the
+          discovered one that already existed.
 
     Raises:
       errors.UnableToConfigure: when the tool is not able to create

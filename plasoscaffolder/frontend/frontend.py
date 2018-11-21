@@ -5,6 +5,7 @@ import os
 from typing import Dict
 from typing import List
 
+from plasoscaffolder.frontend import output_handler as handler
 from plasoscaffolder.helpers import git
 from plasoscaffolder.lib import engine
 from plasoscaffolder.lib import errors
@@ -18,8 +19,13 @@ from plasoscaffolder.scaffolders import manager as scaffolder_manager
 class ScaffolderFrontend:
   """A frontend implementation for the scaffolder project."""
 
-  def __init__(self, output_handler):
-    """Initialze the frontend."""
+  def __init__(self, output_handler: handler.BaseOutputHandler):
+    """Initialze the frontend.
+
+    Args:
+      output_handler (handler.BaseOutputHandler): the output handler used
+          for the frontend.
+    """
     self._git_helper = None
     self._output_handler = output_handler
 
@@ -178,7 +184,7 @@ class ScaffolderFrontend:
       project_path (str): path to the git project folder.
       module_name (str): name of the output module.
     """
-    branch_name = self._git_helper.CreateFeatureBranch(module_name=module_name)
+    branch_name = self._git_helper.SwitchToBranchWithCreate(module_name)
     self._output_handler.PrintOutput(
         'Created the feature branch: {0:s} inside {1:s}'.format(
             branch_name, project_path))
