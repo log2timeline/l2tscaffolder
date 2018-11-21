@@ -8,8 +8,6 @@ import unittest
 from unittest.mock import MagicMock
 import tempfile
 
-import timeout_decorator
-
 from plasoscaffolder.definitions import manager as definition_manager
 from plasoscaffolder.definitions import plaso
 from plasoscaffolder.frontend import frontend
@@ -199,7 +197,6 @@ class ScaffolderFrontendTest(unittest.TestCase):
     """Cleans up after running tests."""
     cls.root_directory.cleanup()
 
-  @timeout_decorator.timeout(20)
   def testFrontend(self):
     """Tests the frontend.
 
