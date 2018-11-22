@@ -9,17 +9,16 @@ from l2tscaffolder.lib import code_formatter
 class ParserMapper:
   """Mapping helper for scaffolders."""
 
-  def __init__(self, yapf_path: str='.style.yapf'):
-    """Initializes the mapping helper class.
+  _PATH_FORMATTER = '.style.yapf'
+  _PATH_TEMPLATE = 'templates'
 
-    Args:
-      yapf_path (str): relative path from the module's
-          root dir to the YAPF config for code formatting.
-    """
+  def __init__(self):
+    """Initializes the mapping helper class."""
     super(ParserMapper, self).__init__()
     self._template_path = ''
     self._template_environment = None
-    self._yapf_path = yapf_path
+    # TODO: Improve this, this is flaky.
+    self._tool_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
     self.formatter = None
 
   def _RemoveWhitespaceAtEndOfLine(self, template: str) -> str:
@@ -106,21 +105,17 @@ class ParserMapper:
 
   def SetDefaultPaths(self):
     """Sets both template and formatter path to a default path."""
-    # TODO: Improve this, this is flaky.
-    tool_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-
-    template_path = os.path.join(tool_path, 'templates')
-    self.SetTemplatePath(template_path)
-
-    formatter_path = os.path.join(tool_path, self._yapf_path)
-    self.SetFormatterPath(formatter_path)
+    self.SetTemplatePath(self._PATH_TEMPLATE)
+    self.SetFormatterPath(self._PATH_FORMATTER)
 
   def SetTemplatePath(self, template_path: str):
     """Sets the template path for the parser mapper.
 
     Args:
-      template_path (str): file path to the template.
+      template_path (str): file path to the template, relative
+          to the path to the tool.
     """
+    template_path = os.path.join(self._tool_path, template_path)
     self._template_path = template_path
     template_loader = jinja2.FileSystemLoader(self._template_path)
     # TODO: Check if autoescape can be set to True due to potential XSS issues.
@@ -131,6 +126,8 @@ class ParserMapper:
     """Sets up a code formatter object from a path to the formatter.
 
     Args:
-      formatter_path (str): the path to the formatter.
+      formatter_path (str): the path to the formatter, relative to the
+          path to the tool.
     """
+    formatter_path = os.path.join(self._tool_path, formatter_path)
     self.formatter = code_formatter.CodeFormatter(formatter_path)
