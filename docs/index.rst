@@ -16,7 +16,7 @@ Contents:
 .. toctree::
    :maxdepth: 3
 
-   sources/user/index
+   User Documentation <sources/user/index>
 
 .. toctree::
    :maxdepth: 3

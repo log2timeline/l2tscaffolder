@@ -19,6 +19,7 @@ import sys
 from sphinx.ext import apidoc
 
 from docutils import nodes, transforms
+from recommonmark.parser import CommonMarkParser
 from recommonmark.transform import AutoStructify
 
 sys.path.insert(0, os.path.abspath('..'))
@@ -63,6 +64,11 @@ napoleon_include_special_with_doc = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
+
+# Enable markdown parser.
+source_parsers = {
+    '.md': CommonMarkParser,
+}
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
