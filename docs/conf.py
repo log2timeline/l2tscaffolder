@@ -21,7 +21,7 @@ from docutils import nodes, transforms
 from recommonmark.transform import AutoStructify
 
 sys.path.insert(0, os.path.abspath('..'))
-import l2tcaffolder
+import l2tscaffolder
 
 
 # -- Project information -----------------------------------------------------
