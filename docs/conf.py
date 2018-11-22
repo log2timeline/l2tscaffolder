@@ -13,9 +13,10 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 import os
+import re
 import sys
 
-from sphinx import apidoc
+from sphinx.ext import apidoc
 
 from docutils import nodes, transforms
 from recommonmark.transform import AutoStructify
