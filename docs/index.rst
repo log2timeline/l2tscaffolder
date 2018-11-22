@@ -11,12 +11,17 @@ The project's code is available from https://github.com/log2timeline/L2tScaffold
 
 l2tScaffolder is licensed under the Apache license version 2.
 
-Contents: (missing ATM)
+Contents:
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 3
 
+   sources/user/index
+
+.. toctree::
+   :maxdepth: 3
+
+   API documentation <sources/api/l2tscaffolder>
 
 
 Indices and tables

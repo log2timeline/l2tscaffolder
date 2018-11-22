@@ -12,10 +12,16 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
-import l2tscaffolder
+import os
+import sys
+
+from sphinx import apidoc
+
+from docutils import nnodes, transforms
+from recommonmark.transform import AutoStructify
+
+sys.path.insert(0, os.path.abspath('..'))
+import l2tcaffolder
 
 
 # -- Project information -----------------------------------------------------
@@ -43,8 +49,16 @@ release = ''
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.coverage',
+    'sphinx.ext.napoleon',
     'sphinx.ext.viewcode',
 ]
+
+# Options for the Sphinx Napoleon extension, which reads google style
+# docstrings.
+napoleon_google_docstring = True
+napoleon_numpy_docstring = False
+napoleon_include_private_with_doc = False
+napoleon_include_special_with_doc = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -52,8 +66,7 @@ templates_path = ['_templates']
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
 #
-# source_suffix = ['.rst', '.md']
-source_suffix = '.rst'
+source_suffix = ['.rst', '.md']
 
 # The master toctree document.
 master_doc = 'index'
@@ -71,7 +84,7 @@ language = None
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = None
+pygments_style = 'sphinx'
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -179,3 +192,68 @@ epub_exclude_files = ['search.html']
 
 
 # -- Extension configuration -------------------------------------------------
+
+class ProcessLink(transforms.Transform):
+  """Transform definition to parse .md references to internal pages."""
+
+  default_priority = 1000
+
+  ANCHOR_REGEX = re.compile(
+      r'(?P<uri>[a-zA-Z0-9-./]+?).md#(?P<anchor>[a-zA-Z0-9-]+)')
+
+  def find_and_replace(self, node):
+    """Parses URIs containing .md and replaces them with their HTML page.
+
+    Args:
+        node(node): docutils node.
+
+    Returns:
+      node: docutils node.
+    """
+    if isinstance(node, nodes.reference) and 'refuri' in node:
+      reference_uri = node['refuri']
+      if reference_uri.endswith('.md'):
+        reference_uri = reference_uri[:-3] + '.html'
+        node['refuri'] = reference_uri
+      else:
+        match = self.ANCHOR_REGEX.match(reference_uri)
+        if match:
+          node['refuri'] = '{0:s}.html#{1:s}'.format(
+              match.group('uri'), match.group('anchor'))
+    return node
+
+  def traverse(self, node):
+    """Traverse the document tree rooted at node.
+
+    node(node): docutils node.
+    """
+    self.find_and_replace(node)
+
+    for c in node.children:
+      self.traverse(c)
+
+  # pylint: disable=arguments-differ
+  def apply(self):
+    """Applies transform on document tree."""
+    self.traverse(self.document)
+
+
+def RunSphinxAPIDoc(_):
+  """Runs sphinx-apidoc to auto-generate documentation."""
+  current_directory = os.path.abspath(os.path.dirname(__file__))
+  module = os.path.join(current_directory, '..', 'l2tscaffolder')
+  api_directory = os.path.join(current_directory, 'sources', 'api')
+  apidoc.main(['-o', api_directory, module, '--force'])
+
+
+def setup(app):
+  """Called at Sphinx initialization."""
+  # Triggers sphinx-apidoc to generate API documentation.
+  app.connect('builder-inited', RunSphinxAPIDoc)
+  app.add_config_value(
+      'recommonmark_config', {
+        'enable_auto_doc_ref': False},
+      True)
+
+  app.add_transform(AutoStructify)
+  app.add_transform(ProcessLink)
