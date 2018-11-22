@@ -4,7 +4,7 @@ from l2tscaffolder.scaffolders import turbinia
 from l2tscaffolder.scaffolders import manager
 
 
-class TurbiniaJobScaffolder(timesketch.TurbiniaBaseScaffolder):
+class TurbiniaJobScaffolder(turbinia.TurbiniaBaseScaffolder):
   """The Turbinia job plugin scaffolder."""
 
   # The name of the plugin or parser this scaffolder provides.
