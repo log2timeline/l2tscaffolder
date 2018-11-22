@@ -15,7 +15,7 @@
 # import os
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
-import plasoscaffolder
+import l2tscaffolder
 
 
 # -- Project information -----------------------------------------------------
@@ -26,7 +26,7 @@ author = 'Log2timeline Developers'
 
 
 # The short X.Y version
-version = plasoscaffolder.__version__
+version = l2tscaffolder.__version__
 # The full version, including alpha/beta/rc tags
 release = ''
 

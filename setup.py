@@ -9,6 +9,9 @@ from setuptools import setup
 
 import l2tscaffolder
 
+with open('README.md', 'r') as fh:
+  long_description = fh.read()
+
 setup(
     name='l2tscaffolder',
     version=l2tscaffolder.__version__,
@@ -16,6 +19,8 @@ setup(
         'Scaffolder project for l2t, helping to bootstrap l2t development.'),
     license='Apache License, Version 2.0',
     url='https://github.com/log2timeline/PlasoScaffolder',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     maintainer='Log2Timeline maintainers',
     maintainer_email='log2timeline-maintainers@googlegroups.com',
     classifiers=[
@@ -32,8 +37,8 @@ setup(
                       'jinja2>=2.9.6',
                       'colorama>=0.3.7',
                       'yapf==0.22',
-                      'timeout-decorator>=0.4.0',
                       'pexpect>=4.2.1'],
     scripts=glob.glob(os.path.join('tools', '[a-z]*.py')),
+    python_requires='>=3',
     keywords="plaso l2t scaffolder log2timeline turbinia timesketch",
 )

@@ -7,7 +7,7 @@ as plaso and timesketch.
 
 ATM there is no documentation to speak, but it will be provided shortly.
 
-The project's code is available from https://github.com/log2timeline/PlasoScaffolder
+The project's code is available from https://github.com/log2timeline/L2tScaffolder
 
 l2tScaffolder is licensed under the Apache license version 2.
 
