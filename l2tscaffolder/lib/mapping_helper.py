@@ -9,11 +9,17 @@ from l2tscaffolder.lib import code_formatter
 class ParserMapper:
   """Mapping helper for scaffolders."""
 
-  def __init__(self):
-    """Initializes the mapping helper class."""
+  def __init__(self, yapf_path: str='.style.yapf'):
+    """Initializes the mapping helper class.
+
+    Args:
+      yapf_path (str): relative path from the module's
+          root dir to the YAPF config for code formatting.
+    """
     super(ParserMapper, self).__init__()
     self._template_path = ''
     self._template_environment = None
+    self._yapf_path = yapf_path
     self.formatter = None
 
   def _RemoveWhitespaceAtEndOfLine(self, template: str) -> str:
@@ -106,7 +112,7 @@ class ParserMapper:
     template_path = os.path.join(tool_path, 'templates')
     self.SetTemplatePath(template_path)
 
-    formatter_path = os.path.join(tool_path, '.style.yapf')
+    formatter_path = os.path.join(tool_path, self._yapf_path)
     self.SetFormatterPath(formatter_path)
 
   def SetTemplatePath(self, template_path: str):

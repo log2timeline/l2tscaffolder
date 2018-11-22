@@ -26,7 +26,7 @@ setup(
     ],
     packages=find_packages(),
     include_package_data=True,
-    package_data={'l2tscaffolder.templates': ['*.jinja2'],'':['.style.yapf']},
+    package_data={'l2tscaffolder.templates': ['*.jinja2'],'':['*.yapf']},
     install_requires=['Click>=6.7',
                       'setuptools>=35.0.2',
                       'jinja2>=2.9.6',

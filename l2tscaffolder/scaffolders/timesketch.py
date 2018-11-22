@@ -42,7 +42,8 @@ class TimesketchBaseScaffolder(interface.Scaffolder):
     super(TimesketchBaseScaffolder, self).__init__()
     self._plugin_path = os.path.join('timesketch', 'lib', 'analyzers')
     self._plugin_test_path = os.path.join('timesketch', 'lib', 'analyzers')
-    self._mapping_helper = mapping_helper.ParserMapper()
+    self._mapping_helper = mapping_helper.ParserMapper(
+        yapf_path='.style.ts.yapf')
     self._mapping_helper.SetDefaultPaths()
 
     self.class_name = ''
