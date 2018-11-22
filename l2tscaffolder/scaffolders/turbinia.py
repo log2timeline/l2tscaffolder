@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Turbinia scaffolder that generates plugins for the tool."""
+import datetime
 import os
 import logging
 
@@ -30,7 +31,6 @@ class TurbiniaBaseScaffolder(interface.Scaffolder):
 
   # Filename of templates.
   TEMPLATE_PLUGIN_FILE = 'turbinia_job.jinja2'
-  TEMPLATE_PLUGIN_TEST = ''
 
   # Questions, a list that contains all the needed questions that the
   # user should be prompted about before the plugin or parser is created.
@@ -40,8 +40,7 @@ class TurbiniaBaseScaffolder(interface.Scaffolder):
   def __init__(self):
     """Initializes the Timesketch scaffolder."""
     super(TurbiniaBaseScaffolder, self).__init__()
-    self._plugin_path = os.path.join('timesketch', 'lib', 'analyzers')
-    self._plugin_test_path = os.path.join('timesketch', 'lib', 'analyzers')
+    self._plugin_path = os.path.join('turbinia', 'jobs')
     self._mapping_helper = mapping_helper.ParserMapper()
     self._mapping_helper.SetDefaultPaths()
 
@@ -51,11 +50,6 @@ class TurbiniaBaseScaffolder(interface.Scaffolder):
     """Generates the plugin file."""
     return self._mapping_helper.RenderTemplate(
         self.TEMPLATE_PLUGIN_FILE, self.GetJinjaContext())
-
-  def _GeneratePluginTest(self) -> str:
-    """Generates the plugin test file."""
-    return self._mapping_helper.RenderTemplate(
-        self.TEMPLATE_PLUGIN_TEST, self.GetJinjaContext())
 
   def GetFilesToCopy(self) -> Iterator[Tuple[str, str]]:
     """Return a list of files that need to be copied.
@@ -73,14 +67,16 @@ class TurbiniaBaseScaffolder(interface.Scaffolder):
         str: name of Jinja argument.
         object: Jinja argument value.
     """
-    context = super(TimesketchBaseScaffolder, self).GetJinjaContext()
+    context = super(TurbiniaBaseScaffolder, self).GetJinjaContext()
     context['class_name'] = self.class_name
     context['plugin_name'] = self._output_name
+    time_now = datetime.datetime.utcnow()
+    context['year'] = time_now.year
 
     return context
 
   def GenerateFiles(self) -> Iterator[Tuple[str, str]]:
-    """Generates all the files required for a Timesketch analyzer plugin.
+    """Generates all the files required for a Turbinia analyzer plugin.
 
     Yields:
       list[tuple]: containing:
@@ -99,16 +95,6 @@ class TurbiniaBaseScaffolder(interface.Scaffolder):
     except SyntaxError as exception:
       logging.error((
           'Syntax error while attempting to generate plugin, error '
-          'message: {0!s}').format(exception))
-
-    test_file_name = '{0:s}_test.py'.format(self._output_name)
-    test_path = os.path.join(self._plugin_test_path, test_file_name)
-    try:
-      test_content = self._GeneratePluginTest()
-      yield test_path, test_content
-    except SyntaxError as exception:
-      logging.error((
-          'Syntax error while attempting to generate plugin test, error '
           'message: {0!s}').format(exception))
 
     plugin_string = (
