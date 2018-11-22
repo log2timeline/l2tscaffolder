@@ -17,7 +17,7 @@ import sys
 
 from sphinx import apidoc
 
-from docutils import nnodes, transforms
+from docutils import nodes, transforms
 from recommonmark.transform import AutoStructify
 
 sys.path.insert(0, os.path.abspath('..'))
