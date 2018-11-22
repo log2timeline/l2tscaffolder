@@ -1,20 +1,19 @@
 # -*- coding: utf-8 -*-
-"""Timesketch index analyzer scaffolder."""
-from l2tscaffolder.scaffolders import timesketch
+"""Turbinia job scaffolder."""
+from l2tscaffolder.scaffolders import turbinia
 from l2tscaffolder.scaffolders import manager
 
 
-class TimesketchIndexScaffolder(timesketch.TimesketchBaseScaffolder):
-  """The Timesketch index analyzer plugin scaffolder."""
+class TurbiniaJobScaffolder(timesketch.TurbiniaBaseScaffolder):
+  """The Turbinia job plugin scaffolder."""
 
   # The name of the plugin or parser this scaffolder provides.
-  NAME = 'index_analyzer'
+  NAME = 'turbinia_job'
   DESCRIPTION = (
-      'Provides a scaffolder to generate a Timesketch index analyzer plugin.')
+      'Provides a scaffolder to generate a Turbinia job plugin.')
 
   # Filenames of templates.
-  TEMPLATE_PLUGIN_FILE = 'ts_index_analyzer.jinja2'
-  TEMPLATE_PLUGIN_TEST = 'ts_index_analyzer_test.jinja2'
+  TEMPLATE_PLUGIN_FILE = 'turbinia_job.jinja2'
 
 
-manager.ScaffolderManager.RegisterScaffolder(TimesketchIndexScaffolder)
+manager.ScaffolderManager.RegisterScaffolder(TurbiniaJobScaffolder)
