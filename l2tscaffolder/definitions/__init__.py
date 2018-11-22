@@ -3,3 +3,4 @@
 
 from l2tscaffolder.definitions import plaso
 from l2tscaffolder.definitions import timesketch
+from l2tscaffolder.definitions import turbinia
