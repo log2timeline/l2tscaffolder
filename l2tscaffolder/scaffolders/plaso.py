@@ -69,8 +69,7 @@ class PlasoBaseScaffolder(interface.Scaffolder):
     self._formatter_test_path = os.path.join('tests', 'formatters')
     self._parser_path = os.path.join('plaso', 'parsers')
     self._parser_test_path = os.path.join('tests', 'parsers')
-    self._mapping_helper = mapping_helper.ParserMapper()
-    self._mapping_helper.SetDefaultPaths()
+    self._mapping_helper = mapping_helper.MappingHelper()
 
     self.class_name = ''
     self.test_file = ''

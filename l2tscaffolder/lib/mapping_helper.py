@@ -6,15 +6,44 @@ import jinja2
 from l2tscaffolder.lib import code_formatter
 
 
-class ParserMapper:
+class MappingHelper:
   """Mapping helper for scaffolders."""
 
-  def __init__(self):
-    """Initializes the mapping helper class."""
-    super(ParserMapper, self).__init__()
-    self._template_path = ''
-    self._template_environment = None
-    self.formatter = None
+  _DEFAULT_PATH_FORMATTER = '.style.yapf'
+  _DEFAULT_PATH_TEMPLATE = 'templates'
+
+  def __init__(self, template_path: str='', formatter_path: str=''):
+    """Initializes the mapping helper class.
+
+    Args:
+        template_path (Optional[str]):  file path to the templates diretory,
+            relative to the path to the tool. If none provided will use the
+            default path.
+        formatter_path (Optional[str]):  file path of the formatter, relative
+            to the path to the tool. If none provided will use the default
+            path.
+    """
+    super(MappingHelper, self).__init__()
+    # TODO: Improve this, this is flaky.
+    self._tool_path = os.path.dirname(
+        os.path.dirname(os.path.realpath(__file__)))
+
+    if not template_path:
+      template_path = self._DEFAULT_PATH_TEMPLATE
+    # TODO: Check if the project has a YAPF config file and use that instead of
+    # falling back to a default one.
+    if not formatter_path:
+      formatter_path = self._DEFAULT_PATH_FORMATTER
+
+    full_template_path = os.path.join(self._tool_path, template_path)
+    self._template_path = full_template_path
+    template_loader = jinja2.FileSystemLoader(self._template_path)
+    # TODO: Check if autoescape can be set to True due to potential XSS issues.
+    self._template_environment = jinja2.Environment(
+        autoescape=False, loader=template_loader, trim_blocks=False)
+
+    full_formatter_path = os.path.join(self._tool_path, formatter_path)
+    self.formatter = code_formatter.CodeFormatter(full_formatter_path)
 
   def _RemoveWhitespaceAtEndOfLine(self, template: str) -> str:
     """Removes blanks at the end of lines.
@@ -97,34 +126,3 @@ class ParserMapper:
     formatted = self._RemoveWhitespaceAtEndOfLine(formatted)
 
     return formatted
-
-  def SetDefaultPaths(self):
-    """Sets both template and formatter path to a default path."""
-    # TODO: Improve this, this is flaky.
-    tool_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-
-    template_path = os.path.join(tool_path, 'templates')
-    self.SetTemplatePath(template_path)
-
-    formatter_path = os.path.join(tool_path, '.style.yapf')
-    self.SetFormatterPath(formatter_path)
-
-  def SetTemplatePath(self, template_path: str):
-    """Sets the template path for the parser mapper.
-
-    Args:
-      template_path (str): file path to the template.
-    """
-    self._template_path = template_path
-    template_loader = jinja2.FileSystemLoader(self._template_path)
-    # TODO: Check if autoescape can be set to True due to potential XSS issues.
-    self._template_environment = jinja2.Environment(
-        autoescape=False, loader=template_loader, trim_blocks=False)
-
-  def SetFormatterPath(self, formatter_path: str):
-    """Sets up a code formatter object from a path to the formatter.
-
-    Args:
-      formatter_path (str): the path to the formatter.
-    """
-    self.formatter = code_formatter.CodeFormatter(formatter_path)
