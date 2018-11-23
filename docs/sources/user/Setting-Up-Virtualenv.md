@@ -1,4 +1,4 @@
-# Setting up scaffolder in virtualenv
+# Setting up L2t scaffolder in a virtualenv
 
 For development purposes, l2t\_scaffolder can be installed using virtualenv
 (preferred method).
