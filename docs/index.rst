@@ -2,21 +2,26 @@ Welcome to l2tScaffolder's documentation!
 =========================================
 
 The l2t_scaffolder is a tool developed to speed up l2t development by
-automatating the generation of plugins and parsers in various tools, such
-as plaso and timesketch.
+automating the generation of plugins and parsers in various tools, such
+as Plaso and Timesketch.
 
-ATM there is no documentation to speak, but it will be provided shortly.
+At the moment there is no documentation to speak of, but it will be provided shortly.
 
 The project's code is available from https://github.com/log2timeline/L2tScaffolder
 
-l2tScaffolder is licensed under the Apache license version 2.
+L2tScaffolder is licensed under the Apache license version 2.
 
-Contents: (missing ATM)
+Contents:
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 3
 
+   User Documentation <sources/user/index>
+
+.. toctree::
+   :maxdepth: 3
+
+   API documentation <sources/api/l2tscaffolder>
 
 
 Indices and tables
