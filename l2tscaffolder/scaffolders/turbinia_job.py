@@ -14,6 +14,3 @@ class TurbiniaJobScaffolder(turbinia.TurbiniaBaseScaffolder):
 
   # Filenames of templates.
   TEMPLATE_PLUGIN_FILE = 'turbinia_job.jinja2'
-
-
-manager.ScaffolderManager.RegisterScaffolder(TurbiniaJobScaffolder)
