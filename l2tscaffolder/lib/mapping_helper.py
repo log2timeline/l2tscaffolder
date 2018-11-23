@@ -16,10 +16,10 @@ class MappingHelper:
     """Initializes the mapping helper class.
 
     Args:
-        template_path (str): optional file path to the templates diretory,
+        template_path (Optional[str]):  file path to the templates diretory,
             relative to the path to the tool. If none provided will use the
             default path.
-        formatter_path (str): optional file path of the formatter, relative
+        formatter_path (Optional[str]):  file path of the formatter, relative
             to the path to the tool. If none provided will use the default
             path.
     """
@@ -31,7 +31,7 @@ class MappingHelper:
     if not template_path:
       template_path = self._DEFAULT_PATH_TEMPLATE
     # TODO: Check if the project has a YAPF config file and use that instead of
-    # fallign back to a default one.
+    # falling back to a default one.
     if not formatter_path:
       formatter_path = self._DEFAULT_PATH_FORMATTER
 
