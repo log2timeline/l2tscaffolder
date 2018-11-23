@@ -18,7 +18,7 @@ class {{ class_name }}SketchPlugin(interface.BaseSketchAnalyzer):
             sketch_id: Sketch ID
         """
         self.index_name = index_name
-        super({{ class_name }}SketchPlugin, self).__init__(sketch_id, index_name)
+        super({{ class_name }}SketchPlugin, self).__init__(index_name, sketch_id)
 
     def run(self):
         """Entry point for the analyzer.
