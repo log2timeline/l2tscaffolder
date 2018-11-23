@@ -15,9 +15,8 @@ class MappingHelperTest(unittest.TestCase):
     yapf_path = path_helper.YapfStyleFilePath()
     self.plugin_name = 'the_one_and_only'
     self.file = 'test_template.jinja2'
-    self.helper = mapping_helper.ParserMapper()
-    self.helper.SetTemplatePath(self.template_path)
-    self.helper.SetFormatterPath(yapf_path)
+    self.helper = mapping_helper.MappingHelper(
+        formatter_path=yapf_path, template_path=self.template_path)
 
   def testRender(self):
     """Tests the render method."""

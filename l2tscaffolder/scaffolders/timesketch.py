@@ -42,11 +42,10 @@ class TimesketchBaseScaffolder(interface.Scaffolder):
     super(TimesketchBaseScaffolder, self).__init__()
     self._plugin_path = os.path.join('timesketch', 'lib', 'analyzers')
     self._plugin_test_path = os.path.join('timesketch', 'lib', 'analyzers')
-    self._mapping_helper = mapping_helper.ParserMapper()
-    self._mapping_helper.SetDefaultPaths()
     # Timesketch uses 4 spaces instead of 2, thus we need to set a different
     # formatter.
-    self._mapping_helper.SetFormatterPath('.style.ts.yapf')
+    self._mapping_helper = mapping_helper.MappingHelper(
+        formatter_path='.style.ts.yapf')
 
     self.class_name = ''
 
