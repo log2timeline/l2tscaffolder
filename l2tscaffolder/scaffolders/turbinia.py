@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Turbinia scaffolder that generates plugins for the tool."""
+"""Turbinia component scaffolder."""
 import datetime
 import os
 import logging
@@ -24,21 +24,16 @@ class TurbiniaBaseScaffolder(interface.Scaffolder):
   NAME = 'turbinia_base'
 
   # One liner describing what the scaffolder provides.
-  DESCRIPTION = 'This is a scaffolder for Turbinia plugins'
+  DESCRIPTION = 'This is a scaffolder for Turbinia components'
 
   # Define which project this particular scaffolder belongs to.
   PROJECT = definitions.DEFINITION_TURBINIA
 
   # Filename of templates.
-  TEMPLATE_PLUGIN_FILE = 'turbinia_job.jinja2'
-
-  # Questions, a list that contains all the needed questions that the
-  # user should be prompted about before the plugin or parser is created.
-  # Each element in the list should be of the named tuple question.
-  QUESTIONS = []
+  TEMPLATE_PLUGIN_FILE = None
 
   def __init__(self):
-    """Initializes the Timesketch scaffolder."""
+    """Initializes the Turbinia scaffolder."""
     super(TurbiniaBaseScaffolder, self).__init__()
     self._plugin_path = os.path.join('turbinia', 'jobs')
     self._mapping_helper = mapping_helper.MappingHelper()
@@ -75,7 +70,7 @@ class TurbiniaBaseScaffolder(interface.Scaffolder):
     return context
 
   def GenerateFiles(self) -> Iterator[Tuple[str, str]]:
-    """Generates all the files required for a Turbinia analyzer plugin.
+    """Generates all the files required for a Turbinia component.
 
     Yields:
       list[tuple]: containing:
