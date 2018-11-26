@@ -18,7 +18,7 @@ setup(
     description=(
         'Scaffolder project for l2t, helping to bootstrap l2t development.'),
     license='Apache License, Version 2.0',
-    url='https://github.com/log2timeline/PlasoScaffolder',
+    url='https://github.com/log2timeline/l2tscaffolder',
     long_description=long_description,
     long_description_content_type='text/markdown',
     maintainer='Log2Timeline maintainers',
