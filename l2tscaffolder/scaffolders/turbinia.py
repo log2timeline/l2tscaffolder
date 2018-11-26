@@ -88,7 +88,7 @@ class TurbiniaBaseScaffolder(interface.Scaffolder):
       yield plugin_path, plugin_content
     except SyntaxError as exception:
       logging.error((
-          'Syntax error while attempting to generate plugin, error '
+          'Syntax error while attempting to generate component, error '
           'message: {0!s}').format(exception))
 
     plugin_string = (
