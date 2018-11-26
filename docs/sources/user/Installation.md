@@ -32,13 +32,13 @@ $ pip3 install --upgrade l2tscaffolder
 First fetch the latest source code from github:
 
 ```
-$ git clone https://github.com/log2timeline/L2tScaffolder.git
+$ git clone https://github.com/log2timeline/l2tscaffolder.git
 ```
 
 Then install dependencies and compile and install the tool:
 
 ```
-$ cd L2tScaffolder
+$ cd l2tscaffolder
 $ pip3 install -r requirements.txt
 $ python3 setup.py build && python3 setup.py install
 ```

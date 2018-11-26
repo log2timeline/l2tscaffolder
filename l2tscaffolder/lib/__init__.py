@@ -1,2 +1,2 @@
 # -*- coding: utf-8 -*-
-"""Library code for PlasoScaffolder"""
+"""Library code for l2tscaffolder."""

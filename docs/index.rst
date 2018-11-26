@@ -1,4 +1,4 @@
-Welcome to l2tScaffolder's documentation!
+Welcome to l2tscaffolder's documentation!
 =========================================
 
 The l2t_scaffolder is a tool developed to speed up l2t development by
@@ -7,9 +7,9 @@ as Plaso and Timesketch.
 
 At the moment there is no documentation to speak of, but it will be provided shortly.
 
-The project's code is available from https://github.com/log2timeline/L2tScaffolder
+The project's code is available from https://github.com/log2timeline/l2tscaffolder
 
-L2tScaffolder is licensed under the Apache license version 2.
+l2tscaffolder is licensed under the Apache license version 2.
 
 Contents:
 

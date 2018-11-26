@@ -1,10 +1,10 @@
-# L2tScaffolder
-L2tScaffolder is a tool that provides scaffolders for various open source projects. It can be used to bootstrap plugin or parser generation for tools like plaso, to make development work easier.
+# l2tscaffolder
+l2tscaffolder is a tool that provides scaffolders for various open source projects. It can be used to bootstrap plugin or parser generation for tools like plaso, to make development work easier.
 
 ### Project status
 [Travis-CI](https://travis-ci.org/) | [Codecov](https://codecov.io/)
 --- | ---
-[![Build Status](https://travis-ci.org/log2timeline/PlasoScaffolder.svg?branch=master)](https://travis-ci.org/log2timeline/PlasoScaffolder) | [![codecov](https://codecov.io/gh/log2timeline/PlasoScaffolder/branch/master/graph/badge.svg)](https://codecov.io/gh/log2timeline/PlasoScaffolder)
+[![Build Status](https://travis-ci.org/log2timeline/l2tscaffolder.svg?branch=master)](https://travis-ci.org/log2timeline/l2tscaffolder) | [![codecov](https://codecov.io/gh/log2timeline/l2tscaffolder/branch/master/graph/badge.svg)](https://codecov.io/gh/log2timeline/l2tscaffolder)
 
 ### Documentation
 
@@ -52,7 +52,7 @@ Python 3.6+, Python 2 is not supported.
 The simple mechanism is to use pip within a virtualenv setup.
 
 Setup
-[virtualenv](https://github.com/log2timeline/L2tScaffolder/wiki/Running-scaffolder-in-virtualenv).
+[virtualenv](https://github.com/log2timeline/l2tscaffolder/wiki/Running-scaffolder-in-virtualenv).
 
 And then use pip3 inside the virtualenv:
 
@@ -66,7 +66,7 @@ The original tool was called PlasoScaffolder, which was written by
 [Claudia Saxer](https://github.com/ClaudiaSaxer) as part of her BSc and
 integrated into the log2timeline organization for purpose of maintenance.
 
-L2tScaffolder is a rewrite of the original PlasoScaffolder tool, reusing parts
+l2tscaffolder is a rewrite of the original PlasoScaffolder tool, reusing parts
 of it, and rewriting other parts to make the tool easier to extend to other
 open source projects and scaffolders, the original tool was written for plaso
 and only supported SQLite plugins.
