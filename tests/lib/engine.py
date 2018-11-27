@@ -26,6 +26,9 @@ class AwesomeScaffolder(scaffolder_interface.Scaffolder):
     self.test2 = ''
     self.test3 = ''
 
+  def AddEntriesToInitFiles(self):
+    return iter(())
+
   def GetJinjaContext(self):
     """Returns a dict that can be used as a context for Jinja2 templates."""
     context = super(AwesomeScaffolder, self).GetJinjaContext()

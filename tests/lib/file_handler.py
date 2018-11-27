@@ -14,6 +14,7 @@ class FileHandlerTest(unittest.TestCase):
   name = "__testfile"
   suffix = "py"
   file = '{0:s}.{1:s}'.format(name, suffix)
+  maxDiff = None
 
   def testCreateFolder(self):
     """Tests if the creation of a folder works."""
@@ -29,9 +30,8 @@ class FileHandlerTest(unittest.TestCase):
     """Tests if the construction of the folder path works."""
     with tempfile.TemporaryDirectory() as directory:
       new_path = os.path.join(directory, "temp")
-      path = file_handler.FileHandler.CreateFilePath(new_path,
-                                                     self.name,
-                                                     self.suffix)
+      path = file_handler.FileHandler.CreateFilePath(
+          new_path, self.name, self.suffix)
       self.assertEqual(path, os.path.join(new_path, self.file))
 
   def testCreateFile(self):
@@ -153,6 +153,34 @@ class FileHandlerTest(unittest.TestCase):
         actual = f.read()
 
     self.assertEqual(expected, actual)
+
+  def testAddImportToInit(self):
+    """Tests adding a line to an init file."""
+    test_path = os.path.join(os.path.dirname(
+        os.path.dirname(os.path.dirname(__file__))), 'test_data')
+    test_file = os.path.join(test_path, 'test_init.py')
+
+    with open(test_file, 'r') as fh:
+      test_file_content = fh.read()
+
+    new_import = 'from secret.project.parsers import foobar\n'
+
+    temp_file = tempfile.NamedTemporaryFile()
+    with open(temp_file.name, 'w') as fh:
+      fh.write(test_file_content)
+
+    handler = file_handler.FileHandler()
+    handler.AddImportToInit(temp_file.name, new_import)
+
+    with open(temp_file.name, 'r') as fh:
+      content = fh.read()
+    os.remove(temp_file.name)
+
+    expected_file_path = os.path.join(test_path, 'test_init_fixed.py')
+    with open(expected_file_path, 'r') as fh:
+      expected_content = fh.read()
+
+    self.assertEqual(content, expected_content)
 
 
 if __name__ == '__main__':

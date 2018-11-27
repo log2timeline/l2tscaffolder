@@ -10,8 +10,7 @@ from l2tscaffolder.lib import errors
 class FileHandler:
   """Handles the creation of files."""
 
-  @classmethod
-  def AddImportToInit(cls, path: str, entry: str):
+  def AddImportToInit(self, path: str, entry: str):
     """Adds an import into an init file in the correct order.
 
     Args:

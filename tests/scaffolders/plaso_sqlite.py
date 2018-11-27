@@ -71,17 +71,21 @@ class PlasoSQLiteScaffolderTest(unittest.TestCase):
     expected_files = frozenset([
         'plaso/formatters/testing.py', 'tests/formatters/testing.py',
         'plaso/parsers/sqlite_plugins/testing.py',
-        'tests/parsers/sqlite_plugins/testing.py',
-        'plaso/formatters/__init__.py',
-        'plaso/parsers/sqlite_plugins/__init__.py'])
+        'tests/parsers/sqlite_plugins/testing.py'])
     self.assertEqual(set(files_generated.keys()), expected_files)
 
+    expected_init_files = frozenset([
+        'plaso/formatters/__init__.py',
+        'plaso/parsers/sqlite_plugins/__init__.py'])
+    init_generated = dict(scaffolder.AddEntriesToInitFiles())
+    self.assertEqual(set(init_generated.keys()), expected_init_files)
+
     expected_parser_init_addition = (
-        '# TODO: put in alphabetical order.\nfrom '
-        'plaso.parsers.sqlite_plugins import testing')
+        'from '
+        'plaso.parsers.sqlite_plugins import testing\n')
     self.assertEqual(
         expected_parser_init_addition,
-        files_generated['plaso/parsers/sqlite_plugins/__init__.py'])
+        init_generated['plaso/parsers/sqlite_plugins/__init__.py'])
 
     with open('test_data/plaso_testing_sqlite_plugin.py', 'r') as fh:
       expected_parser_content = fh.read()
