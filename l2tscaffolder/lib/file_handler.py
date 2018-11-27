@@ -11,6 +11,34 @@ class FileHandler:
   """Handles the creation of files."""
 
   @classmethod
+  def AddImportToInit(cls, path: str, entry: str):
+    """Adds an import into an init file in the correct order.
+
+    Args:
+      path (str): path to the __init__ file.
+      entry (str): the import statement.
+    """
+    if not os.path.isfile(path):
+      return
+
+    lines = []
+    with open(path, 'r') as file_object:
+      lines = file_object.readlines()
+
+    line_index = 0
+    for index, line in enumerate(lines):
+      if not line.startswith('from '):
+        continue
+      if line > entry:
+        line_index = index
+        break
+    lines.insert(line_index, entry)
+
+    with open(path, 'w') as file_object:
+      for line in lines:
+        file_object.write(line)
+
+  @classmethod
   def CreateFilePath(cls, path: str, name: str, extension: str) -> str:
     """Creates the file path from the directory path, filename and suffix.
 

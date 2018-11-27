@@ -75,6 +75,11 @@ class ScaffolderEngine:
       full_path = os.path.join(self._definition_root_path, file_path)
       yield self._file_handler.AddContent(full_path, content)
 
+    for file_path, content in self._scaffolder.AddEntriesToInitFiles():
+      full_path = os.path.join(self._definition_root_path, file_path)
+      self._file_handler.AddImportToInit(full_path, content)
+      yield full_path
+
   def SetModuleName(self, module_name: str):
     """Sets the module name as chosen by the user.
 
