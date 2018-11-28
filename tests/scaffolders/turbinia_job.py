@@ -6,14 +6,14 @@ import unittest
 from l2tscaffolder.scaffolders import turbinia_job
 
 
-class TurbiniaJobScaffolderTest(unittest.TestCase):
+class TurbiniaJobTaskScaffolderTest(unittest.TestCase):
   """Test class for the Turbinia job scaffolder."""
 
   maxDiff = None
 
-  def testTurbiniaJobScaffolder(self):
+  def testTurbiniaJobTaskScaffolder(self):
     """Test the Turbinia job scaffolder."""
-    scaffolder = turbinia_job.TurbiniaJobScaffolder()
+    scaffolder = turbinia_job.TurbiniaJobTaskScaffolder()
     scaffolder.SetOutputName('secret_processing')
 
     file_copy_paths = [x for _, x in scaffolder.GetFilesToCopy()]
@@ -23,7 +23,9 @@ class TurbiniaJobScaffolderTest(unittest.TestCase):
 
     expected_files = frozenset([
         'turbinia/jobs/secret_processing.py',
-        'turbinia/jobs/__init__.py'])
+        'turbinia/workers/secret_processing.py',
+        'turbinia/jobs/__init__.py',
+        'turbinia/workers/__init__.py'])
     self.assertEqual(set(files_generated.keys()), expected_files)
 
     expected_parser_init_addition = (

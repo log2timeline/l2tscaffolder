@@ -20,8 +20,7 @@ from __future__ import unicode_literals
 # from turbinia.evidence import FilteredTextFile
 from turbinia.jobs import interface
 from turbinia.jobs import manager
-
-# TODO: if needed import parts from turbinia.workers.
+from turbinia.workers.secret_processing import SecretProcessingTask
 
 
 class SecretProcessingJob(interface.TurbiniaJob):
@@ -44,7 +43,7 @@ class SecretProcessingJob(interface.TurbiniaJob):
         A list of tasks to schedule.
     """
     # TODO: Fill in the tasks.
-    tasks = []
+    tasks = [SecretProcessingTask() for _ in evidence]
     return tasks
 
 

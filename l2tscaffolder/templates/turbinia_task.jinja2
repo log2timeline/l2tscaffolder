@@ -12,39 +12,38 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Job to execute {{ plugin_name|lower|replace('_',' ')}} task."""
+"""Task to execute {{ plugin_name|lower|replace('_',' ')}}."""
 
 from __future__ import unicode_literals
 
+import os
+
 # TODO: import from turbinia.evidence the needed files, eg:
 # from turbinia.evidence import FilteredTextFile
-from turbinia.jobs import interface
-from turbinia.jobs import manager
-from turbinia.workers.{{ plugin_name }} import {{ class_name }}Task
+from turbinia.workers import TurbiniaTask
 
 
-class {{ class_name }}Job(interface.TurbiniaJob):
-  """Need to add some description here."""
+class {{ class_name }}Task(TurbiniaTask):
+  """Class for {{ plugin_name }}."""
 
-  # The types of evidence that this Job will process
-  # TODO: Fill this out.
-  evidence_input = []
-  evidence_output = []
-
-  NAME = '{{ class_name }}Job'
-
-  def create_tasks(self, evidence):
-    """Create task.
+  def run(self, evidence, result):
+    """TODO: Add docstring.
 
     Args:
-      evidence: List of evidence object to process
+        evidence (Evidence object):  The evidence we will process
+        result (TurbiniaTaskResult): The object to place task results into.
 
     Returns:
-        A list of tasks to schedule.
+        TurbiniaTaskResult object.
     """
-    # TODO: Fill in the tasks.
-    tasks = [{{ class_name}}Task() for _ in evidence]
-    return tasks
+    # TODO: Fill in the output evidence.
+    output_evidence = None
 
+    # TODO: Fill in the command.
+    cmd = ''
 
-manager.JobsManager.RegisterJob({{ class_name }}Job)
+    result.log('Running [{0:s}]'.format(cmd))
+    self.execute(
+        cmd, result, new_evidence=[output_evidence], close=True, shell=True)
+
+    return result
