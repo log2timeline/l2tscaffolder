@@ -22,17 +22,14 @@ class TurbiniaJobTaskScaffolderTest(unittest.TestCase):
 
     expected_files = frozenset([
         'turbinia/jobs/secret_processing.py',
-        'turbinia/workers/secret_processing.py',
-        'turbinia/jobs/__init__.py',
-        'turbinia/workers/__init__.py'])
+        'turbinia/workers/secret_processing.py'])
     self.assertEqual(set(files_generated.keys()), expected_files)
 
-    expected_parser_init_addition = (
-        '# TODO: put in alphabetical order.\nfrom '
-        'turbinia.jobs import secret_processing')
-    self.assertEqual(
-        expected_parser_init_addition,
-        files_generated['turbinia/jobs/__init__.py'])
+    expected_init_files = frozenset([
+        'turbinia/jobs/__init__.py',
+        'turbinia/workers/__init__.py'])
+    init_generated = dict(scaffolder.GetInitFileChanges())
+    self.assertEqual(set(init_generated.keys()), expected_init_files)
 
     with open('test_data/turbinia_job_output.py', 'r') as fh:
       expected_parser_content = fh.read()
