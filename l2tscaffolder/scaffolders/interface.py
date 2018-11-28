@@ -117,14 +117,11 @@ class Scaffolder:
     self._output_name = ''
 
   @abc.abstractmethod
-  def AddEntriesToInitFiles(self) -> Iterator[Tuple[str, str]]:
-    """Returns a list of init files that were modified.
-
-    Adds an entry into the import section of an __init__.py file
-    in the correct alphabetical order.
+  def GetInitFileChanges(self) -> Iterator[Tuple[str, str]]:
+    """Generate a list of init files that need changing and the changes to them.
 
     Yields:
-      tuple (str, str): file name of source and destination.
+      tuple (str, str): path to the init file and the entry to add to it.
     """
 
   def GetJinjaContext(self) -> Dict[str, object]:

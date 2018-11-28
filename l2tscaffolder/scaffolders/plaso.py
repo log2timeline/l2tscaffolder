@@ -95,14 +95,11 @@ class PlasoBaseScaffolder(interface.Scaffolder):
     return self._mapping_helper.RenderTemplate(
         self.TEMPLATE_PARSER_TEST, self.GetJinjaContext())
 
-  def AddEntriesToInitFiles(self) -> Iterator[Tuple[str, str]]:
-    """Returns a list of init files that were modified.
-
-    Adds an entry into the import section of an __init__.py file
-    in the correct alphabetical order.
+  def GetInitFileChanges(self) -> Iterator[Tuple[str, str]]:
+    """Generate a list of init files that need changing and the changes to them.
 
     Yields:
-      tuple (str, str): file name of source and destination.
+      Tuple[str, str]: path to the init file and the entry to add to it.
     """
     formatter_string = 'from plaso.formatters import {0:s}\n'.format(
         self._output_name)
@@ -110,7 +107,7 @@ class PlasoBaseScaffolder(interface.Scaffolder):
     yield formatter_init_path, formatter_string
 
     parser_string = 'from {0:s} import {1:s}\n'.format(
-            self._parser_path.replace(os.sep, '.'), self._output_name)
+        self._parser_path.replace(os.sep, '.'), self._output_name)
     parser_init_path = os.path.join(self._parser_path, '__init__.py')
     yield parser_init_path, parser_string
 

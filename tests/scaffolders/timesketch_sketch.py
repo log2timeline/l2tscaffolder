@@ -28,7 +28,7 @@ class TimesketchSketchScaffolderTest(unittest.TestCase):
 
     expected_init_files = frozenset([
         'timesketch/lib/analyzers/__init__.py'])
-    init_generated = dict(scaffolder.AddEntriesToInitFiles())
+    init_generated = dict(scaffolder.GetInitFileChanges())
     self.assertEqual(set(init_generated.keys()), expected_init_files)
 
     expected_parser_init_addition = (

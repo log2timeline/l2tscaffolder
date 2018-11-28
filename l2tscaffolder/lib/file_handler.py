@@ -20,7 +20,6 @@ class FileHandler:
     if not os.path.isfile(path):
       return
 
-    lines = []
     with open(path, 'r') as file_object:
       lines = file_object.readlines()
 
