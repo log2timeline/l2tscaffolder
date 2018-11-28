@@ -64,12 +64,6 @@ class TurbiniaBaseScaffolder(interface.Scaffolder):
     plugin_init_path = os.path.join(self._plugin_path, '__init__.py')
     yield plugin_init_path, plugin_string
 
-    task_path = self._task_path.replace(os.sep, '.')
-    task_string = 'from {0:s} import {1:s}\n'.format(
-        task_path, self._output_name)
-    task_init_path = os.path.join(self._task_path, '__init__.py')
-    yield task_init_path, task_string
-
   def GetFilesToCopy(self) -> Iterator[Tuple[str, str]]:
     """Return a list of files that need to be copied.
 

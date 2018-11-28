@@ -26,8 +26,7 @@ class TurbiniaJobTaskScaffolderTest(unittest.TestCase):
     self.assertEqual(set(files_generated.keys()), expected_files)
 
     expected_init_files = frozenset([
-        'turbinia/jobs/__init__.py',
-        'turbinia/workers/__init__.py'])
+        'turbinia/jobs/__init__.py'])
     init_generated = dict(scaffolder.GetInitFileChanges())
     self.assertEqual(set(init_generated.keys()), expected_init_files)
 
