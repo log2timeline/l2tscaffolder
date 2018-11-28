@@ -4,8 +4,8 @@ from l2tscaffolder.scaffolders import turbinia
 from l2tscaffolder.scaffolders import manager
 
 
-class TurbiniaJobScaffolder(turbinia.TurbiniaBaseScaffolder):
-  """The Turbinia job plugin scaffolder."""
+class TurbiniaJobTaskScaffolder(turbinia.TurbiniaBaseScaffolder):
+  """The Turbinia job and task plugin scaffolder."""
 
   # The name of the plugin or parser this scaffolder provides.
   NAME = 'turbinia_job'
@@ -13,7 +13,8 @@ class TurbiniaJobScaffolder(turbinia.TurbiniaBaseScaffolder):
       'Provides a scaffolder to generate a Turbinia job plugin.')
 
   # Filenames of templates.
-  TEMPLATE_PLUGIN_FILE = 'turbinia_job.jinja2'
+  TEMPLATE_JOB_FILE = 'turbinia_job.jinja2'
+  TEMPLATE_TASK_FILE = 'turbinia_task.jinja2'
 
 
-manager.ScaffolderManager.RegisterScaffolder(TurbiniaJobScaffolder)
+manager.ScaffolderManager.RegisterScaffolder(TurbiniaJobTaskScaffolder)

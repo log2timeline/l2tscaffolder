@@ -30,20 +30,27 @@ class TurbiniaBaseScaffolder(interface.Scaffolder):
   PROJECT = definitions.DEFINITION_TURBINIA
 
   # Filename of templates.
-  TEMPLATE_PLUGIN_FILE = None
+  TEMPLATE_JOB_FILE = None
+  TEMPLATE_TASK_FILE = None
 
   def __init__(self):
     """Initializes the Turbinia scaffolder."""
     super(TurbiniaBaseScaffolder, self).__init__()
     self._plugin_path = os.path.join('turbinia', 'jobs')
+    self._task_path = os.path.join('turbinia', 'workers')
     self._mapping_helper = mapping_helper.MappingHelper()
 
     self.class_name = ''
 
-  def _GeneratePlugin(self) -> str:
-    """Generates the plugin file."""
+  def _GenerateJobFile(self) -> str:
+    """Generates the job plugin file."""
     return self._mapping_helper.RenderTemplate(
-        self.TEMPLATE_PLUGIN_FILE, self.GetJinjaContext())
+        self.TEMPLATE_JOB_FILE, self.GetJinjaContext())
+
+  def _GenerateTaskFile(self) -> str:
+    """Generates the task plugin file."""
+    return self._mapping_helper.RenderTemplate(
+        self.TEMPLATE_TASK_FILE, self.GetJinjaContext())
 
   def GetFilesToCopy(self) -> Iterator[Tuple[str, str]]:
     """Return a list of files that need to be copied.
@@ -84,8 +91,17 @@ class TurbiniaBaseScaffolder(interface.Scaffolder):
 
     try:
       plugin_path = os.path.join(self._plugin_path, plugin_name)
-      plugin_content = self._GeneratePlugin()
+      plugin_content = self._GenerateJobFile()
       yield plugin_path, plugin_content
+    except SyntaxError as exception:
+      logging.error((
+          'Syntax error while attempting to generate component, error '
+          'message: {0!s}').format(exception))
+
+    try:
+      task_path = os.path.join(self._task_path, plugin_name)
+      task_content = self._GenerateTaskFile()
+      yield task_path, task_content
     except SyntaxError as exception:
       logging.error((
           'Syntax error while attempting to generate component, error '
@@ -96,3 +112,9 @@ class TurbiniaBaseScaffolder(interface.Scaffolder):
             self._plugin_path.replace(os.sep, '.'), self._output_name)
     plugin_init_path = os.path.join(self._plugin_path, '__init__.py')
     yield plugin_init_path, plugin_string
+
+    task_string = (
+        '# TODO: put in alphabetical order.\nfrom {0:s} import {1:s}').format(
+            self._task_path.replace(os.sep, '.'), self._output_name)
+    task_init_path = os.path.join(self._task_path, '__init__.py')
+    yield task_init_path, task_string
