@@ -95,6 +95,22 @@ class PlasoBaseScaffolder(interface.Scaffolder):
     return self._mapping_helper.RenderTemplate(
         self.TEMPLATE_PARSER_TEST, self.GetJinjaContext())
 
+  def GetInitFileChanges(self) -> Iterator[Tuple[str, str]]:
+    """Generate a list of init files that need changing and the changes to them.
+
+    Yields:
+      Tuple[str, str]: path to the init file and the entry to add to it.
+    """
+    formatter_string = 'from plaso.formatters import {0:s}\n'.format(
+        self._output_name)
+    formatter_init_path = os.path.join(self._formatter_path, '__init__.py')
+    yield formatter_init_path, formatter_string
+
+    parser_string = 'from {0:s} import {1:s}\n'.format(
+        self._parser_path.replace(os.sep, '.'), self._output_name)
+    parser_init_path = os.path.join(self._parser_path, '__init__.py')
+    yield parser_init_path, parser_string
+
   def GetJinjaContext(self) -> Dict[str, object]:
     """Returns a dict that can be used as a context for Jinja2 templates.
 
@@ -172,18 +188,6 @@ class PlasoBaseScaffolder(interface.Scaffolder):
       logging.error((
           'Syntax error while attempting to generate formatter test, error '
           'message: {0!s}').format(exception))
-
-    formatter_string = (
-        '# TODO: put in alphabetical order.\nfrom plaso.formatters import'
-        '{0:s}').format(self._output_name)
-    formatter_init_path = os.path.join(self._formatter_path, '__init__.py')
-    yield formatter_init_path, formatter_string
-
-    parser_string = (
-        '# TODO: put in alphabetical order.\nfrom {0:s} import {1:s}').format(
-            self._parser_path.replace(os.sep, '.'), self._output_name)
-    parser_init_path = os.path.join(self._parser_path, '__init__.py')
-    yield parser_init_path, parser_string
 
   # pylint raises issues with OSError being raised and not documented, but it is
   # not raised.

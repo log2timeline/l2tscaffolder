@@ -23,16 +23,19 @@ class TimesketchIndexScaffolderTest(unittest.TestCase):
 
     expected_files = frozenset([
         'timesketch/lib/analyzers/testing.py',
-        'timesketch/lib/analyzers/testing_test.py',
-        'timesketch/lib/analyzers/__init__.py'])
+        'timesketch/lib/analyzers/testing_test.py'])
     self.assertEqual(set(files_generated.keys()), expected_files)
 
+    expected_init_files = frozenset([
+        'timesketch/lib/analyzers/__init__.py'])
+    init_generated = dict(scaffolder.GetInitFileChanges())
+    self.assertEqual(set(init_generated.keys()), expected_init_files)
+
     expected_parser_init_addition = (
-        '# TODO: put in alphabetical order.\nfrom '
-        'timesketch.lib.analyzers import testing')
+        'from timesketch.lib.analyzers import testing\n')
     self.assertEqual(
         expected_parser_init_addition,
-        files_generated['timesketch/lib/analyzers/__init__.py'])
+        init_generated['timesketch/lib/analyzers/__init__.py'])
 
     with open('test_data/timesketch_testing_plugin.py', 'r') as fh:
       expected_parser_content = fh.read()

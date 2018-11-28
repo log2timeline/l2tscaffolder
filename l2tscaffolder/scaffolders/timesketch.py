@@ -59,6 +59,18 @@ class TimesketchBaseScaffolder(interface.Scaffolder):
     return self._mapping_helper.RenderTemplate(
         self.TEMPLATE_PLUGIN_TEST, self.GetJinjaContext())
 
+  def GetInitFileChanges(self) -> Iterator[Tuple[str, str]]:
+    """Generate a list of init files that need changing and the changes to them.
+
+    Yields:
+      Tuple[str, str]: path to the init file and the entry to add to it.
+    """
+    plugin_path = self._plugin_path.replace(os.sep, '.')
+    plugin_string = 'from {0:s} import {1:s}\n'.format(
+        plugin_path, self._output_name)
+    plugin_init_path = os.path.join(self._plugin_path, '__init__.py')
+    yield plugin_init_path, plugin_string
+
   def GetFilesToCopy(self) -> Iterator[Tuple[str, str]]:
     """Return a list of files that need to be copied.
 
@@ -112,9 +124,3 @@ class TimesketchBaseScaffolder(interface.Scaffolder):
       logging.error((
           'Syntax error while attempting to generate plugin test, error '
           'message: {0!s}').format(exception))
-
-    plugin_string = (
-        '# TODO: put in alphabetical order.\nfrom {0:s} import {1:s}').format(
-            self._plugin_path.replace(os.sep, '.'), self._output_name)
-    plugin_init_path = os.path.join(self._plugin_path, '__init__.py')
-    yield plugin_init_path, plugin_string

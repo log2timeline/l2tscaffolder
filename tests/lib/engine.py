@@ -26,6 +26,14 @@ class AwesomeScaffolder(scaffolder_interface.Scaffolder):
     self.test2 = ''
     self.test3 = ''
 
+  def GetInitFileChanges(self):
+    """Generate a list of init files that need changing and the changes to them.
+
+    Yields:
+      tuple(str, str): path to the init file and the entry to add to it.
+    """
+    return iter(())
+
   def GetJinjaContext(self):
     """Returns a dict that can be used as a context for Jinja2 templates."""
     context = super(AwesomeScaffolder, self).GetJinjaContext()

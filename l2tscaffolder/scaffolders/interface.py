@@ -116,6 +116,14 @@ class Scaffolder:
     super(Scaffolder, self).__init__()
     self._output_name = ''
 
+  @abc.abstractmethod
+  def GetInitFileChanges(self) -> Iterator[Tuple[str, str]]:
+    """Generate a list of init files that need changing and the changes to them.
+
+    Yields:
+      tuple (str, str): path to the init file and the entry to add to it.
+    """
+
   def GetJinjaContext(self) -> Dict[str, object]:
     """Returns a dict that can be used as a context for Jinja2 templates.
 
