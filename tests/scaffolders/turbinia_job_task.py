@@ -1,19 +1,18 @@
-# !/usr/bin/python
 # -*- coding: utf-8 -*-
-"""Tests for the Turbinia job scaffolder."""
+"""Tests for the Turbinia job and task scaffolder."""
 import unittest
 
-from l2tscaffolder.scaffolders import turbinia_job
+from l2tscaffolder.scaffolders import turbinia_job_task
 
 
 class TurbiniaJobTaskScaffolderTest(unittest.TestCase):
-  """Test class for the Turbinia job scaffolder."""
+  """Test class for the Turbinia job and task scaffolder."""
 
   maxDiff = None
 
   def testTurbiniaJobTaskScaffolder(self):
-    """Test the Turbinia job scaffolder."""
-    scaffolder = turbinia_job.TurbiniaJobTaskScaffolder()
+    """Test the Turbinia job and task scaffolder."""
+    scaffolder = turbinia_job_task.TurbiniaJobTaskScaffolder()
     scaffolder.SetOutputName('secret_processing')
 
     file_copy_paths = [x for _, x in scaffolder.GetFilesToCopy()]
