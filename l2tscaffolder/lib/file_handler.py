@@ -31,7 +31,11 @@ class FileHandler:
       if line > entry:
         line_index = index
         break
-    lines.insert(line_index, entry)
+
+    if line_index:
+      lines.insert(line_index, entry)
+    else:
+      lines.append(entry)
 
     with open(path, 'w') as file_object:
       for line in lines:
