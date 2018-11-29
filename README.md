@@ -2,9 +2,9 @@
 l2tscaffolder is a tool that provides scaffolders for various open source projects. It can be used to bootstrap plugin or parser generation for tools like plaso, to make development work easier.
 
 ### Project status
-[Travis-CI](https://travis-ci.org/) | [Codecov](https://codecov.io/)
---- | ---
-[![Build Status](https://travis-ci.org/log2timeline/l2tscaffolder.svg?branch=master)](https://travis-ci.org/log2timeline/l2tscaffolder) | [![codecov](https://codecov.io/gh/log2timeline/l2tscaffolder/branch/master/graph/badge.svg)](https://codecov.io/gh/log2timeline/l2tscaffolder)
+[Travis-CI](https://travis-ci.org/) | [Codecov](https://codecov.io/) | [ReadTheDocs](https://readthedocs.org)
+--- | --- | ---
+[![Build Status](https://travis-ci.org/log2timeline/l2tscaffolder.svg?branch=master)](https://travis-ci.org/log2timeline/l2tscaffolder) | [![codecov](https://codecov.io/gh/log2timeline/l2tscaffolder/branch/master/graph/badge.svg)](https://codecov.io/gh/log2timeline/l2tscaffolder) | [![Doc Status](https://readthedocs.org/projects/pip/badge/)](https://l2tscaffolder.readthedocs.org)
 
 ### Documentation
 
