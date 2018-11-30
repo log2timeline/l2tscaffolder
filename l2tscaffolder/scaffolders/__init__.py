@@ -3,4 +3,4 @@
 from l2tscaffolder.scaffolders import plaso_sqlite
 from l2tscaffolder.scaffolders import timesketch_index
 from l2tscaffolder.scaffolders import timesketch_sketch
-from l2tscaffolder.scaffolders import turbinia_job_task
+from l2tscaffolder.scaffolders import turbinia

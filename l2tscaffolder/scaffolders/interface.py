@@ -150,13 +150,15 @@ class Scaffolder:
       list: file name and content of the file to be written to disk.
     """
 
-  @abc.abstractmethod
   def GetFilesToCopy(self) -> Iterator[Tuple[str, str]]:
     """Return a list of files that need to be copied.
+
+    If not overwritten this will return an emtpy iterator.
 
     Yields:
       tuple (str, str): file name of source and destination.
     """
+    return iter(())
 
   def RaiseIfNotReady(self):
     """Checks to see if all attributes are set to start generating files.

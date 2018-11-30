@@ -71,14 +71,6 @@ class TimesketchBaseScaffolder(interface.Scaffolder):
     plugin_init_path = os.path.join(self._plugin_path, '__init__.py')
     yield plugin_init_path, plugin_string
 
-  def GetFilesToCopy(self) -> Iterator[Tuple[str, str]]:
-    """Return a list of files that need to be copied.
-
-    Returns:
-      an empty iterator.
-    """
-    return iter(())
-
   def GetJinjaContext(self) -> Dict[str, object]:
     """Returns a dict that can be used as a context for Jinja2 templates.
 

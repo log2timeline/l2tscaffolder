@@ -11,44 +11,46 @@ from typing import Tuple
 from l2tscaffolder.lib import definitions
 from l2tscaffolder.lib import mapping_helper
 from l2tscaffolder.scaffolders import interface
+from l2tscaffolder.scaffolders import manager
 
 
-class TurbiniaBaseScaffolder(interface.Scaffolder):
+class TurbiniaJobTaskScaffolder(interface.Scaffolder):
   """The Turbinia base scaffolder interface.
 
   Attributes:
-    class_name (str): class name of the Turbinia plugin to be generated.
+    class_name (str): class name of the Turbinia job and task to be generated.
   """
 
-  # The name of the plugin this scaffolder plugin provides.
-  NAME = 'turbinia_base'
+  # The name of the scaffolder plugin.
+  NAME = 'turbinia_job_and_task'
 
   # One liner describing what the scaffolder provides.
-  DESCRIPTION = 'This is a scaffolder for Turbinia components'
+  DESCRIPTION = (
+      'Provides a scaffolder to generate a Turbinia job and task plugins.')
 
   # Define which project this particular scaffolder belongs to.
   PROJECT = definitions.DEFINITION_TURBINIA
 
-  # Filename of templates.
-  TEMPLATE_JOB_FILE = None
-  TEMPLATE_TASK_FILE = None
+  # Filenames of templates.
+  TEMPLATE_JOB_FILE = 'turbinia_job.jinja2'
+  TEMPLATE_TASK_FILE = 'turbinia_task.jinja2'
 
   def __init__(self):
     """Initializes the Turbinia scaffolder."""
-    super(TurbiniaBaseScaffolder, self).__init__()
-    self._plugin_path = os.path.join('turbinia', 'jobs')
+    super(TurbiniaJobTaskScaffolder, self).__init__()
+    self._job_path = os.path.join('turbinia', 'jobs')
     self._task_path = os.path.join('turbinia', 'workers')
     self._mapping_helper = mapping_helper.MappingHelper()
 
     self.class_name = ''
 
   def _GenerateJobFile(self) -> str:
-    """Generates the job plugin file."""
+    """Generates the job job file."""
     return self._mapping_helper.RenderTemplate(
         self.TEMPLATE_JOB_FILE, self.GetJinjaContext())
 
   def _GenerateTaskFile(self) -> str:
-    """Generates the task plugin file."""
+    """Generates the task file."""
     return self._mapping_helper.RenderTemplate(
         self.TEMPLATE_TASK_FILE, self.GetJinjaContext())
 
@@ -58,19 +60,11 @@ class TurbiniaBaseScaffolder(interface.Scaffolder):
     Yields:
       Tuple[str, str]: path to the init file and the entry to add to it.
     """
-    plugin_path = self._plugin_path.replace(os.sep, '.')
-    plugin_string = 'from {0:s} import {1:s}\n'.format(
-        plugin_path, self._output_name)
-    plugin_init_path = os.path.join(self._plugin_path, '__init__.py')
-    yield plugin_init_path, plugin_string
-
-  def GetFilesToCopy(self) -> Iterator[Tuple[str, str]]:
-    """Return a list of files that need to be copied.
-
-    Returns:
-      an empty iterator.
-    """
-    return iter(())
+    python_init_path = self._job_path.replace(os.sep, '.')
+    job_string = 'from {0:s} import {1:s}\n'.format(
+        python_init_path, self._output_name)
+    job_init_path = os.path.join(self._job_path, '__init__.py')
+    yield job_init_path, job_string
 
   def GetJinjaContext(self) -> Dict[str, object]:
     """Returns a dict that can be used as a context for Jinja2 templates.
@@ -80,7 +74,7 @@ class TurbiniaBaseScaffolder(interface.Scaffolder):
         str: name of Jinja argument.
         object: Jinja argument value.
     """
-    context = super(TurbiniaBaseScaffolder, self).GetJinjaContext()
+    context = super(TurbiniaJobTaskScaffolder, self).GetJinjaContext()
     context['class_name'] = self.class_name
     context['plugin_name'] = self._output_name
     time_now = datetime.datetime.utcnow()
@@ -102,9 +96,9 @@ class TurbiniaBaseScaffolder(interface.Scaffolder):
         self._output_name)
 
     try:
-      plugin_path = os.path.join(self._plugin_path, plugin_name)
-      plugin_content = self._GenerateJobFile()
-      yield plugin_path, plugin_content
+      job_path = os.path.join(self._job_path, plugin_name)
+      job_content = self._GenerateJobFile()
+      yield job_path, job_content
     except SyntaxError as exception:
       logging.error((
           'Syntax error while attempting to generate component, error '
@@ -118,3 +112,6 @@ class TurbiniaBaseScaffolder(interface.Scaffolder):
       logging.error((
           'Syntax error while attempting to generate component, error '
           'message: {0!s}').format(exception))
+
+
+manager.ScaffolderManager.RegisterScaffolder(TurbiniaJobTaskScaffolder)

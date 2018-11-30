@@ -2,7 +2,7 @@
 """Tests for the Turbinia job and task scaffolder."""
 import unittest
 
-from l2tscaffolder.scaffolders import turbinia_job_task
+from l2tscaffolder.scaffolders import turbinia
 
 
 class TurbiniaJobTaskScaffolderTest(unittest.TestCase):
@@ -12,7 +12,7 @@ class TurbiniaJobTaskScaffolderTest(unittest.TestCase):
 
   def testTurbiniaJobTaskScaffolder(self):
     """Test the Turbinia job and task scaffolder."""
-    scaffolder = turbinia_job_task.TurbiniaJobTaskScaffolder()
+    scaffolder = turbinia.TurbiniaJobTaskScaffolder()
     scaffolder.SetOutputName('secret_processing')
 
     file_copy_paths = [x for _, x in scaffolder.GetFilesToCopy()]
