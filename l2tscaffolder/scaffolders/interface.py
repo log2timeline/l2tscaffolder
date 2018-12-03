@@ -216,4 +216,5 @@ class Scaffolder:
       raise ValueError('Value is of type {0:s}, not {1:s}'.format(
           type(value), value_type))
 
+    print('Setting attribute: {} to {}'.format(name, value))
     setattr(self, name, value)
