@@ -35,6 +35,11 @@ class SQLQuestion(interface.DictQuestion):
 
     temp_db = sqlite3.connect(':memory:')
     for query_name, query in answer.items():
+      fixed_query_name = query_name.title().replace(' ', '')
+
+      if fixed_query_name != query_name:
+        answer[fixed_query_name] = answer.pop(query_name)
+
       try:
         temp_db.execute(query)
       except ValueError as exception:
@@ -93,9 +98,12 @@ class PlasoSQLiteScaffolder(plaso.PlasoPluginScaffolder):
   QUESTIONS = [
       SQLQuestion(
           attribute='queries', prompt=(
-            'Define the name of the SQL query (key) as well as the actual SQL '
-            'queries (value) this plugin will execute'),
-          key_prompt='Query Name', value_prompt='SQL Statement'),
+              'Define the name of the callback function (key) that will be '
+              'called for every row returned from the SQL query (value). '
+              'The plugin will execute the SQL query and call the callback '
+              'once for each resulting row. The name of the function should '
+              'follow style guide, eg: ParseBookmark.'),
+          key_prompt='Callback function name', value_prompt='SQL Statement'),
       interface.ListQuestion(
           attribute='required_tables', prompt='List of required tables')]
 
