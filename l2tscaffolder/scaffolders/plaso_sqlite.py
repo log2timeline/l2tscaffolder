@@ -25,6 +25,12 @@ class SQLQuestion(interface.DictQuestion):
     by attempting to run it against an empty SQLite database stored
     in memory.
 
+    The function also makes sure the key value confirms to the
+    style guide of ParseBookmarkRow. If the key contains space each
+    word will be capitalized and spaces removed. Since the templates
+    will add the word "Parse" in front of the key value it will be
+    removed if it is there as well.
+
     Args:
       answer (dict): the answer to the question asked.
 
