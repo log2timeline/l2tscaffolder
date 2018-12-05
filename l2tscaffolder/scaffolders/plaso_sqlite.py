@@ -115,7 +115,10 @@ class PlasoSQLiteScaffolder(plaso.PlasoPluginScaffolder):
               'called for every row returned from the SQL query (value).\n'
               'The plugin will execute the SQL query and call the callback\n'
               'once for each resulting row. The name of the function should\n'
-              'follow style guide, eg: ParseBookmark.'),
+              'follow style guide and be descriptive. An example of that is\n'
+              'a SQL statement that fetches bookmarks, the key name should be\n'
+              'Bookmark, or if the SQL statement collects GPS coordinates\n'
+              'it could be called Location.'),
           key_prompt='Callback function name', value_prompt='SQL Statement'),
       interface.ListQuestion(
           attribute='required_tables', prompt='List of required tables')]
