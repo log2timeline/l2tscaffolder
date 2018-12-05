@@ -41,17 +41,17 @@ class SQLQuestion(interface.DictQuestion):
       if ' ' in query_name:
         raise errors.UnableToConfigure((
             'Wrong format for key value, key cannot contain spaces '
-            '[{0:s]').format(query_name))
+            '[{0:s}]').format(query_name))
 
       if not query_name[0].isupper():
         raise errors.UnableToConfigure((
             'Wrong format for key value, key needs to start with an '
-            'upper case letter [{0:s]').format(query_name))
+            'upper case letter [{0:s}]').format(query_name))
 
       if query_name.startswith('Parse'):
         raise errors.UnableToConfigure((
             'Wrong format for key value, key should not start with the '
-            'Parse (that is added by template) [{0:s]').format(query_name))
+            'Parse (that is added by template) [{0:s}]').format(query_name))
 
       try:
         temp_db.execute(query)
