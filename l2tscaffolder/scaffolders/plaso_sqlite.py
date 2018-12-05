@@ -26,10 +26,7 @@ class SQLQuestion(interface.DictQuestion):
     in memory.
 
     The function also makes sure the key value confirms to the
-    style guide of ParseBookmarkRow. If the key contains space each
-    word will be capitalized and spaces removed. Since the templates
-    will add the word "Parse" in front of the key value it will be
-    removed if it is there as well.
+    style guide of plaso, to be in the form of CamelCase, eg. BookmarkRow.
 
     Args:
       answer (dict): the answer to the question asked.
@@ -41,15 +38,20 @@ class SQLQuestion(interface.DictQuestion):
 
     temp_db = sqlite3.connect(':memory:')
     for query_name, query in answer.items():
-      fixed_query_name = query_name
       if ' ' in query_name:
-        fixed_query_name = query_name.title().replace(' ', '')
+        raise errors.UnableToConfigure((
+            'Wrong format for key value, key cannot contain spaces '
+            '[{0:s]').format(query_name))
+
+      if not query_name[0].isupper():
+        raise errors.UnableToConfigure((
+            'Wrong format for key value, key needs to start with an '
+            'upper case letter [{0:s]').format(query_name))
 
       if query_name.startswith('Parse'):
-        fixed_query_name = query_name[5:]
-
-      if fixed_query_name != query_name:
-        answer[fixed_query_name] = answer.pop(query_name)
+        raise errors.UnableToConfigure((
+            'Wrong format for key value, key should not start with the '
+            'Parse (that is added by template) [{0:s]').format(query_name))
 
       try:
         temp_db.execute(query)
