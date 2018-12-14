@@ -14,7 +14,7 @@ from plaso.lib import eventdata
 from plaso.parsers import sqlite
 from plaso.parsers.sqlite_plugins import interface
 {% for query_name, query in queries.items()|sort(false) %}
-class {{ class_name }}{{ query_name|capitalize}}EventData(events.EventData):
+class {{ class_name }}{{ query_name }}EventData(events.EventData):
   """{{ plugin_name|replace('_',' ')}} {{query_name|lower}} event data.
 
   Attributes:
@@ -40,7 +40,7 @@ class {{ class_name }}Plugin(interface.SQLitePlugin):
   {% for query_name, query in queries.items()|sort(false) %}
       ((
           '{{ query|wordwrap(width=69,break_long_words=False,wrapstring="'\n          '") }}'),
-       'Parse{{ query_name|capitalize }}Row'){% if not loop.last %},{% endif %}{% endfor %}]
+       'Parse{{ query_name }}Row'){% if not loop.last %},{% endif %}{% endfor %}]
 
   REQUIRED_TABLES = frozenset([
       {% for table in required_tables %}'{{ table }}'{% if not loop.last %},
@@ -51,7 +51,7 @@ class {{ class_name }}Plugin(interface.SQLitePlugin):
           '{{schema|wordwrap(width=64,wrapstring="'\n          '")}}'){% if not loop.last %},{% endif %}{% endfor%}}]
 
 {% for query_name, query in queries.items()|sort(false) %}
-  def Parse{{ query_name|capitalize }}Row(self, parser_mediator, query, row, **unused_kwargs):
+  def Parse{{ query_name }}Row(self, parser_mediator, query, row, **unused_kwargs):
     """Parses a row from the database.
 
     Args:

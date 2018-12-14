@@ -25,6 +25,9 @@ class SQLQuestion(interface.DictQuestion):
     by attempting to run it against an empty SQLite database stored
     in memory.
 
+    The function also makes sure the key value confirms to the
+    style guide of plaso, to be in the form of CamelCase, eg. BookmarkRow.
+
     Args:
       answer (dict): the answer to the question asked.
 
@@ -35,6 +38,21 @@ class SQLQuestion(interface.DictQuestion):
 
     temp_db = sqlite3.connect(':memory:')
     for query_name, query in answer.items():
+      if ' ' in query_name:
+        raise errors.UnableToConfigure((
+            'Wrong format for key value, key cannot contain spaces '
+            '[{0:s}]').format(query_name))
+
+      if not query_name[0].isupper():
+        raise errors.UnableToConfigure((
+            'Wrong format for key value, key needs to start with an '
+            'upper case letter [{0:s}]').format(query_name))
+
+      if query_name.startswith('Parse'):
+        raise errors.UnableToConfigure((
+            'Wrong format for key value, key should not start with the '
+            'Parse (that is added by template) [{0:s}]').format(query_name))
+
       try:
         temp_db.execute(query)
       except ValueError as exception:
@@ -93,9 +111,15 @@ class PlasoSQLiteScaffolder(plaso.PlasoPluginScaffolder):
   QUESTIONS = [
       SQLQuestion(
           attribute='queries', prompt=(
-            'Define the name of the SQL query (key) as well as the actual SQL '
-            'queries (value) this plugin will execute'),
-          key_prompt='Query Name', value_prompt='SQL Statement'),
+              'Define the name of the callback function (key) that will be\n'
+              'called for every row returned from the SQL query (value).\n'
+              'The plugin will execute the SQL query and call the callback\n'
+              'once for each resulting row. The name of the function should\n'
+              'follow style guide and be descriptive. An example of that is\n'
+              'a SQL statement that fetches bookmarks, the key name should be\n'
+              'Bookmark, or if the SQL statement collects GPS coordinates\n'
+              'it could be called Location.'),
+          key_prompt='Callback function name', value_prompt='SQL Statement'),
       interface.ListQuestion(
           attribute='required_tables', prompt='List of required tables')]
 
