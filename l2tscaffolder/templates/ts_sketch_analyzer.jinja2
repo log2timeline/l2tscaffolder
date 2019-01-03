@@ -1,6 +1,7 @@
 """Sketch analyzer plugin for {{ plugin_name|lower|replace('_',' ')}}."""
 from __future__ import unicode_literals
 
+from timesketch.lib import emojis
 from timesketch.lib.analyzers import interface
 from timesketch.lib.analyzers import manager
 
@@ -38,6 +39,9 @@ class {{ class_name }}SketchPlugin(interface.BaseSketchAnalyzer):
             return_fields=return_fields
         )
 
+        # TODO: If an emoji is needed fetch it here.
+        # my_emoji = emojis.get_emoji('emoji_name')
+
         # TODO: Add analyzer logic here.
         # Methods available to use for sketch analyzers:
         # sketch.get_all_indices()
@@ -47,6 +51,8 @@ class {{ class_name }}SketchPlugin(interface.BaseSketchAnalyzer):
         # event_add_label('label')
         # event.add_star()
         # event.add_comment('comment')
+        # event.add_emojis(['emoji_code'])
+        # event.add_human_readable('human readable text', self.NAME)
         for event in events:
             pass
 
