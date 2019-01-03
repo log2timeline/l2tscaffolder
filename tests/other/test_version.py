@@ -12,7 +12,7 @@ class VersionTest(unittest.TestCase):
   def testGetVersion(self):
     """testing the get version"""
     actual = l2tscaffolder.__version__
-    self.assertEqual('20181127', actual)
+    self.assertEqual('20190103', actual)
 
 
 if __name__ == '__main__':
