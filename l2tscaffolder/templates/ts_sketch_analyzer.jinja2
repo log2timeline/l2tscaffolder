@@ -11,6 +11,8 @@ class {{ class_name }}SketchPlugin(interface.BaseSketchAnalyzer):
 
     NAME = '{{ plugin_name }}'
 
+    DEPENDENCIES = frozenset()
+
     def __init__(self, index_name, sketch_id):
         """Initialize The Sketch Analyzer.
 
@@ -53,6 +55,8 @@ class {{ class_name }}SketchPlugin(interface.BaseSketchAnalyzer):
         # event.add_comment('comment')
         # event.add_emojis([my_emoji])
         # event.add_human_readable('human readable text', self.NAME)
+        # Remember you'll need to add event.commit() once all changes to the
+        # event have been completed.
         for event in events:
             pass
 
