@@ -3,7 +3,7 @@ matrix:
   include:
   - env: TARGET="linux-python36"
     os: linux
-    dist: trusty
+    dist: xenial
     sudo: required
     group: edge
     python: 3.6
