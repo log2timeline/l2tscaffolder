@@ -65,6 +65,13 @@ class SQLQuestion(interface.DictQuestion):
               'Unable to run query [{0:s}] with error: {1!s}'.format(
                   query_name, exception))
 
+      star_items = [x for x in query.split() if x == '*']
+      if star_items:
+        raise errors.UnableToConfigure((
+            'Unable to generate parser while using * to select columns. '
+            'Please adjust your SELECT statements to include explicit '
+            'column names.'))
+
 
 class PlasoSQLiteScaffolder(plaso.PlasoPluginScaffolder):
   """The plaso SQLite plugin scaffolder.
@@ -211,6 +218,10 @@ class PlasoSQLiteScaffolder(plaso.PlasoPluginScaffolder):
 
     Yields:
       tuple: file name and content of the file to be written to disk.
+
+    Raises:
+      errors.UnableToConfigure: if it is not possible to generate
+          the files.
     """
     _, _, database_name = self.test_file.rpartition(os.sep)
     self.database_name = database_name
@@ -226,6 +237,10 @@ class PlasoSQLiteScaffolder(plaso.PlasoPluginScaffolder):
       sql_columns[query_name] = []
 
       for column in self._GetQueryColumns(query):
+        if column == '*':
+          raise errors.UnableToConfigure(
+              'Cannot use a "*" as a column name, please select a different '
+              'SELECT statement.')
         if 'time' in column:
           timestamp_columns[query_name].append(column.strip())
         sql_columns[query_name].append(column)
