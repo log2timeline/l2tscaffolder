@@ -21,4 +21,4 @@ class TestTestingPlugin(BaseTest):
     def test_analyzer(self):
         """Test analyzer."""
         # TODO: Write actual tests here.
-        self.assertIsEqual(True, False)
+        self.assertEqual(True, False)
