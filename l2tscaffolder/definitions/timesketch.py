@@ -28,7 +28,7 @@ class TimesketchProject(interface.ScaffolderDefinition):
     if not os.path.isdir(os.path.join(root_path, 'timesketch')):
       return False
 
-    if not os.path.isfile(os.path.join(root_path, 'timesketch.conf')):
+    if not os.path.isfile(os.path.join(root_path, 'data', 'timesketch.conf')):
       return False
 
     if not os.path.isdir(os.path.join(root_path, 'timesketch', 'views')):
