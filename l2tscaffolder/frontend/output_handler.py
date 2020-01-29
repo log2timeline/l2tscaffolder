@@ -55,7 +55,7 @@ class BaseOutputHandler:
     raise NotImplementedError
 
   def PromptError(self, text: str) -> str:
-    """Presents the user with an error message prompt and return back the answer.
+    """Presents the user with an error message prompt and returns the answer.
 
     Args:
       text (str): the text to prompt
