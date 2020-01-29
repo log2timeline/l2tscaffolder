@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 """Interface defining how a project class looks like."""
-import abc
 
 from l2tscaffolder.lib import definitions
 
@@ -9,7 +8,6 @@ class ScaffolderDefinition:
 
   NAME = definitions.DEFINITION_UNDEFINED
 
-  @abc.abstractmethod
   def ValidatePath(self, root_path: str) -> bool:
     """Validates the path to the root directory of the project.
 
@@ -19,3 +17,4 @@ class ScaffolderDefinition:
     Returns:
       bool: whether the given path is the correct root path of the project.
     """
+    raise NotImplementedError
