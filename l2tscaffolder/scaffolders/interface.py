@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 """The scaffolder interface classes."""
-import abc
-
 from typing import Dict
 from typing import Iterator
 from typing import List
@@ -116,13 +114,13 @@ class Scaffolder:
     super(Scaffolder, self).__init__()
     self._output_name = ''
 
-  @abc.abstractmethod
   def GetInitFileChanges(self) -> Iterator[Tuple[str, str]]:
     """Generate a list of init files that need changing and the changes to them.
 
     Yields:
       tuple (str, str): path to the init file and the entry to add to it.
     """
+    raise NotImplementedError
 
   def GetJinjaContext(self) -> Dict[str, object]:
     """Returns a dict that can be used as a context for Jinja2 templates.
@@ -142,13 +140,13 @@ class Scaffolder:
     """
     return self.QUESTIONS
 
-  @abc.abstractmethod
   def GenerateFiles(self) -> Iterator[Tuple[str, str]]:
     """Generates files this scaffolder provides.
 
     Yields:
       list: file name and content of the file to be written to disk.
     """
+    raise NotImplementedError
 
   def GetFilesToCopy(self) -> Iterator[Tuple[str, str]]:
     """Return a list of files that need to be copied.

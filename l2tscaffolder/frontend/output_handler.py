@@ -6,13 +6,11 @@ An output handler is used as a UI element, for two things:
 1. Relay information back to the user.
 2. Gather input from an end user and presenting it back to the tool.
 """
-import abc
 
 
 class BaseOutputHandler:
   """Interface for the output handler."""
 
-  @abc.abstractmethod
   def Confirm(self, text: str, default=True, abort=True):
     """Returns a bool from a yes/no question presented to the end user.
 
@@ -26,38 +24,38 @@ class BaseOutputHandler:
     Returns:
        bool: False if the user entered no, True if the user entered yes
     """
+    raise NotImplementedError
 
-  @abc.abstractmethod
   def PrintError(self, text: str):
     """Presents an error message.
 
     Args:
       text (str): the error message to present.
     """
+    raise NotImplementedError
 
-  @abc.abstractmethod
   def PrintInfo(self, text: str):
     """Presents the user with an informational text.
 
     Args:
       text (str): the text to present.
     """
+    raise NotImplementedError
 
-  @abc.abstractmethod
   def PrintNewLine(self):
     """Adds a new or blank line to the output."""
+    raise NotImplementedError
 
-  @abc.abstractmethod
   def PrintOutput(self, text: str):
     """Presents the user with output from the tool.
 
     Args:
       text (str): the text to present the user with.
     """
+    raise NotImplementedError
 
-  @abc.abstractmethod
   def PromptError(self, text: str) -> str:
-    """Presents the user with an error message prompt and return back the answer.
+    """Presents the user with an error message prompt and returns the answer.
 
     Args:
       text (str): the text to prompt
@@ -65,8 +63,8 @@ class BaseOutputHandler:
     Returns:
       str: the user input.
     """
+    raise NotImplementedError
 
-  @abc.abstractmethod
   def PromptInfo(self, text: str) -> str:
     """Presents the user with a message prompt and return back the answer.
 
@@ -76,8 +74,8 @@ class BaseOutputHandler:
     Returns:
       str: the user input.
     """
+    raise NotImplementedError
 
-  @abc.abstractmethod
   def PromptInfoWithDefault(
       self, text: str, input_type: type, default: object) -> str:
     """Presents the user with a prompt with a default return value and a type.
@@ -93,3 +91,4 @@ class BaseOutputHandler:
     Returns:
       object: the user input, using the supplied input type.
     """
+    raise NotImplementedError
