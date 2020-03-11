@@ -50,7 +50,7 @@ class {{ class_name }}SketchPlugin(interface.BaseSketchAnalyzer):
         # sketch.get_all_indices()
         # (If you add a view, please make sure the analyzer has results before
         # adding the view.)
-        # sketch.add_view(
+        # view = sketch.add_view(
         #     view_name=name, analyzer_name=self.NAME,
         #     query_string=query_string, query_filter={})
         # event.add_attributes({'foo': 'bar'})
@@ -62,6 +62,11 @@ class {{ class_name }}SketchPlugin(interface.BaseSketchAnalyzer):
         # event.add_human_readable('human readable text', self.NAME)
         # Remember you'll need to add event.commit() once all changes to the
         # event have been completed.
+        # You can also add a story.
+        # story = self.sketch.add_story(title='Story from analyzer')
+        # story.add_text('## This is a markdown title')
+        # story.add_view(view)
+        # story.add_text('This is another paragraph')
         for event in events:
             pass
 
