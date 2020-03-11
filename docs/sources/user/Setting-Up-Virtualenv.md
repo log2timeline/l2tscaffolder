@@ -71,7 +71,7 @@ $ deactivate
 ## Configuring Git Client
 
 Before submitting code to the project, make sure that you have created a fork of
-the project, and check that out.
+the l2tscaffolder project, and check out your personal fork:
 
 ```
 $ git clone https://github.com/USERNAME/l2tscaffolder.git
@@ -84,3 +84,9 @@ $ git remote add upstream https://github.com/log2timeline/l2tscaffolder.git
 ```
 
 And then you can create a feature branch to work on.
+
+```
+$ git checkout -b my_feature
+```
+
+
