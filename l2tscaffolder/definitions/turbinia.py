@@ -28,9 +28,6 @@ class TurbiniaProject(interface.ScaffolderDefinition):
     if not os.path.isdir(os.path.join(root_path, 'turbinia')):
       return False
 
-    if not os.path.isdir(os.path.join(root_path, 'terraform')):
-      return False
-
     if not os.path.isfile(os.path.join(root_path, 'turbinia', 'evidence.py')):
       return False
 
