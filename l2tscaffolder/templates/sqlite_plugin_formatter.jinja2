@@ -6,7 +6,7 @@ from plaso.formatters import manager
 from plaso.lib import errors{% for query_name in queries %}
 
 
-class {{ class_name }}{{ query_name|capitalize }}Formatter(interface.ConditionalEventFormatter):
+class {{ class_name }}{{ query_name|capitalize }}FormatterHelper(interface.CustomEventFormatterHelper):
   """{{ plugin_name|replace('_',' ')}} {{ query_name|lower }} event formatter."""
 
   DATA_TYPE = '{{ data_types[query_name] }}'
@@ -26,7 +26,7 @@ class {{ class_name }}{{ query_name|capitalize }}Formatter(interface.Conditional
 {% endfor %}
 
 
-manager.FormattersManager.RegisterFormatter([
+manager.FormattersManager.RegisterEventFormatterHelpers([
   {% for query_name in queries %}{{ class_name }}{{ query_name|capitalize }}Formatter{% if not loop.last %},
   {% endif %}{% endfor %}
 ])
