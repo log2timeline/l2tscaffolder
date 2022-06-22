@@ -77,7 +77,7 @@ class BaseOutputHandler:
     raise NotImplementedError
 
   def PromptInfoWithDefault(
-      self, text: str, input_type: type, default: object) -> str:
+      self, text: str, input_type: type, default: object) -> object:
     """Presents the user with a prompt with a default return value and a type.
 
     The prompt can have a default value to be chosen as well as a defined type
