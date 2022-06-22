@@ -6,10 +6,12 @@ from timesketch.lib.analyzers import interface
 from timesketch.lib.analyzers import manager
 
 
-class {{ class_name }}SketchPlugin(interface.BaseSketchAnalyzer):
+class {{ class_name }}SketchPlugin(interface.BaseAnalyzer):
     """Sketch analyzer for {{ class_name }}."""
 
     NAME = '{{ plugin_name }}'
+    DISPLAY_NAME = '{{ plugin_name }}'
+    DESCRIPTION = 'TODO: {{ plugin_name }} description'
 
     DEPENDENCIES = frozenset()
 
@@ -50,12 +52,12 @@ class {{ class_name }}SketchPlugin(interface.BaseSketchAnalyzer):
         # sketch.get_all_indices()
         # (If you add a view, please make sure the analyzer has results before
         # adding the view.)
-        # view = sketch.add_view(
+        # view = self.sketch.add_view(
         #     view_name=name, analyzer_name=self.NAME,
         #     query_string=query_string, query_filter={})
         # event.add_attributes({'foo': 'bar'})
         # event.add_tags(['tag_name'])
-        # event_add_label('label')
+        # event.add_label('label')
         # event.add_star()
         # event.add_comment('comment')
         # event.add_emojis([my_emoji])
