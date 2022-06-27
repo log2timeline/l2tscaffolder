@@ -14,7 +14,7 @@ class {{ class_name }}Plugin(interface.BaseIndexAnalyzer):
         """Initialize the Index Analyzer.
 
         Args:
-            index_name: Elasticsearch index name
+            index_name: Opensearch index name
         """
         super({{ class_name }}Plugin, self).__init__(index_name)
 
@@ -24,7 +24,7 @@ class {{ class_name }}Plugin(interface.BaseIndexAnalyzer):
         Returns:
             String with summary of the analyzer result
         """
-        # TODO: Add Elasticsearch query to get the events you need.
+        # TODO: Add Opensearch query to get the events you need.
         query = ''
 
         # TODO: Specify what returned fields you need for your analyzer.

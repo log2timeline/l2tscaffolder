@@ -15,15 +15,15 @@ class {{ class_name }}SketchPlugin(interface.BaseAnalyzer):
 
     DEPENDENCIES = frozenset()
 
-    def __init__(self, index_name, sketch_id):
+    def __init__(self, index_name, sketch_id, timeline_id=None):
         """Initialize The Sketch Analyzer.
 
         Args:
-            index_name: Elasticsearch index name
+            index_name: Opensearch index name
             sketch_id: Sketch ID
         """
         self.index_name = index_name
-        super({{ class_name }}SketchPlugin, self).__init__(index_name, sketch_id)
+        super({{ class_name }}SketchPlugin, self).__init__(index_name, sketch_id, timeline_id=timeline_id)
 
     def run(self):
         """Entry point for the analyzer.
@@ -31,7 +31,7 @@ class {{ class_name }}SketchPlugin(interface.BaseAnalyzer):
         Returns:
             String with summary of the analyzer result
         """
-        # TODO: Add Elasticsearch query to get the events you need.
+        # TODO: Add Opensearch query to get the events you need.
         query = ''
 
         # TODO: Specify what returned fields you need for your analyzer.

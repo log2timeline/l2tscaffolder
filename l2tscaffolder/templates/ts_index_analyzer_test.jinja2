@@ -11,14 +11,10 @@ from timesketch.lib.testlib import MockDataStore
 class Test{{ class_name }}Plugin(BaseTest):
     """Tests the functionality of the analyzer."""
 
-    def __init__(self, *args, **kwargs):
-        super(Test{{ class_name }}Plugin, self).__init__(*args, **kwargs)
-
-    # Mock the Elasticsearch datastore.
+    # Mock the Opensearch datastore.
     @mock.patch(
-        u'timesketch.lib.analyzers.interface.ElasticsearchDataStore',
-        MockDataStore)
-    def test_analyzer(self):
-        """Test analyzer."""
+        u'timesketch.lib.analyzers.interface.OpenSearchDataStore', MockDataStore)
+    def test_{{ class_name }}_analyzer_class(self):
+        """Test core functionality of the analyzer class."""
         # TODO: Write actual tests here.
         self.assertEqual(True, False)
