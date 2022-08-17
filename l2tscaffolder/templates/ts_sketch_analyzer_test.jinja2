@@ -1,5 +1,4 @@
 """Tests for {{ class_name }}Plugin."""
-from __future__ import unicode_literals
 
 import mock
 
@@ -8,8 +7,14 @@ from timesketch.lib.testlib import BaseTest
 from timesketch.lib.testlib import MockDataStore
 
 
-class Test{{ class_name }}Plugin(BaseTest):
+class Test{{ class_name }}(BaseTest):
     """Tests the functionality of the analyzer."""
+
+    @mock.patch(u'timesketch.lib.analyzers.interface.OpenSearchDataStore',
+                MockDataStore)
+    def setUp(self):
+        """Setup for for running the {{ class_name }} analyzer tests."""
+        super().setUp()
 
     # Mock the Opensearch datastore.
     @mock.patch(

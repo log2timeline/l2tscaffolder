@@ -1,6 +1,4 @@
 """Tests for {{ class_name }}Plugin."""
-from __future__ import unicode_literals
-
 import mock
 
 from timesketch.lib.analyzers import {{ plugin_name }}
@@ -8,7 +6,7 @@ from timesketch.lib.testlib import BaseTest
 from timesketch.lib.testlib import MockDataStore
 
 
-class Test{{ class_name }}Plugin(BaseTest):
+class Test{{ class_name }}(BaseTest):
     """Tests the functionality of the analyzer."""
 
     # Mock the Opensearch datastore.
