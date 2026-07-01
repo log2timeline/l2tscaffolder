@@ -37,7 +37,7 @@ class TimesketchSketchScaffolderTest(unittest.TestCase):
         expected_parser_init_addition,
         init_generated['timesketch/lib/analyzers/__init__.py'])
 
-    with open('test_data/timesketch_testing_plugin.py', 'r') as fh:
+    with open('test_data/timesketch_sketch_testing_plugin.py', 'r') as fh:
       expected_parser_content = fh.read()
     self.assertEqual(
         expected_parser_content,

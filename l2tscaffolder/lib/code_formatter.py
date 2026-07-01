@@ -26,3 +26,5 @@ class CodeFormatter:
       str: the formatted code
     """
     return yapf_api.FormatCode(code, style_config=self.yapf_path)
+
+
