@@ -1,12 +1,7 @@
-import logging
-from typing import Tuple
+# -*- coding: utf-8 -*-
+"""Formatter for generated code."""
 
-try:
-  from yapf.yapflib import yapf_api
-  HAS_YAPF = True
-except ImportError:
-  HAS_YAPF = False
-  logging.warning('yapf not installed, code will not be formatted.')
+from yapf.yapflib import yapf_api
 
 
 class CodeFormatter:
@@ -21,16 +16,15 @@ class CodeFormatter:
     super().__init__()
     self.yapf_path = yapf_path
 
-  def Format(self, code: str) -> Tuple[str, bool]:
+  def Format(self, code: str) -> str:
     """Formats the code.
 
     Args:
       code (str): code to format
 
     Returns:
-      Tuple[str, bool]: the formatted code and whether it was changed.
+      str: the formatted code
     """
-    if not HAS_YAPF:
-      return code, False
     return yapf_api.FormatCode(code, style_config=self.yapf_path)
+
 

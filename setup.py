@@ -38,7 +38,7 @@ setup(
                       'setuptools>=35.0.2',
                       'jinja2>=2.9.6',
                       'colorama>=0.3.7',
-                      'yapf==0.22',
+                      'yapf==0.43.0',
                       'pexpect>=4.2.1'],
     scripts=glob.glob(os.path.join('tools', '[a-z]*.py')),
     python_requires='>=3',

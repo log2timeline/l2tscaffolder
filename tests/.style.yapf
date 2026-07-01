@@ -1,4 +1,5 @@
 [style]
-based_on_style = chromium
+based_on_style = pep8
+INDENT_WIDTH = 2
 COALESCE_BRACKETS = True
 SPLIT_BEFORE_FIRST_ARGUMENT = True
