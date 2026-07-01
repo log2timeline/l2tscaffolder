@@ -4,16 +4,19 @@
 import unittest
 
 from l2tscaffolder.lib import code_formatter
+from l2tscaffolder.lib.code_formatter import HAS_YAPF
 from tests.test_helper import path_helper
 
 
 class CodeFormatterTest(unittest.TestCase):
   """Test case for the code formatter functions. """
 
+  @unittest.skipIf(not HAS_YAPF, 'yapf not available')
   def testCodeFormatter(self):
     """Tests the code formatter.."""
     yapf_path = path_helper.YapfStyleFilePath()
     formatter = code_formatter.CodeFormatter(yapf_path)
+
 
     faulty_code_string = (
         'class Foobar(object):\n'
