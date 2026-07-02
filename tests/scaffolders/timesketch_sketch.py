@@ -1,6 +1,7 @@
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
 """Tests for the Timesketch sketch analyzer scaffolder."""
+
 import unittest
 
 from l2tscaffolder.scaffolders import timesketch_sketch

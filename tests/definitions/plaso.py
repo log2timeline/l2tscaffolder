@@ -1,6 +1,7 @@
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
 """Test class for the plaso project."""
+
 import os
 import unittest
 

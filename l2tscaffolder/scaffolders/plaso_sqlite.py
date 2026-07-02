@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """The scaffolder interface classes."""
+
 import os
 import sqlite3
 

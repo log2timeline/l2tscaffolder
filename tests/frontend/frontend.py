@@ -1,6 +1,7 @@
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
 """Test class for the CLI frontend."""
+
 import io
 import os
 import re

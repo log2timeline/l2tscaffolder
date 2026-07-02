@@ -1,6 +1,7 @@
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
 """The scaffolder frontend."""
+
 import os
 from typing import Dict
 from typing import List

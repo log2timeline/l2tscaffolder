@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 """The l2t scaffolder tool."""
+
 import click
 
 from l2tscaffolder.frontend import cli_output_handler

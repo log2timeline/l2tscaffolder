@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Tests for the Turbinia job and task scaffolder."""
+
 import unittest
 
 from l2tscaffolder.scaffolders import turbinia

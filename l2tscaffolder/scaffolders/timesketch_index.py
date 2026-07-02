@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Timesketch index analyzer scaffolder."""
+
 from l2tscaffolder.scaffolders import timesketch
 from l2tscaffolder.scaffolders import manager
 

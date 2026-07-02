@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Timesketch scaffolder that generates analyzer plugins."""
+
 import os
 import logging
 

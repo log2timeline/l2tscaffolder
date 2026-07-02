@@ -1,6 +1,7 @@
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
 """Tests for the plaso sqlite scaffolder."""
+
 import unittest
 
 from l2tscaffolder.lib import errors
@@ -99,6 +100,7 @@ class PlasoSQLiteScaffolderTest(unittest.TestCase):
             "test_data/plaso_testing_sqlite_plugin.py", encoding="utf-8"
         ) as file_object:
             expected_parser_content = file_object.read()
+
         self.assertEqual(
             expected_parser_content,
             files_generated["plaso/parsers/sqlite_plugins/testing.py"],

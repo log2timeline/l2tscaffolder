@@ -1,6 +1,7 @@
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
 """Test class for the definition manager."""
+
 import unittest
 
 from l2tscaffolder.definitions import interface

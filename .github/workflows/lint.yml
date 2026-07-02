@@ -43,7 +43,7 @@ jobs:
         add-apt-repository -y ppa:deadsnakes/ppa
         add-apt-repository -y ppa:gift/dev
         apt update -q
-        apt install -y build-essential git pkg-config python${{ matrix.python-version }} python${{ matrix.python-version }}-dev python${{ matrix.python-version }}-venv python3-pip python3-setuptools tox
+        apt install -y build-essential git pkg-config python${{ matrix.python-version }} python${{ matrix.python-version }}-dev python${{ matrix.python-version }}-venv python3-click python3-colorama python3-jinja2 python3-pexpect python3-pip python3-setuptools python3-yapf tox
     - name: Run linter
       env:
         LANG: en_US.UTF-8

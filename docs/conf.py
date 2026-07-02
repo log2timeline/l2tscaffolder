@@ -25,7 +25,6 @@ from recommonmark.transform import AutoStructify
 sys.path.insert(0, os.path.abspath(".."))
 import l2tscaffolder
 
-
 # -- Project information -----------------------------------------------------
 
 project = "l2tScaffolder"

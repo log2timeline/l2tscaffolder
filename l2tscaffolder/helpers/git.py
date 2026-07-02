@@ -3,6 +3,7 @@
 
 This file provides a class to assist with git operations.
 """
+
 import os
 import re
 
