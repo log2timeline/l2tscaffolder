@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google Inc.
+# Copyright 2026 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +14,6 @@
 # limitations under the License.
 """Job to execute secret processing task."""
 
-from __future__ import unicode_literals
-
 # TODO: import from turbinia.evidence the needed files, eg:
 # from turbinia.evidence import FilteredTextFile
 from turbinia.jobs import interface
@@ -24,27 +22,27 @@ from turbinia.workers.secret_processing import SecretProcessingTask
 
 
 class SecretProcessingJob(interface.TurbiniaJob):
-    """Need to add some description here."""
+  """Need to add some description here."""
 
-    # The types of evidence that this Job will process
-    # TODO: Fill this out.
-    evidence_input = []
-    evidence_output = []
+  # The types of evidence that this Job will process
+  # TODO: Fill this out.
+  evidence_input = []
+  evidence_output = []
 
-    NAME = "SecretProcessingJob"
+  NAME = 'SecretProcessingJob'
 
-    def CreateTask(self, evidence):
-        """Create tasks.
+  def create_tasks(self, evidence):
+    """Create tasks.
 
-        Args:
-          evidence (list[object]): List of evidence object to process
+    Args:
+      evidence: List of evidence object to process
 
-        Returns:
-            A list of tasks to schedule.
-        """
-        # TODO: Fill in the tasks.
-        tasks = [SecretProcessingTask() for _ in evidence]
-        return tasks
+    Returns:
+        A list of tasks to schedule.
+    """
+    # TODO: Fill in the tasks.
+    tasks = [SecretProcessingTask() for _ in evidence]
+    return tasks
 
 
 manager.JobsManager.RegisterJob(SecretProcessingJob)

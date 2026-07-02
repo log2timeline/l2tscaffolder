@@ -1,6 +1,7 @@
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
 """Tests for the scaffolder manager."""
+
 import unittest
 
 from l2tscaffolder.scaffolders import interface

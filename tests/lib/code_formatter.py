@@ -1,6 +1,7 @@
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
 """Tests for the code formatter."""
+
 import unittest
 
 from yapf.yapflib import errors

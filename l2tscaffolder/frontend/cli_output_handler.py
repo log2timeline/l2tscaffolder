@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """The output file handler for click"""
+
 import click
 
 from l2tscaffolder.frontend import output_handler

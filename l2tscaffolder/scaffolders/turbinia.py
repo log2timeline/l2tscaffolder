@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Turbinia component scaffolder."""
+
 import datetime
 import os
 import logging

@@ -1,6 +1,7 @@
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
 """Tests for the mapping helper."""
+
 import unittest
 
 from l2tscaffolder.lib import mapping_helper

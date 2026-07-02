@@ -1,6 +1,7 @@
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
 """Tests class for the scaffolder engine"""
+
 import os
 import unittest
 
@@ -34,7 +35,7 @@ class AwesomeScaffolder(scaffolder_interface.Scaffolder):
         Yields:
           tuple(str, str): path to the init file and the entry to add to it.
         """
-        yield from iter()
+        yield from iter(())
 
     def GetJinjaContext(self):
         """Returns a dict that can be used as a context for Jinja2 templates."""

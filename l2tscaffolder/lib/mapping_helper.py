@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Helper methods for mapping."""
+
 import os
 import jinja2
 
