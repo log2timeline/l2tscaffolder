@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Git helper for the scaffolder project.
 
 This file provides a class to assist with git operations.

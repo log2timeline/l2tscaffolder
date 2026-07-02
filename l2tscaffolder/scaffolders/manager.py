@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """The scaffolder manager."""
 
 from typing import Dict

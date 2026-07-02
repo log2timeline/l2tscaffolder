@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Turbinia component scaffolder."""
 
 import datetime

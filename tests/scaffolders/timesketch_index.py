@@ -1,5 +1,4 @@
-# !/usr/bin/python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
 """Tests for the Timesketch index analyzer scaffolder."""
 
 import unittest

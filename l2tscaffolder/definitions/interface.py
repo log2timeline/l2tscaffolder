@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Interface defining how a project class looks like."""
 
 from l2tscaffolder.lib import definitions

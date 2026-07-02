@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """The scaffolder interface classes."""
 
 from typing import Dict
