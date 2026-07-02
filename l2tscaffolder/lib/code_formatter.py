@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Formatter for generated code."""
 
 from yapf.yapflib import yapf_api

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """The output file handler for click"""
 
 import click

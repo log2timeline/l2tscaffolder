@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """The Timesketch definition class."""
 
 import os

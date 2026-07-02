@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """The output file handler.
 
 This file defines the interface of how an output handler should operate.

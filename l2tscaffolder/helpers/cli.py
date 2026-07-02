@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Helper for command line functions."""
 
 # This is the same class as: https://github.com/log2timeline/l2tdevtools/ \

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Timesketch sketch analyzer scaffolder."""
 
 from l2tscaffolder.scaffolders import timesketch

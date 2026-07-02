@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """The definition manager."""
 
 from typing import Iterator

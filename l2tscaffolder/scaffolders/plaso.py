@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Plaso scaffolder that generates plaso parser and plugins."""
 
 import os

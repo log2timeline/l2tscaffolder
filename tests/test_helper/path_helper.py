@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """helper for the test"""
 
 import os
