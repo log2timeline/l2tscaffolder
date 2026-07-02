@@ -8,7 +8,7 @@ like Plaso, to make development work easier.
 
 GitHub | [Codecov](https://codecov.io/) | [ReadTheDocs](https://readthedocs.org) | [PyPi](https://pypi.python.org)
 --- | --- | --- | ---
-[![build](https://github.com/log2timeline/l2tscaffolder/actions/workflows/build_tox.yml/badge.svg)](https://github.com/log2timeline/l2tscaffolder/actions/workflows/build_tox.yml) | [![codecov](https://codecov.io/gh/log2timeline/l2tscaffolder/branch/master/graph/badge.svg)](https://codecov.io/gh/log2timeline/l2tscaffolder) | [![Doc Status](https://readthedocs.org/projects/pip/badge/)](https://l2tscaffolder.readthedocs.org) | [![PyPi Status](https://img.shields.io/pypi/v/l2tscaffolder.svg)](https://pypi.python.org/pypi/l2tscaffolder)
+[![build](https://github.com/log2timeline/l2tscaffolder/actions/workflows/test_tox.yml/badge.svg)](https://github.com/log2timeline/l2tscaffolder/actions/workflows/test_tox.yml) | [![codecov](https://codecov.io/gh/log2timeline/l2tscaffolder/branch/master/graph/badge.svg)](https://codecov.io/gh/log2timeline/l2tscaffolder) | [![Doc Status](https://readthedocs.org/projects/pip/badge/)](https://l2tscaffolder.readthedocs.org) | [![PyPi Status](https://img.shields.io/pypi/v/l2tscaffolder.svg)](https://pypi.python.org/pypi/l2tscaffolder)
 
 ### Documentation
 
