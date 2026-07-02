@@ -133,7 +133,7 @@ class TestFrontend(frontend.ScaffolderFrontend):
 
     def __init__(self, output_handler_to_use):
         """Initializes the frontend."""
-        super(TestFrontend, self).__init__(output_handler_to_use)
+        super().__init__(output_handler_to_use)
         self._mock = MagicMock()
         self._git_helper = self._mock
 
@@ -159,7 +159,7 @@ class TestFrontend(frontend.ScaffolderFrontend):
         Raises:
           errors.WrongCliInput: when no valid project path has been provided.
         """
-        return_value = super(TestFrontend, self).GetProjectPath(definition)
+        return_value = super().GetProjectPath(definition)
         self._git_helper = self._mock
         return return_value
 
@@ -184,16 +184,20 @@ class ScaffolderFrontendTest(unittest.TestCase):
             )
         except KeyError:
             pass
+
+        # pylint: disable=consider-using-with
         cls.root_directory = tempfile.TemporaryDirectory()
+
         root_dir_name = cls.root_directory.name
         os.mkdir(os.path.join(root_dir_name, "plaso"))
         os.mkdir(os.path.join(root_dir_name, "plaso", "parsers"))
         os.mkdir(os.path.join(root_dir_name, "plaso", "test_data"))
         os.mkdir(os.path.join(root_dir_name, "plaso", "tests"))
         os.mkdir(os.path.join(root_dir_name, "plaso", "parsers", "sqlite_plugins"))
-        fw = open(os.path.join(root_dir_name, "plaso.ini"), "w")
-        fw.write("\n")
-        fw.close()
+
+        path = os.path.join(root_dir_name, "plaso.ini")
+        with open(path, "w", encoding="utf-8") as file_object:
+            file_object.write("\n")
 
     @classmethod
     def tearDownClass(cls):
@@ -237,34 +241,27 @@ class ScaffolderFrontendTest(unittest.TestCase):
         last_part = last_line[-len(expected_string) :]
         self.assertEqual(last_part, expected_string)
 
-        self.assertTrue(
-            os.path.isfile(
-                os.path.join(
-                    self.root_directory.name,
-                    "plaso",
-                    "parsers",
-                    "sqlite_plugins",
-                    "foobar_test.py",
-                )
-            )
+        path = os.path.join(
+            self.root_directory.name,
+            "plaso",
+            "parsers",
+            "sqlite_plugins",
+            "foobar_test.py",
         )
-        self.assertTrue(
-            os.path.isfile(
-                os.path.join(
-                    self.root_directory.name,
-                    "tests",
-                    "parsers",
-                    "sqlite_plugins",
-                    "foobar_test.py",
-                )
-            )
-        )
+        self.assertTrue(os.path.isfile(path))
 
-        self.assertTrue(
-            os.path.isfile(
-                os.path.join(self.root_directory.name, "test_data", "test_sqlite.db")
-            )
+        path = os.path.join(
+            self.root_directory.name,
+            "tests",
+            "parsers",
+            "sqlite_plugins",
+            "foobar_test.py",
         )
+        self.assertTrue(os.path.isfile(path))
+
+        path = os.path.join(self.root_directory.name, "test_data", "test_sqlite.db")
+
+        self.assertTrue(os.path.isfile(path))
 
 
 if __name__ == "__main__":

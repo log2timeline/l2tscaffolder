@@ -34,7 +34,7 @@ class SQLQuestion(interface.DictQuestion):
         Raises:
           errors.UnableToConfigure: if the answer is invalid.
         """
-        super(SQLQuestion, self).ValidateAnswer(answer)
+        super().ValidateAnswer(answer)
 
         temp_db = sqlite3.connect(":memory:")
         for query_name, query in answer.items():
@@ -155,7 +155,7 @@ class PlasoSQLiteScaffolder(plaso.PlasoPluginScaffolder):
 
     def __init__(self):
         """Initializes the plaso SQLite plugin scaffolder."""
-        super(PlasoSQLiteScaffolder, self).__init__()
+        super().__init__()
         self.database_name = ""
         self.database_schema = {}
         self.data_types = {}
@@ -226,7 +226,7 @@ class PlasoSQLiteScaffolder(plaso.PlasoPluginScaffolder):
             str: name of Jinja argument.
             object: Jinja argument value.
         """
-        context = super(PlasoSQLiteScaffolder, self).GetJinjaContext()
+        context = super().GetJinjaContext()
         context["database_name"] = self.database_name
         context["database_schema"] = self.database_schema
         context["data_types"] = self.data_types
@@ -275,7 +275,7 @@ class PlasoSQLiteScaffolder(plaso.PlasoPluginScaffolder):
 
         self.database_schema = self._GetSchema(self.test_file)
 
-        for name, content in super(PlasoSQLiteScaffolder, self).GenerateFiles():
+        for name, content in super().GenerateFiles():
             yield name, content
 
 

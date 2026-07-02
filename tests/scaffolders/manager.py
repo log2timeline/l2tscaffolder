@@ -10,6 +10,8 @@ from l2tscaffolder.scaffolders import manager
 class BaseScaffolderTest(interface.Scaffolder):
     """Basic class to inherit in tests."""
 
+    # pylint: disable=abstract-method
+
     def GenerateFiles(self):
         """Empty file generator."""
 
@@ -19,6 +21,8 @@ class BaseScaffolderTest(interface.Scaffolder):
 
 class AwesomeTestScaffolder(BaseScaffolderTest):
     """First test scaffolder."""
+
+    # pylint: disable=abstract-method
 
     NAME = "Awesome"
     DESCRIPTION = "This is a really awesome thing."
@@ -32,6 +36,8 @@ class AwesomeTestScaffolder(BaseScaffolderTest):
 class AverageTestScaffolder(BaseScaffolderTest):
     """Second test scaffolder."""
 
+    # pylint: disable=abstract-method
+
     NAME = "Average"
     DESCRIPTION = "This scaffolder implements the average parser."
     QUESTIONS = [
@@ -43,6 +49,8 @@ class AverageTestScaffolder(BaseScaffolderTest):
 
 class RegistrationTestScaffolder(BaseScaffolderTest):
     """Third test scaffolder."""
+
+    # pylint: disable=abstract-method
 
     NAME = "Registration"
     DESCRIPTION = (
@@ -60,6 +68,8 @@ class RegistrationTestScaffolder(BaseScaffolderTest):
 
 class NotAwesomeTestScaffolder(AwesomeTestScaffolder):
     """Test scaffolder for the Register function."""
+
+    # pylint: disable=abstract-method
 
     NAME = "Clearly not awesome"
 

@@ -39,8 +39,10 @@ class TimesketchIndexScaffolderTest(unittest.TestCase):
             init_generated["timesketch/lib/analyzers/__init__.py"],
         )
 
-        with open("test_data/timesketch_index_testing_plugin.py", "r") as fh:
-            expected_parser_content = fh.read()
+        with open(
+            "test_data/timesketch_index_testing_plugin.py", encoding="utf-8"
+        ) as file_object:
+            expected_parser_content = file_object.read()
         self.assertEqual(
             expected_parser_content,
             files_generated["timesketch/lib/analyzers/testing_test.py"],

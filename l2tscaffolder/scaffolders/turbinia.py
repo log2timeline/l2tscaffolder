@@ -36,7 +36,7 @@ class TurbiniaJobTaskScaffolder(interface.Scaffolder):
 
     def __init__(self):
         """Initializes the Turbinia scaffolder."""
-        super(TurbiniaJobTaskScaffolder, self).__init__()
+        super().__init__()
         self._job_path = os.path.join("turbinia", "jobs")
         self._task_path = os.path.join("turbinia", "workers")
         self._mapping_helper = mapping_helper.MappingHelper()
@@ -76,7 +76,7 @@ class TurbiniaJobTaskScaffolder(interface.Scaffolder):
             str: name of Jinja argument.
             object: Jinja argument value.
         """
-        context = super(TurbiniaJobTaskScaffolder, self).GetJinjaContext()
+        context = super().GetJinjaContext()
         context["class_name"] = self.class_name
         context["plugin_name"] = self._output_name
         time_now = datetime.datetime.utcnow()

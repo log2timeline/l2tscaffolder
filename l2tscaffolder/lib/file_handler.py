@@ -20,7 +20,7 @@ class FileHandler:
         if not os.path.isfile(path):
             return
 
-        with open(path, "r") as file_object:
+        with open(path, encoding="utf-8") as file_object:
             lines = file_object.readlines()
 
         line_index = 0
@@ -36,7 +36,7 @@ class FileHandler:
         else:
             lines.append(entry)
 
-        with open(path, "w") as file_object:
+        with open(path, "w", encoding="utf-8") as file_object:
             for line in lines:
                 file_object.write(line)
 
@@ -155,7 +155,7 @@ class FileHandler:
           str: path of the edited file.
         """
         _ = self.CreateFolderForFilePathIfNotExist(source)
-        with open(source, "a") as file_object:
+        with open(source, "a", encoding="utf-8") as file_object:
             file_object.write(str(content))
 
         return source

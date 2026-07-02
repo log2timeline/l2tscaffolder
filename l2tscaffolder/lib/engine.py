@@ -17,7 +17,7 @@ class ScaffolderEngine:
 
     def __init__(self):
         """Initializes the engine."""
-        super(ScaffolderEngine, self).__init__()
+        super().__init__()
         self._attributes = {}
         self._definition = ""
         self._definition_root_path = ""

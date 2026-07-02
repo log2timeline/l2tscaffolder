@@ -56,8 +56,7 @@ class DefinitionManager:
         Yields:
           str: definition names.
         """
-        for definition_name in cls._definition_classes:
-            yield definition_name
+        yield from cls._definition_classes
 
     @classmethod
     def GetDefinitionObjects(cls) -> Iterator[interface.ScaffolderDefinition]:

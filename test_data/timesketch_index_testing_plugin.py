@@ -2,7 +2,6 @@
 
 import mock
 
-from timesketch.lib.analyzers import testing
 from timesketch.lib.testlib import BaseTest
 from timesketch.lib.testlib import MockDataStore
 

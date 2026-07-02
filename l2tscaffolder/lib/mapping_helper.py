@@ -23,7 +23,7 @@ class MappingHelper:
                 to the path to the tool. If none provided will use the default
                 path.
         """
-        super(MappingHelper, self).__init__()
+        super().__init__()
         # TODO: Improve this, this is flaky.
         self._tool_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 

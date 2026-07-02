@@ -26,7 +26,7 @@ class TestFileQuestion(interface.StringQuestion):
         Raises:
           errors.UnableToConfigure: if the answer is invalid.
         """
-        super(TestFileQuestion, self).ValidateAnswer(answer)
+        super().ValidateAnswer(answer)
 
         if not os.path.isfile(answer):
             raise errors.UnableToConfigure(
@@ -65,7 +65,7 @@ class PlasoBaseScaffolder(interface.Scaffolder):
 
     def __init__(self):
         """Initializes the plaso scaffolder."""
-        super(PlasoBaseScaffolder, self).__init__()
+        super().__init__()
         self._formatter_path = os.path.join("plaso", "formatters")
         self._formatter_test_path = os.path.join("tests", "formatters")
         self._parser_path = os.path.join("plaso", "parsers")
@@ -126,7 +126,7 @@ class PlasoBaseScaffolder(interface.Scaffolder):
             str: name of Jinja argument.
             object: Jinja argument value.
         """
-        context = super(PlasoBaseScaffolder, self).GetJinjaContext()
+        context = super().GetJinjaContext()
 
         context["class_name"] = self.class_name
         context["test_file"] = self.test_file
@@ -239,9 +239,9 @@ class PlasoBaseScaffolder(interface.Scaffolder):
         Raises:
           ScaffolderNotConfigured: if the scaffolder is not fully configured.
         """
-        super(PlasoBaseScaffolder, self).RaiseIfNotReady()
+        super().RaiseIfNotReady()
         if not os.path.isfile(self.test_file):
-            errors.ScaffolderNotConfigured(
+            raise errors.ScaffolderNotConfigured(
                 "Test file path is incorrect, file does not exist."
             )
 
@@ -251,7 +251,7 @@ class PlasoPluginScaffolder(PlasoBaseScaffolder):
 
     def __init__(self):
         """Initializes the plaso plugin scaffolder."""
-        super(PlasoPluginScaffolder, self).__init__()
+        super().__init__()
         plugin_path_name = "{0:s}_plugins".format(self.NAME)
         self._parser_path = os.path.join(self._parser_path, plugin_path_name)
         self._parser_test_path = os.path.join(self._parser_test_path, plugin_path_name)
@@ -266,7 +266,7 @@ class PlasoPluginScaffolder(PlasoBaseScaffolder):
             str: name of Jinja argument.
             object: Jinja argument value.
         """
-        context = super(PlasoPluginScaffolder, self).GetJinjaContext()
+        context = super().GetJinjaContext()
         context["plugin_name"] = self._output_name
         return context
 
@@ -280,7 +280,7 @@ class PlasoParserScaffolder(PlasoBaseScaffolder):
 
     def __init__(self):
         """Initializes the plaso plugin scaffolder."""
-        super(PlasoParserScaffolder, self).__init__()
+        super().__init__()
         self.parser_name = ""
 
     def GetJinjaContext(self) -> Dict[str, object]:
@@ -291,6 +291,6 @@ class PlasoParserScaffolder(PlasoBaseScaffolder):
             str: name of Jinja argument.
             object: Jinja argument value.
         """
-        context = super(PlasoParserScaffolder, self).GetJinjaContext()
+        context = super().GetJinjaContext()
         context["parser_name"] = self._output_name
         return context

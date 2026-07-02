@@ -26,7 +26,7 @@ class CLIHelper:
           mock_responses (Optional[dict[str, str]]): mappings of commands to
               responses, for testing.
         """
-        super(CLIHelper, self).__init__()
+        super().__init__()
         self.mock_responses = mock_responses
         self.preferred_encoding = locale.getpreferredencoding()
 
@@ -52,6 +52,7 @@ class CLIHelper:
         arguments = shlex.split(command)
 
         try:
+            # pylint: disable=consider-using-with
             process = subprocess.Popen(
                 arguments, stderr=subprocess.PIPE, stdout=subprocess.PIPE
             )
