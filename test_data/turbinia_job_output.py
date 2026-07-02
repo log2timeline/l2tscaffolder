@@ -24,27 +24,27 @@ from turbinia.workers.secret_processing import SecretProcessingTask
 
 
 class SecretProcessingJob(interface.TurbiniaJob):
-  """Need to add some description here."""
+    """Need to add some description here."""
 
-  # The types of evidence that this Job will process
-  # TODO: Fill this out.
-  evidence_input = []
-  evidence_output = []
+    # The types of evidence that this Job will process
+    # TODO: Fill this out.
+    evidence_input = []
+    evidence_output = []
 
-  NAME = 'SecretProcessingJob'
+    NAME = "SecretProcessingJob"
 
-  def create_tasks(self, evidence):
-    """Create tasks.
+    def create_tasks(self, evidence):
+        """Create tasks.
 
-    Args:
-      evidence: List of evidence object to process
+        Args:
+          evidence: List of evidence object to process
 
-    Returns:
-        A list of tasks to schedule.
-    """
-    # TODO: Fill in the tasks.
-    tasks = [SecretProcessingTask() for _ in evidence]
-    return tasks
+        Returns:
+            A list of tasks to schedule.
+        """
+        # TODO: Fill in the tasks.
+        tasks = [SecretProcessingTask() for _ in evidence]
+        return tasks
 
 
 manager.JobsManager.RegisterJob(SecretProcessingJob)

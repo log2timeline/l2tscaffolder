@@ -11,134 +11,139 @@ from typing import Tuple
 from l2tscaffolder.helpers import cli
 from l2tscaffolder.lib import errors
 
+
 class GitHelper(cli.CLIHelper):
-  """Helper class for git operations.
+    """Helper class for git operations.
 
-  Attributes:
-    project_path: path to the git project folder.
-  """
-
-  def __init__(self, project_path: str):
-    """Initializes the git helper.
-
-    Arguments:
-      project_path (str): the path to the git project folder.
+    Attributes:
+      project_path: path to the git project folder.
     """
-    super(GitHelper, self).__init__()
-    self.project_path = project_path
-    self._cwd = os.getcwd()
 
-  def AddFileToTrack(self, file_path: str):
-    """Add a file to those that are tracked by the git repo.
+    def __init__(self, project_path: str):
+        """Initializes the git helper.
 
-    Args:
-      file_path (str): path to the file to be added to tracked
-          files by this git repo.
+        Arguments:
+          project_path (str): the path to the git project folder.
+        """
+        super(GitHelper, self).__init__()
+        self.project_path = project_path
+        self._cwd = os.getcwd()
 
-    Raises:
-      errors.UnableToConfigure: when the tool is not able to add
-          newly added files to the git repo.
-    """
-    command = 'git add {0:s}'.format(file_path)
-    exit_code, output, error = self.RunCommand(command)
-    if exit_code != 0:
-      raise errors.UnableToConfigure((
-          'Unable to add files to git branch, output of "git add" '
-          'command is [{0:s}] with the error: {1:s}'.format(output, error)))
+    def AddFileToTrack(self, file_path: str):
+        """Add a file to those that are tracked by the git repo.
 
-  def HasBranch(self, branch_name: str) -> bool:
-    """Tests for the existence of a specific branch.
+        Args:
+          file_path (str): path to the file to be added to tracked
+              files by this git repo.
 
-    Args:
-      branch_name (str): the name of the branch to test for.
+        Raises:
+          errors.UnableToConfigure: when the tool is not able to add
+              newly added files to the git repo.
+        """
+        command = "git add {0:s}".format(file_path)
+        exit_code, output, error = self.RunCommand(command)
+        if exit_code != 0:
+            raise errors.UnableToConfigure(
+                (
+                    'Unable to add files to git branch, output of "git add" '
+                    "command is [{0:s}] with the error: {1:s}".format(output, error)
+                )
+            )
 
-    Returns:
-      bool: True if the branch exists.
-    """
-    command = 'git show-ref --verify --quiet refs/heads/"{0:s}"'.format(
-        branch_name)
-    exit_code, _, _ = self.RunCommand(command)
-    if exit_code == 0:
-      return True
+    def HasBranch(self, branch_name: str) -> bool:
+        """Tests for the existence of a specific branch.
 
-    return False
+        Args:
+          branch_name (str): the name of the branch to test for.
 
-  def GenerateBranchName(self, module_name: str) -> str:
-    """Generates a git branch name.
+        Returns:
+          bool: True if the branch exists.
+        """
+        command = 'git show-ref --verify --quiet refs/heads/"{0:s}"'.format(branch_name)
+        exit_code, _, _ = self.RunCommand(command)
+        if exit_code == 0:
+            return True
 
-    Args:
-      module_name (str): module name to generate a git branch name from.
+        return False
 
-    Returns:
-      str: git branch name.
-    """
-    branch_name = re.sub('(?<!^)(?=[A-Z])', '_', module_name)
-    branch_name = branch_name.lower()
-    return branch_name
+    def GenerateBranchName(self, module_name: str) -> str:
+        """Generates a git branch name.
 
-  def GetActiveBranch(self) -> str:
-    """Determines the active branch of the git project.
+        Args:
+          module_name (str): module name to generate a git branch name from.
 
-    Returns:
-      str: the active branch of the git project.
+        Returns:
+          str: git branch name.
+        """
+        branch_name = re.sub("(?<!^)(?=[A-Z])", "_", module_name)
+        branch_name = branch_name.lower()
+        return branch_name
 
-    Raises:
-      errors.UnableToConfigure: when the tool is not able to get
-          the active branch of the git project.
-    """
-    command = 'git branch --list --no-color'
-    exit_code, output, error = self.RunCommand(command)
+    def GetActiveBranch(self) -> str:
+        """Determines the active branch of the git project.
 
-    if exit_code != 0:
-      raise errors.UnableToConfigure((
-          'Unable to get the active git branch, with error message '
-          '{0:s}').format(error))
+        Returns:
+          str: the active branch of the git project.
 
-    for line in output.split('\n'):
-      if line.startswith('*'):
-        _, _, line_string = line.partition('*')
-        return line_string.strip()
-    raise errors.UnableToConfigure('Unable to determine the active git branch')
+        Raises:
+          errors.UnableToConfigure: when the tool is not able to get
+              the active branch of the git project.
+        """
+        command = "git branch --list --no-color"
+        exit_code, output, error = self.RunCommand(command)
 
-  def RunCommand(self, command: str) -> Tuple[int, str, str]:
-    """Runs a command.
+        if exit_code != 0:
+            raise errors.UnableToConfigure(
+                (
+                    "Unable to get the active git branch, with error message " "{0:s}"
+                ).format(error)
+            )
 
-    Args:
-      command (str): command to run.
+        for line in output.split("\n"):
+            if line.startswith("*"):
+                _, _, line_string = line.partition("*")
+                return line_string.strip()
+        raise errors.UnableToConfigure("Unable to determine the active git branch")
 
-    Returns:
-      tuple[int, str, str]: exit code, output that was written to stdout
-          and stderr.
-    """
-    os.chdir(self.project_path)
-    exit_code, output, error = super(GitHelper, self).RunCommand(command)
-    os.chdir(self._cwd)
-    return exit_code, output, error
+    def RunCommand(self, command: str) -> Tuple[int, str, str]:
+        """Runs a command.
 
-  def SwitchToBranch(self, branch: str) -> int:
-    """Switches the git branch and returns the exit code of the command.
+        Args:
+          command (str): command to run.
 
-    Arguments:
-      branch (str): the name of the git branch.
+        Returns:
+          tuple[int, str, str]: exit code, output that was written to stdout
+              and stderr.
+        """
+        os.chdir(self.project_path)
+        exit_code, output, error = super(GitHelper, self).RunCommand(command)
+        os.chdir(self._cwd)
+        return exit_code, output, error
 
-    Returns:
-      int: the exit code from the git command.
-    """
-    command = 'git checkout {0:s}'.format(branch)
-    exit_code, _, _ = self.RunCommand(command)
+    def SwitchToBranch(self, branch: str) -> int:
+        """Switches the git branch and returns the exit code of the command.
 
-    return exit_code
+        Arguments:
+          branch (str): the name of the git branch.
 
-  def CreateBranch(self, branch: str) -> int:
-    """Creates a git branch and returns the exit code of the command.
+        Returns:
+          int: the exit code from the git command.
+        """
+        command = "git checkout {0:s}".format(branch)
+        exit_code, _, _ = self.RunCommand(command)
 
-    Arguments:
-      branch (str): the name of the git branch.
+        return exit_code
 
-    Returns:
-      int: the exit code from the git command.
-    """
-    command = 'git branch {0:s}'.format(branch)
-    exit_code, _, _ = self.RunCommand(command)
+    def CreateBranch(self, branch: str) -> int:
+        """Creates a git branch and returns the exit code of the command.
 
-    return exit_code
+        Arguments:
+          branch (str): the name of the git branch.
+
+        Returns:
+          int: the exit code from the git command.
+        """
+        command = "git branch {0:s}".format(branch)
+        exit_code, _, _ = self.RunCommand(command)
+
+        return exit_code

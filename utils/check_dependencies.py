@@ -8,18 +8,20 @@ from __future__ import unicode_literals
 import sys
 
 # Change PYTHONPATH to include dependencies.
-sys.path.insert(0, '.')
+sys.path.insert(0, ".")
 
 import utils.dependencies  # pylint: disable=wrong-import-position
 
 
-if __name__ == '__main__':
-  dependency_helper = utils.dependencies.DependencyHelper()
+if __name__ == "__main__":
+    dependency_helper = utils.dependencies.DependencyHelper()
 
-  if not dependency_helper.CheckDependencies():
-    build_instructions_url = (
-        'https://github.com/log2timeline/plaso/wiki/Users-Guide')
+    if not dependency_helper.CheckDependencies():
+        build_instructions_url = (
+            "https://github.com/log2timeline/plaso/wiki/Users-Guide"
+        )
 
-    print('See: {0:s} on how to set up l2t scaffolder.'.format(
-        build_instructions_url))
-    print('')
+        print(
+            "See: {0:s} on how to set up l2t scaffolder.".format(build_instructions_url)
+        )
+        print("")
