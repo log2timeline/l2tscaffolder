@@ -23,7 +23,7 @@ class AwesomeScaffolder(scaffolder_interface.Scaffolder):
     ]
 
     def __init__(self):
-        super(AwesomeScaffolder, self).__init__()
+        super().__init__()
         self.test1 = ""
         self.test2 = ""
         self.test3 = ""
@@ -34,11 +34,11 @@ class AwesomeScaffolder(scaffolder_interface.Scaffolder):
         Yields:
           tuple(str, str): path to the init file and the entry to add to it.
         """
-        return iter(())
+        yield from iter()
 
     def GetJinjaContext(self):
         """Returns a dict that can be used as a context for Jinja2 templates."""
-        context = super(AwesomeScaffolder, self).GetJinjaContext()
+        context = super().GetJinjaContext()
         context["test1"] = self.test1
         context["test2"] = self.test2
         context["test3"] = self.test3

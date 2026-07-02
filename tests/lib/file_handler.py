@@ -72,8 +72,8 @@ class FileHandlerTest(unittest.TestCase):
             source = os.path.join(directory, self.file)
             destination = os.path.join(directory, "copy", self.file)
 
-            with open(source, "a") as f:
-                f.write(expected_content)
+            with open(source, "a", encoding="utf-8") as file_object:
+                file_object.write(expected_content)
 
             handler = file_handler.FileHandler()
             self.assertFalse(os.path.exists(destination))
@@ -88,16 +88,16 @@ class FileHandlerTest(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as directory:
             source = os.path.join(directory, self.file)
-            with open(source, "a") as f:
-                f.write(content)
+            with open(source, "a", encoding="utf-8") as file_object:
+                file_object.write(content)
 
             handler = file_handler.FileHandler()
             self.assertTrue(os.path.exists(source))
             handler.AddContent(source, content)
             self.assertTrue(os.path.exists(source))
 
-            with open(source, "r") as f:
-                actual = f.read()
+            with open(source, encoding="utf-8") as file_object:
+                actual = file_object.read()
 
         self.assertEqual(expected, actual)
 
@@ -113,8 +113,8 @@ class FileHandlerTest(unittest.TestCase):
             handler.AddContent(source, content)
             self.assertTrue(os.path.exists(source))
 
-            with open(source, "r") as f:
-                actual = f.read()
+            with open(source, encoding="utf-8") as file_object:
+                actual = file_object.read()
 
         self.assertEqual(expected, actual)
 
@@ -125,16 +125,16 @@ class FileHandlerTest(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as directory:
             source = os.path.join(directory, self.file)
-            with open(source, "a") as f:
-                f.write(content)
+            with open(source, "a", encoding="utf-8") as file_object:
+                file_object.write(content)
 
             handler = file_handler.FileHandler()
             self.assertTrue(os.path.exists(source))
             handler.CreateOrModifyFileWithContent(source, content)
             self.assertTrue(os.path.exists(source))
 
-            with open(source, "r") as f:
-                actual = f.read()
+            with open(source, encoding="utf-8") as file_object:
+                actual = file_object.read()
 
         self.assertEqual(expected, actual)
 
@@ -151,8 +151,8 @@ class FileHandlerTest(unittest.TestCase):
             handler.CreateOrModifyFileWithContent(source, content)
             self.assertTrue(os.path.exists(source))
 
-            with open(source, "r") as f:
-                actual = f.read()
+            with open(source, encoding="utf-8") as file_object:
+                actual = file_object.read()
 
         self.assertEqual(expected, actual)
 
@@ -163,25 +163,24 @@ class FileHandlerTest(unittest.TestCase):
         )
         test_file = os.path.join(test_path, "test_init.py")
 
-        with open(test_file, "r") as fh:
-            test_file_content = fh.read()
+        with open(test_file, encoding="utf-8") as file_object:
+            test_file_content = file_object.read()
 
         new_import = "from secret.project.parsers import foobar\n"
 
-        temp_file = tempfile.NamedTemporaryFile()
-        with open(temp_file.name, "w") as fh:
-            fh.write(test_file_content)
+        with tempfile.NamedTemporaryFile() as temp_file:
+            with open(temp_file.name, "w", encoding="utf-8") as file_object:
+                file_object.write(test_file_content)
 
-        handler = file_handler.FileHandler()
-        handler.AddImportToInit(temp_file.name, new_import)
+            handler = file_handler.FileHandler()
+            handler.AddImportToInit(temp_file.name, new_import)
 
-        with open(temp_file.name, "r") as fh:
-            content = fh.read()
-        os.remove(temp_file.name)
+            with open(temp_file.name, encoding="utf-8") as file_object:
+                content = file_object.read()
 
         expected_file_path = os.path.join(test_path, "test_init_fixed.py")
-        with open(expected_file_path, "r") as fh:
-            expected_content = fh.read()
+        with open(expected_file_path, encoding="utf-8") as file_object:
+            expected_content = file_object.read()
 
         self.assertEqual(content, expected_content)
 

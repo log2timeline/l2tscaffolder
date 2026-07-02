@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "l2tscaffolder"
+version = "20260702"
+description = "Scaffolder for plaso and other l2t related projects"
+maintainers = [
+    { name = "Log2Timeline maintainers", email = "log2timeline-maintainers@googlegroups.com" },
+]
+license = "Apache-2.0"
+license-files = ["ACKNOWLEDGEMENTS", "AUTHORS", "LICENSE"]
+readme = "README.md"
+classifiers = [
+    "",
+    "Programming Language :: Python",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "click >= 6.7",
+    "colorama >= 0.3.7",
+    "jinja2 >= 2.9.6",
+    "pexpect >= 4.2.1",
+    "setuptools >= 35.0.2",
+    "yapf >= 0.40.0",
+]
+
+[project.urls]
+Documentation = "https://l2tscaffolder.readthedocs.io/en/latest"
+Homepage = "https://github.com/log2timeline/l2tscaffolder"
+Repository = "https://github.com/log2timeline/l2tscaffolder"
+
+[tool.black]
+line-length = 88
+target-version = ["py310"]
+include = "\\.pyi?$"
+
+[tool.docformatter]
+black = true
+non-cap = ["bytes:", "dfDateTime", "float:", "int:", "str:"]
+non-strict = true
+
+[tool.l2tdevtools]
+name = "a scaffolder project for log2timeline projects, easing parser and plugin creation."
+status = "None"
+description = """
+The log2timeline scaffolder is a tool written to make writing a new plugin or \
+parser in plaso or other log2timeline (and friends) projects easier by asking \
+the developer few questions and automatically create all the boilerplate code \
+necessary to start the process. \
+"""
+
+[tool.setuptools]
+package-dir = {"l2tscaffolder" = "l2tscaffolder"}

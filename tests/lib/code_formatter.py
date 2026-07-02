@@ -17,10 +17,9 @@ class CodeFormatterTest(unittest.TestCase):
         yapf_path = path_helper.YapfStyleFilePath()
         formatter = code_formatter.CodeFormatter(yapf_path)
 
-        faulty_code_string = (
-            "class Foobar(object):\n" "\n" "  def SetStuff(self):\n" "  return None\n"
+        faulty_code_string = "\n".join(
+            ["class Foobar(object):", "", "  def SetStuff(self):", "  return None", ""]
         )
-
         with self.assertRaises(errors.YapfError):
             _ = formatter.Format(faulty_code_string)
 
@@ -45,7 +44,6 @@ class CodeFormatterTest(unittest.TestCase):
             '"informal", "direct",\n'
             '        "indirect")\n'
         )
-
         self.assertTrue(code_changed)
         self.assertEqual(formatted_code, correct_code)
 

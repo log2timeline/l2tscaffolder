@@ -88,15 +88,17 @@ class PlasoSQLiteScaffolderTest(unittest.TestCase):
         self.assertEqual(set(init_generated.keys()), expected_init_files)
 
         expected_parser_init_addition = (
-            "from " "plaso.parsers.sqlite_plugins import testing\n"
+            "from plaso.parsers.sqlite_plugins import testing\n"
         )
         self.assertEqual(
             expected_parser_init_addition,
             init_generated["plaso/parsers/sqlite_plugins/__init__.py"],
         )
 
-        with open("test_data/plaso_testing_sqlite_plugin.py", "r") as fh:
-            expected_parser_content = fh.read()
+        with open(
+            "test_data/plaso_testing_sqlite_plugin.py", encoding="utf-8"
+        ) as file_object:
+            expected_parser_content = file_object.read()
         self.assertEqual(
             expected_parser_content,
             files_generated["plaso/parsers/sqlite_plugins/testing.py"],

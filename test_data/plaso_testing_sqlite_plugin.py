@@ -7,10 +7,7 @@ SQLite database Name: test_sqlite.db
 
 from __future__ import unicode_literals
 
-from dfdatetime import posix_time as dfdatetime_posix_time
-
-from plaso.containers import time_events
-from plaso.lib import eventdata
+from plaso.containers import events
 from plaso.parsers import sqlite
 from plaso.parsers.sqlite_plugins import interface
 
@@ -28,7 +25,8 @@ class TestingFoobarEventData(events.EventData):
 
     def __init__(self):
         """Initializes event data."""
-        super(TestingFoobarEventData, self).__init__(data_type=self.DATA_TYPE)
+        super().__init__(data_type=self.DATA_TYPE)
+        # pylint: disable=disallowed-name
         self.bar = None
         self.foo = None
 
@@ -47,7 +45,7 @@ class TestingStrangeEventData(events.EventData):
 
     def __init__(self):
         """Initializes event data."""
-        super(TestingStrangeEventData, self).__init__(data_type=self.DATA_TYPE)
+        super().__init__(data_type=self.DATA_TYPE)
         self.address = None
         self.name = None
         self.ssn = None
@@ -82,6 +80,8 @@ class TestingPlugin(interface.SQLitePlugin):
             ),
         }
     ]
+
+    # pylint: disable=unused-argument
 
     def ParseFoobarRow(self, parser_mediator, query, row, **unused_kwargs):
         """Parses a row from the database.

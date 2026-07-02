@@ -1,18 +1,11 @@
-# -*- coding: utf-8 -*-
 """Helper to check for availability and version of dependencies."""
 
-from __future__ import print_function
-from __future__ import unicode_literals
-
+import configparser
+import os
 import re
 
-try:
-    import ConfigParser as configparser
-except ImportError:
-    import configparser  # pylint: disable=import-error
 
-
-class DependencyDefinition(object):
+class DependencyDefinition:
     """Dependency definition.
 
     Attributes:
@@ -20,12 +13,19 @@ class DependencyDefinition(object):
       is_optional (bool): True if the dependency is optional.
       l2tbinaries_name (str): name of the l2tbinaries package that provides
           the dependency.
-      maximum_version (str): maximum supported version.
-      minimum_version (str): minimum supported version.
+      maximum_version (str): maximum supported version, a greater or equal
+          version is not supported.
+      minimum_version (str): minimum supported version, a lesser version is
+          not supported.
       name (str): name of (the Python module that provides) the dependency.
       pypi_name (str): name of the PyPI package that provides the dependency.
       python2_only (bool): True if the dependency is only supported by Python 2.
+      python3_only (bool): True if the dependency is only supported by Python 3.
       rpm_name (str): name of the rpm package that provides the dependency.
+      skip_check (bool): True if the dependency should be skipped by the
+          CheckDependencies or CheckTestDependencies methods of DependencyHelper.
+      skip_requires (bool): True if the dependency should be excluded from
+          pyproject.toml dependencies.
       version_property (str): name of the version attribute or function.
     """
 
@@ -35,7 +35,7 @@ class DependencyDefinition(object):
         Args:
           name (str): name of the dependency.
         """
-        super(DependencyDefinition, self).__init__()
+        super().__init__()
         self.dpkg_name = None
         self.is_optional = False
         self.l2tbinaries_name = None
@@ -44,11 +44,14 @@ class DependencyDefinition(object):
         self.name = name
         self.pypi_name = None
         self.python2_only = False
+        self.python3_only = False
         self.rpm_name = None
+        self.skip_check = None
+        self.skip_requires = None
         self.version_property = None
 
 
-class DependencyDefinitionReader(object):
+class DependencyDefinitionReader:
     """Dependency definition reader."""
 
     _VALUE_NAMES = frozenset(
@@ -60,7 +63,10 @@ class DependencyDefinitionReader(object):
             "minimum_version",
             "pypi_name",
             "python2_only",
+            "python3_only",
             "rpm_name",
+            "skip_check",
+            "skip_requires",
             "version_property",
         ]
     )
@@ -90,13 +96,8 @@ class DependencyDefinitionReader(object):
         Yields:
           DependencyDefinition: dependency definition.
         """
-        config_parser = configparser.RawConfigParser()
-        # pylint: disable=deprecated-method
-        # TODO: replace readfp by read_file, check if Python 2 compatible
-        if hasattr(config_parser, "read_file"):
-            config_parser.read_file(file_object)
-        else:
-            config_parser.readfp(file_object)
+        config_parser = configparser.ConfigParser(interpolation=None)
+        config_parser.read_file(file_object)
 
         for section_name in config_parser.sections():
             dependency_definition = DependencyDefinition(section_name)
@@ -107,7 +108,7 @@ class DependencyDefinitionReader(object):
             yield dependency_definition
 
 
-class DependencyHelper(object):
+class DependencyHelper:
     """Dependency helper.
 
     Attributes:
@@ -117,27 +118,33 @@ class DependencyHelper(object):
     _VERSION_NUMBERS_REGEX = re.compile(r"[0-9.]+")
     _VERSION_SPLIT_REGEX = re.compile(r"\.|\-")
 
-    def __init__(self, configuration_file="dependencies.ini"):
+    def __init__(
+        self,
+        dependencies_file="dependencies.ini",
+        test_dependencies_file="test_dependencies.ini",
+    ):
         """Initializes a dependency helper.
 
         Args:
-          configuration_file (Optional[str]): path to the dependencies
+          dependencies_file (Optional[str]): path to the dependencies configuration
+              file.
+          test_dependencies_file (Optional[str]): path to the test dependencies
               configuration file.
         """
-        super(DependencyHelper, self).__init__()
+        super().__init__()
         self._test_dependencies = {}
         self.dependencies = {}
 
         dependency_reader = DependencyDefinitionReader()
 
-        with open(configuration_file, "r") as file_object:
+        with open(dependencies_file, encoding="utf-8") as file_object:
             for dependency in dependency_reader.Read(file_object):
                 self.dependencies[dependency.name] = dependency
 
-        dependency = DependencyDefinition("mock")
-        dependency.minimum_version = "0.7.1"
-        dependency.version_property = "__version__"
-        self._test_dependencies["mock"] = dependency
+        if os.path.exists(test_dependencies_file):
+            with open(test_dependencies_file, encoding="utf-8") as file_object:
+                for dependency in dependency_reader.Read(file_object):
+                    self._test_dependencies[dependency.name] = dependency
 
     def _CheckPythonModule(self, dependency):
         """Checks the availability of a Python module.
@@ -146,7 +153,7 @@ class DependencyHelper(object):
           dependency (DependencyDefinition): dependency definition.
 
         Returns:
-          tuple: consists:
+          tuple: containing:
 
             bool: True if the Python module is available and conforms to
                 the minimum required version, False otherwise.
@@ -154,8 +161,7 @@ class DependencyHelper(object):
         """
         module_object = self._ImportPythonModule(dependency.name)
         if not module_object:
-            status_message = "missing: {0:s}".format(dependency.name)
-            return False, status_message
+            return False, f"missing: {dependency.name:s}"
 
         if not dependency.version_property:
             return True, dependency.name
@@ -186,7 +192,7 @@ class DependencyHelper(object):
           maximum_version (str): maximum version.
 
         Returns:
-          tuple: consists:
+          tuple: containing:
 
             bool: True if the Python module is available and conforms to
                 the minimum required version, False otherwise.
@@ -201,13 +207,12 @@ class DependencyHelper(object):
                 module_version = version_method()
 
         if not module_version:
-            status_message = (
-                "unable to determine version information for: {0:s}"
-            ).format(module_name)
-            return False, status_message
+            return False, (
+                f"unable to determine version information for: {module_name:s}"
+            )
 
         # Make sure the module version is a string.
-        module_version = "{0!s}".format(module_version)
+        module_version = f"{module_version!s}"
 
         # Split the version string and convert every digit into an integer.
         # A string compare of both version strings will yield an incorrect result.
@@ -223,10 +228,9 @@ class DependencyHelper(object):
                 map(int, self._VERSION_SPLIT_REGEX.split(module_version))
             )
         except ValueError:
-            status_message = "unable to parse module version: {0:s} {1:s}".format(
-                module_name, module_version
+            return False, (
+                f"unable to parse module version: {module_name:s} {module_version:s}"
             )
-            return False, status_message
 
         if minimum_version:
             try:
@@ -234,16 +238,16 @@ class DependencyHelper(object):
                     map(int, self._VERSION_SPLIT_REGEX.split(minimum_version))
                 )
             except ValueError:
-                status_message = "unable to parse minimum version: {0:s} {1:s}".format(
-                    module_name, minimum_version
+                return False, (
+                    f"unable to parse minimum version: {module_name:s} "
+                    f"{minimum_version:s}"
                 )
-                return False, status_message
 
             if module_version_map < minimum_version_map:
-                status_message = (
-                    "{0:s} version: {1!s} is too old, {2!s} or later required"
-                ).format(module_name, module_version, minimum_version)
-                return False, status_message
+                return False, (
+                    f"{module_name:s} version: {module_version!s} is too old, "
+                    f"{minimum_version!s} or later required"
+                )
 
         if maximum_version:
             try:
@@ -251,50 +255,18 @@ class DependencyHelper(object):
                     map(int, self._VERSION_SPLIT_REGEX.split(maximum_version))
                 )
             except ValueError:
-                status_message = "unable to parse maximum version: {0:s} {1:s}".format(
-                    module_name, maximum_version
+                return False, (
+                    f"unable to parse maximum version: {module_name:s} "
+                    f"{maximum_version:s}"
                 )
-                return False, status_message
 
             if module_version_map > maximum_version_map:
-                status_message = (
-                    "{0:s} version: {1!s} is too recent, {2!s} or earlier " "required"
-                ).format(module_name, module_version, maximum_version)
-                return False, status_message
+                return False, (
+                    f"{module_name:s} version: {module_version!s} is too recent, "
+                    f"{maximum_version!s} or earlier required"
+                )
 
-        status_message = "{0:s} version: {1!s}".format(module_name, module_version)
-        return True, status_message
-
-    def _CheckSQLite3(self):
-        """Checks the availability of sqlite3.
-
-        Returns:
-          tuple: consists:
-
-            bool: True if the Python module is available and conforms to
-                the minimum required version, False otherwise.
-            str: status message.
-        """
-        # On Windows sqlite3 can be provided by both pysqlite2.dbapi2 and
-        # sqlite3. sqlite3 is provided with the Python installation and
-        # pysqlite2.dbapi2 by the pysqlite2 Python module. Typically
-        # pysqlite2.dbapi2 would contain a newer version of sqlite3, hence
-        # we check for its presence first.
-        module_name = "pysqlite2.dbapi2"
-        minimum_version = "3.7.8"
-
-        module_object = self._ImportPythonModule(module_name)
-        if not module_object:
-            module_name = "sqlite3"
-
-        module_object = self._ImportPythonModule(module_name)
-        if not module_object:
-            status_message = "missing: {0:s}.".format(module_name)
-            return False, status_message
-
-        return self._CheckPythonModuleVersion(
-            module_name, module_object, "sqlite_version", minimum_version, None
-        )
+        return True, f"{module_name:s} version: {module_version!s}"
 
     def _ImportPythonModule(self, module_name):
         """Imports a Python module.
@@ -327,6 +299,7 @@ class DependencyHelper(object):
           result (bool): True if the Python module is available and conforms to
                 the minimum required version, False otherwise.
           status_message (str): status message.
+          verbose_output (Optional[bool]): True if output should be verbose.
         """
         if not result or dependency.is_optional:
             if dependency.is_optional:
@@ -334,10 +307,10 @@ class DependencyHelper(object):
             else:
                 status_indicator = "[FAILURE]"
 
-            print("{0:s}\t{1:s}".format(status_indicator, status_message))
+            print(f"{status_indicator:s}\t{status_message:s}")
 
         elif verbose_output:
-            print("[OK]\t\t{0:s}".format(status_message))
+            print(f"[OK]\t\t{status_message:s}")
 
     def CheckDependencies(self, verbose_output=True):
         """Checks the availability of the dependencies.
@@ -351,15 +324,11 @@ class DependencyHelper(object):
         print("Checking availability and versions of dependencies.")
         check_result = True
 
-        for module_name, dependency in sorted(self.dependencies.items()):
-            if module_name == "sqlite3":
-                result, status_message = self._CheckSQLite3()
-            else:
-                result, status_message = self._CheckPythonModule(dependency)
+        for _, dependency in sorted(self.dependencies.items()):
+            if dependency.skip_check:
+                continue
 
-            if not result and module_name == "lzma":
-                dependency.name = "backports.lzma"
-                result, status_message = self._CheckPythonModule(dependency)
+            result, status_message = self._CheckPythonModule(dependency)
 
             if not result and not dependency.is_optional:
                 check_result = False
@@ -392,8 +361,12 @@ class DependencyHelper(object):
         for dependency in sorted(
             self._test_dependencies.values(), key=lambda dependency: dependency.name
         ):
+            if dependency.skip_check:
+                continue
+
             result, status_message = self._CheckPythonModule(dependency)
-            if not result:
+
+            if not result and not dependency.is_optional:
                 check_result = False
 
             self._PrintCheckDependencyStatus(

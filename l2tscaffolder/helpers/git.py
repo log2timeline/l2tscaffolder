@@ -25,7 +25,7 @@ class GitHelper(cli.CLIHelper):
         Arguments:
           project_path (str): the path to the git project folder.
         """
-        super(GitHelper, self).__init__()
+        super().__init__()
         self.project_path = project_path
         self._cwd = os.getcwd()
 
@@ -116,7 +116,7 @@ class GitHelper(cli.CLIHelper):
               and stderr.
         """
         os.chdir(self.project_path)
-        exit_code, output, error = super(GitHelper, self).RunCommand(command)
+        exit_code, output, error = super().RunCommand(command)
         os.chdir(self._cwd)
         return exit_code, output, error
 

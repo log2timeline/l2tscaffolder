@@ -33,11 +33,11 @@ class SecretProcessingJob(interface.TurbiniaJob):
 
     NAME = "SecretProcessingJob"
 
-    def create_tasks(self, evidence):
+    def CreateTask(self, evidence):
         """Create tasks.
 
         Args:
-          evidence: List of evidence object to process
+          evidence (list[object]): List of evidence object to process
 
         Returns:
             A list of tasks to schedule.

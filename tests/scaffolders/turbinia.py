@@ -32,8 +32,9 @@ class TurbiniaJobTaskScaffolderTest(unittest.TestCase):
         init_generated = dict(scaffolder.GetInitFileChanges())
         self.assertEqual(set(init_generated.keys()), expected_init_files)
 
-        with open("test_data/turbinia_job_output.py", "r") as fh:
-            expected_parser_content = fh.read()
+        with open("test_data/turbinia_job_output.py", encoding="utf-8") as file_object:
+            expected_parser_content = file_object.read()
+
         self.assertEqual(
             expected_parser_content,
             files_generated["turbinia/jobs/secret_processing.py"],

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """Imports for the important parser in our life."""
 
+# pylint: disable=unused-import
+
 from secret.project.parsers import android_calls
 from secret.project.parsers import android_sms
 from secret.project.parsers import android_webview

@@ -40,16 +40,16 @@ class BaseQuestion:
         Raises:
           errors.UnableToConfigure: if the answer is not the correct type.
         """
+        # pylint: disable=isinstance-second-argument-not-valid-type
         if not isinstance(answer, self.TYPE):
             raise errors.UnableToConfigure(
                 (
                     "Answer is not of the correct type. It is {0!s} "
                     "instead of being {1!s}"
-                ).format(type(answer)),
-                type(self.TYPE),
+                ).format(type(answer), self.TYPE)
             )
 
-    def ValidateAnswer(self, answer: object):
+    def ValidateAnswer(self, answer):
         """Validate an answer to a question.
 
         Args:
@@ -77,7 +77,7 @@ class DictQuestion(BaseQuestion):
 
     def __init__(self, attribute, prompt, key_prompt, value_prompt):
         """Initialize the question."""
-        super(DictQuestion, self).__init__(attribute, prompt)
+        super().__init__(attribute, prompt)
         self.key_prompt = key_prompt
         self.value_prompt = value_prompt
 
@@ -119,7 +119,7 @@ class Scaffolder:
 
     def __init__(self):
         """Initializes the scaffolder."""
-        super(Scaffolder, self).__init__()
+        super().__init__()
         self._output_name = ""
 
     def GetInitFileChanges(self) -> Iterator[Tuple[str, str]]:
@@ -148,6 +148,7 @@ class Scaffolder:
         """
         return self.QUESTIONS
 
+    # pylint: disable=redundant-yields-doc
     def GenerateFiles(self) -> Iterator[Tuple[str, str]]:
         """Generates files this scaffolder provides.
 

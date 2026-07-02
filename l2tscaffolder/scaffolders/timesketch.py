@@ -39,7 +39,7 @@ class TimesketchBaseScaffolder(interface.Scaffolder):
 
     def __init__(self):
         """Initializes the Timesketch scaffolder."""
-        super(TimesketchBaseScaffolder, self).__init__()
+        super().__init__()
         self._plugin_path = os.path.join("timesketch", "lib", "analyzers")
         self._plugin_test_path = os.path.join("timesketch", "lib", "analyzers")
         # Timesketch uses 4 spaces instead of 2, thus we need to set a different
@@ -83,7 +83,7 @@ class TimesketchBaseScaffolder(interface.Scaffolder):
             str: name of Jinja argument.
             object: Jinja argument value.
         """
-        context = super(TimesketchBaseScaffolder, self).GetJinjaContext()
+        context = super().GetJinjaContext()
         context["class_name"] = self.class_name
         context["plugin_name"] = self._output_name
 

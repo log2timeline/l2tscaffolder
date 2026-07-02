@@ -2,13 +2,14 @@
 
 import mock
 
-from timesketch.lib.analyzers import testing
 from timesketch.lib.testlib import BaseTest
 from timesketch.lib.testlib import MockDataStore
 
 
 class TestTesting(BaseTest):
     """Tests the functionality of the analyzer."""
+
+    # pylint: disable=invalid-name
 
     @mock.patch("timesketch.lib.analyzers.interface.OpenSearchDataStore", MockDataStore)
     def setUp(self):

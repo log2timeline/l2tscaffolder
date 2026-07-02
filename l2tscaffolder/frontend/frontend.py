@@ -374,10 +374,8 @@ class ScaffolderFrontend:
             self.CreateGitFeatureBranch(project_path, scaffolder_engine.module_name)
         except errors.UnableToConfigure as exception:
             self._output_handler.PrintError(
-                (
-                    "Unable to create feature branch, is {0:s} a valid git project path? "
-                    "The error message was: {1!s}"
-                ).format(project_path, exception)
+                f"Unable to create feature branch with error: {exception!s}. Does "
+                f"{project_path:s} contain a git repository?"
             )
             self._output_handler.PrintError("Due to fatal error, not proceeding.")
             return
